@@ -3,14 +3,10 @@ SPDX-FileCopyrightText: 2023 Bundesministerium des Innern und für Heimat, PG Ze
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# Read me first
+# Contributing to openDesk Edu
 
-Please read the [project's entire CONTRIBUTING.md](https://gitlab.opencode.de/bmi/opendesk/info/-/blob/main/CONTRIBUTING.md) first.
-
-# How to contribute?
-
-Please also read the [project's workflow documentation](./docs/developer/workflow.md) for more details on standards like commit
-messages and branching convention.
+Thanks for your interest in contributing! Please read the [project's workflow documentation](./docs/developer/workflow.md)
+for standards like commit messages and branching conventions.
 
 ## Helm vs. Operators vs. Manifests
 
@@ -23,14 +19,19 @@ Due to DVS requirements:
 In order to align the Helm files from various sources into the unified deployment of openDesk we make use of
 [Helmfile](https://github.com/helmfile/helmfile).
 
+## Educational Services
+
+When contributing to the educational services (ILIAS, Moodle, BigBlueButton, OpenCloud):
+
+- Each service has its own Helm chart under `helmfile/charts/<service>/`
+- App-level values are in `helmfile/apps/<service>/`
+- Follow the existing SAML/OIDC integration patterns
+- Test SSO flows before submitting PRs
+
 ## Tooling
 
-New tools should not be introduced without first discussing it with the team. A proposal is fine, but let the team decide if the tool should
-be used or not.
-
-We should avoid adding unnecessary complexity.
+New tools should not be introduced without first discussing it with the team. We should avoid adding unnecessary complexity.
 
 ## In doubt? Ask!
 
-We are always happy to receive contributions, but we also like to discuss technical approaches in order to solve a problem. This helps to ensure
-a contribution fits the openDesk platform strategy and roadmap, and potentially avoids otherwise wasted time. So when in doubt please [open an issue](https://gitlab.opencode.de/bmi/opendesk/deployment/sovereign-workplace/-/issues/new) and start a discussion.
+When in doubt please [open an issue](https://github.com/tobias-weiss-ai-xr/opendesk-edu/issues) and start a discussion.

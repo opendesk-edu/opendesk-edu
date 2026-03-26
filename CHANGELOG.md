@@ -1,3 +1,20 @@
+## openDesk Edu Changelog
+
+This is a fork of [openDesk](https://www.opencode.de/en/opendesk) with educational services added on top.
+The upstream changelog follows below. For edu-specific changes, see the commit history.
+
+### Edu Additions (on top of openDesk CE v1.13.1)
+
+- **ILIAS** LMS integration with SAML SSO via Keycloak
+- **Moodle** LMS integration with Shibboleth authentication
+- **BigBlueButton** video conferencing with SAML SSO
+- **OpenCloud** file sharing with OIDC authentication
+- Custom portal tiles and SVG icons for educational services
+- Helm charts for ILIAS, Moodle, BBB, and OpenCloud
+- Shibboleth SP configuration templates
+
+---
+
 ## [1.13.1](https://gitlab.opencode.de/bmi/opendesk/deployment/opendesk/compare/v1.13.0...v1.13.1) (2026-03-23)
 
 

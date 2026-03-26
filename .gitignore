@@ -50,13 +50,3 @@ k8up-*.yaml
 *.key
 *.crt
 *.p12
-
-# Internal tooling
-.sisyphus/
-
-# Environment-specific configs
-helmfile/environments/hrz/
-
-# Test artifacts
-tests/e2e/
-test_e2e.js

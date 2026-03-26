@@ -15,13 +15,6 @@ environments:
       - "../../environments/default-enterprise-overrides/*.yaml.gotmpl"
       {{- end }}
       - "../../environments/dev/*.yaml.gotmpl"
-  hrz:
-    values:
-      - "../../environments/default/*.yaml.gotmpl"
-      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
-      - "../../environments/default-enterprise-overrides/*.yaml.gotmpl"
-      {{- end }}
-      - "../../environments/hrz/*.yaml.gotmpl"
   test:
     values:
       - "../../environments/default/*.yaml.gotmpl"

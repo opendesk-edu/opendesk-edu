@@ -12,6 +12,10 @@ on:
       - "helmfile/charts/**"
       - "ct.yaml"
 
+concurrency:
+  group: install-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

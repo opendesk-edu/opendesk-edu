@@ -5,6 +5,8 @@ SPDX-License-Identifier: Apache-2.0
 
 # Release management
 
+> **Note:** This document describes the upstream openDesk release process. openDesk Edu follows the upstream release cycle and applies edu-specific patches independently. See [CHANGELOG.md](../CHANGELOG.md) for edu-specific changes.
+
 This document outlines the release and patch management strategy for **openDesk**, ensuring that all updates, patches, and new releases are systematically **planned, tested, documented**, and **reliably deployed** into production. The process is designed to align with operational planning requirements and maintain system stability and security.
 
 <!-- TOC -->

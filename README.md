@@ -26,8 +26,9 @@ SPDX-License-Identifier: Apache-2.0
 <br/>
 
 An extension of [openDesk Community Edition](https://www.opencode.de/en/opendesk) that adds
-**learning management, video conferencing, and cloud file sharing** — integrated with openDesk's
-existing Keycloak SSO and portal. Deploy everything on Kubernetes with a single `helmfile apply`.
+**learning management systems** (ILIAS, Moodle) and provides **alternative components** for
+video conferencing (BigBlueButton ↔ Jitsi) and file sharing (OpenCloud ↔ Nextcloud) —
+all integrated with openDesk's existing Keycloak SSO and portal. Deploy everything on Kubernetes with a single `helmfile apply`.
 
 [Getting Started →](#-quick-start) &nbsp;·&nbsp; [What's Added →](#-whats-added-on-top-of-opendesk-ce) &nbsp;·&nbsp; [All Components →](#-full-component-matrix)
 
@@ -70,8 +71,15 @@ core services universities need — all integrated with openDesk's existing Keyc
 |:--------|:----------|:------:|:------------|
 | 📖 **Learning Management** | [ILIAS](https://www.ilias.de/) | ✅ Stable | Full-featured LMS with SAML SSO — courses, SCORM, assessments, forums |
 | 📖 **Learning Management** | [Moodle](https://moodle.org/) | 🔄 Beta | LMS with Shibboleth auth — plugins, gradebook, workshops |
-| 🎥 **Video Conferencing** | [BigBlueButton](https://bigbluebutton.org/) | 🔄 Beta | Online lectures & meetings with SAML SSO — recording, breakout rooms |
-| ☁️ **File Sharing** | [OpenCloud](https://opencloud.eu/) | 🔄 Beta | Self-hosted file sync & share with OIDC — CS3, WebDAV, Collabora |
+
+### Alternative components 🔄
+
+These can be used **instead of** their openDesk CE counterparts. Enable one or the other — not both.
+
+| Replaces | Alternative | Status | Why? |
+|:---------|:------------|:------:|:-----|
+| 📹 [Jitsi](https://jitsi.github.io/) | [BigBlueButton](https://bigbluebutton.org/) | 🔄 Beta | Built for teaching — recording, breakout rooms, whiteboard, polling, session timers |
+| 📁 [Nextcloud](https://nextcloud.com/) | [OpenCloud](https://opencloud.eu/) | 🔄 Beta | Lightweight CS3-based file sync — separate user namespace, per-course shares |
 
 ### How it works ⚙️
 
@@ -86,8 +94,8 @@ core services universities need — all integrated with openDesk's existing Keyc
 ### What's unchanged ✅
 
 All core openDesk CE components remain intact — Element, Nextcloud, Open-Xchange, XWiki, OpenProject,
-Jitsi, CryptPad, Notes, Collabora, and the full Nubus IAM stack. This is a **superset** of openDesk CE,
-not a fork.
+Jitsi, CryptPad, Notes, Collabora, and the full Nubus IAM stack. BBB and OpenCloud are optional
+drop-in alternatives, not replacements. This is a **superset** of openDesk CE, not a fork.
 
 ---
 
@@ -109,8 +117,8 @@ not a fork.
 | 📄 Office | Collabora | MPL-2.0 | [25.04.8](https://www.collaboraoffice.com/code-25-04-release-notes/) | [Docs](https://sdk.collaboraonline.com/) |
 | 📖 **LMS** | **ILIAS** | GPL-3.0 | [7.28](https://github.com/ILIAS-eLearning/ILIAS/releases) | [Docs](https://docu.ilias.de/) |
 | 📖 **LMS** | **Moodle** | GPL-3.0 | [4.4](https://moodle.org/release/) | [Docs](https://docs.moodle.org/) |
-| 🎥 **Lectures** | **BigBlueButton** | LGPL-3.0 | [2.7](https://github.com/bigbluebutton/bigbluebutton/releases) | [Docs](https://docs.bigbluebutton.org/) |
-| ☁️ **Files** | **OpenCloud** | Apache-2.0 | [4.0.3](https://github.com/opencloudeu/opencloud/releases) | [Docs](https://docs.opencloud.eu/) |
+| 🎥 **Lectures** | **BigBlueButton** (↔ Jitsi) | LGPL-3.0 | [2.7](https://github.com/bigbluebutton/bigbluebutton/releases) | [Docs](https://docs.bigbluebutton.org/) |
+| ☁️ **Files** | **OpenCloud** (↔ Nextcloud) | Apache-2.0 | [4.0.3](https://github.com/opencloudeu/opencloud/releases) | [Docs](https://docs.opencloud.eu/) |
 
 ---
 

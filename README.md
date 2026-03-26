@@ -6,7 +6,14 @@ SPDX-License-Identifier: Apache-2.0
 
 <div align="center">
 
-<img src="docs/assets/readme-lead-image.svg" alt="openDesk Edu" width="100%"/>
+![openDesk Edu](docs/assets/readme-lead-image.svg)
+
+### TL;DR 🚀
+- 🔐 **Single Sign-On** – One login (Keycloak) for all educational services
+- 🎓 **Learning Management** – ILIAS + Moodle for university workflows
+- 🏫 **Education-optimized** – BigBlueButton (lectures) and OpenCloud (file sharing)
+- 🚀 **One-command deploy** – Helmfile on Kubernetes (15+ services)
+- 🧩 **Modular** – Choose Jitsi/Nextcloud OR BBB/OpenCloud
 
 # 🎓 openDesk Edu
 
@@ -40,25 +47,15 @@ all integrated with openDesk's existing Keycloak SSO and portal. Deploy everythi
 
 ## 🚀 Quick Start
 
-> **Prerequisites:** Kubernetes 1.28+, Helm 3, [helmfile](https://helmfile.readthedocs.io/)
-
 ```bash
-# 1. Clone the repo
-git clone https://github.com/tobias-weiss-ai-xr/opendesk-edu.git
-cd opendesk-edu
-
-# 2. Configure your environment
-#    Edit helmfile/environments/default/global.yaml.gotmpl
-#    Set your domain, mail domain, and image registry
-
-# 3. Deploy
+# ✅ ONE COMMAND to deploy openDesk + all educational services
 helmfile -e default apply
-
-# 4. Access the portal
-#    Open https://portal.<your-domain> in your browser
 ```
 
-📖 For detailed instructions see the [Getting started guide](./docs/getting-started.md) and [Requirements](./docs/requirements.md).
+📖 **Prerequisites & Setup Guide:**
+- Kubernetes 1.28+, Helm 3, [helmfile](https://helmfile.readthedocs.io/)
+- Edit config: `helmfile/environments/default/global.yaml.gotmpl`
+- [Detailed guide →](./docs/getting-started.md)  |  [Requirements →](./docs/requirements.md)
 
 ---
 
@@ -67,12 +64,12 @@ helmfile -e default apply
 openDesk Edu takes the stock [openDesk CE](https://www.opencode.de/en/opendesk) deployment and adds the
 core services universities need — all integrated with openDesk's existing Keycloak-based SSO and portal.
 
-### What's added on top of openDesk CE ➕
+### Educational Services Added ➕
 
 | Service | Component | Status | Description |
 |:--------|:----------|:------:|:------------|
-| 📖 **Learning Management** | [ILIAS](https://www.ilias.de/) | 🔄 Beta | Full-featured LMS with SAML SSO — courses, SCORM, assessments, forums |
-| 📖 **Learning Management** | [Moodle](https://moodle.org/) | 🔄 Beta | LMS with Shibboleth auth — plugins, gradebook, workshops |
+| 📖 **Learning Management** | [ILIAS](https://www.ilias.de/) ![ILIAS](docs/assets/icons/ilias-icon.svg?raw=true&width=20) | 🔄 Beta | Full-featured LMS with SAML SSO — courses, assessments, forums, SCORM |
+| 📖 **Learning Management** | [Moodle](https://moodle.org/) ![Moodle](docs/assets/icons/moodle-icon.svg?raw=true&width=20) | 🔄 Beta | Plugin-rich LMS — assignments, workshops, gradebook, Shibboleth auth |
 
 ### Additional education tools 🎓
 
@@ -87,24 +84,21 @@ core services universities need — all integrated with openDesk's existing Keyc
 | 📐 **Diagramming** | [Draw.io](https://www.drawio.com/) | ✅ Stable | Architecture diagrams, flowcharts, UML — export to PDF/VSDX |
 | ✏️ **Whiteboarding** | [Excalidraw](https://excalidraw.com/) | ✅ Stable | Hand-drawn sketches, brainstorming — lightweight and fast |
 
-### Alternative components 🔄
+### Alt Components (Choose One) 🔄
 
-These can be used **instead of** their openDesk CE counterparts. Enable one or the other — not both.
+Configure **either** the standard openDesk CE component **or** its enabling-focused alternative — not both.
 
-| Replaces | Alternative | Status | Why? |
-|:---------|:------------|:------:|:-----|
-| 📹 [Jitsi](https://jitsi.github.io/) | [BigBlueButton](https://bigbluebutton.org/) | 🔄 Beta | Built for teaching — recording, breakout rooms, whiteboard, polling, session timers |
-| 📁 [Nextcloud](https://nextcloud.com/) | [OpenCloud](https://opencloud.eu/) | 🔄 Beta | Lightweight CS3-based file sync — separate user namespace, per-course shares |
+| Standard | Alternative | Status | Key Benefits |
+|:---------|:------------|:------:|:-------------|
+| 📹 [Jitsi](https://jitsi.github.io/) | [BigBlueButton](https://bigbluebutton.org/) ![BBB](docs/assets/icons/bigbluebutton-icon.svg?raw=true&width=20) | 🔄 Beta | Built for teaching: recording, whiteboard, breakout rooms, session timers |
+| 📁 [Nextcloud](https://nextcloud.com/) | [OpenCloud](https://opencloud.eu/) ![OpenCloud](docs/assets/icons/opencloud-icon.svg?raw=true&width=20) | 🔄 Beta | Lightweight for education: per-course shares, CS3-based sync |
 
-### How it works ⚙️
+## ✨ How It Works
 
-- 🔐 **Single Sign-On** — All educational services authenticate through openDesk's Keycloak via
-  SAML 2.0 (ILIAS, BBB, Moodle) or OIDC (OpenCloud). One login, everything.
-- 🖥️ **Unified Portal** — Custom SVG icons and portal tiles give users direct access to ILIAS, Moodle,
-  BigBlueButton, and OpenCloud alongside all standard openDesk apps.
-- 📦 **Helm Charts** — Each service has its own chart with configurable values, SAML SP config,
-  ingress rules, and persistence.
-- 💾 **Integrated Backups** — k8up-based backup schedules for educational service data.
+- 🔐 **SSO** – One login (Keycloak) via SAML2/OIDC for all services
+- 🖥️ **Unified Portal** – Access educational services alongside openDesk apps
+- 📦 **Modular Charts** – Each service in its own configurable Helm chart
+- 💾 **Integrated Backups** – k8up-backed persistent data (LMS, recordings, files)
 
 ### What's unchanged ✅
 

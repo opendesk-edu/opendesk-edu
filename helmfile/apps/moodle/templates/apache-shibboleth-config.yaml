@@ -46,15 +46,3 @@ data:
       require valid-user
     </Location>
 
-    <Location /admin>
-      AuthType Basic
-      AuthName "Admin Portal Access"
-      AuthLDAPBindDN "cn=admin,dc=swp-ldap,dc=internal"
-      AuthLDAPBindPasswordFile "/var/secrets/ldap_admin_pass"
-      AuthLDAPURL "ldap://ums-ldap-server-primary/dc=swp-ldap,dc=internal?uid"
-      require ldap-group cn=Domain Admins,cn=groups,dc=swp-ldap,dc=internal
-    </Location>
-
-    <Location /admin/bbb-shared-secret>
-      require ldap-group cn=Domain Admins,cn=groups,dc=swp-ldap,dc=internal
-    </Location>

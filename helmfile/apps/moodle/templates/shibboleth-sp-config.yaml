@@ -36,12 +36,12 @@ data:
 
       <!-- Application configuration -->
       <ApplicationDefaults entityID="{{ .Values.global.moodleSaml.entityId | default (printf "https://moodle.%s/shibboleth" .Values.global.domain) | quote }}"
-                          REMOTE_USER="eppn persistent-id targeted-id"
+                          REMOTE_USER="USERNAME"
                           cipherSuites="DEFAULT:!DH:!3DES:!DES:!RC4:!aNULL:!eNULL:!MD5:!EXP:!PSK:!SRP"
                           signing="false" encryption="false">
 
         <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
-                  checkAddress="false" handlerSSL="true" cookieProps="; path=/; secure; HttpOnly"
+                  checkAddress="false" handlerSSL="true" cookieProps="; path=/; HttpOnly; Secure"
                   exportLocation="https://moodle.{{ .Values.global.domain }}/Shibboleth.sso/Metadata"
                   idpHistory="false" idpHistoryDays="7">
 
@@ -82,6 +82,9 @@ data:
 
         </Sessions>
 
+        <AttributeExtractor type="XML" validate="true" path="attribute-map.xml"/>
+        <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+
         <!-- Metadata generation -->
         <MetadataProvider type="XML" uri=""
                           file="/etc/shibboleth/sp-metadata.xml" reloadInterval="180"/>
@@ -93,6 +96,30 @@ data:
                        uri="internal://protocol-config.xml"/>
 
     </SPConfig>
+
+  attribute-map.xml: |
+    <Attributes xmlns="urn:mace:shibboleth:2.0:attribute-map">
+      <Attribute name="email" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" id="USERNAME"/>
+      <Attribute name="givenname" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" id="FIRSTNAME"/>
+      <Attribute name="surname" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" id="LASTNAME"/>
+    </Attributes>
+
+  attribute-policy.xml: |
+    <AttributeFilterPolicyGroup xmlns="urn:mace:shibboleth:2.0:afp"
+                                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <AttributeFilterPolicy id="PolicyForKeycloak">
+        <PolicyRequirementRule xsi:type="ANY"/>
+        <AttributeRule attributeID="USERNAME">
+          <PermitValueRule xsi:type="ANY"/>
+        </AttributeRule>
+        <AttributeRule attributeID="FIRSTNAME">
+          <PermitValueRule xsi:type="ANY"/>
+        </AttributeRule>
+        <AttributeRule attributeID="LASTNAME">
+          <PermitValueRule xsi:type="ANY"/>
+        </AttributeRule>
+      </AttributeFilterPolicy>
+    </AttributeFilterPolicyGroup>
 
   idp-metadata.xml: |
     {{ .Values.secrets.moodleSaml.idpMetadata | default "" | quote }}
@@ -115,6 +142,14 @@ data:
     {{ else }}
     LogLevel mod_shib:warn
     {{ end }}
+
+    # Trust X-Forwarded-Proto header from ingress to detect HTTPS behind TLS termination
+    SetEnvIf X-Forwarded-Proto https HTTPS=on
+
+    <Location />
+      ShibUseHeaders On
+      SetEnvIf X-Forwarded-Proto https HTTPS=on
+    </Location>
 
     # Shibboleth Request Mapper
     <Location /Shibboleth.sso>

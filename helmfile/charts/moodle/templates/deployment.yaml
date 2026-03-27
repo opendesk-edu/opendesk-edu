@@ -51,15 +51,36 @@ spec:
               value: {{ .Values.moodle.moodleSkipInstall | quote }}
             - name: BITNAMI_DEBUG
               value: "false"
+            - name: XML_CATALOG_FILES
+              value: "/usr/share/xml/shibboleth/catalog.xml:/usr/share/xml/xmltooling/catalog.xml:/usr/share/xml/opensaml/saml20-catalog.xml:/usr/share/xml/opensaml/saml11-catalog.xml"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: moodle-data
               mountPath: /bitnami/moodle
+            - name: shibboleth-sp-config
+              mountPath: /etc/shibboleth
+              readOnly: true
+            - name: shibboleth-sp-certs
+              mountPath: /etc/shibboleth/certs
+              readOnly: true
+            - name: apache-shibboleth-config
+              mountPath: /etc/apache2/conf-enabled/shibboleth.conf
+              subPath: shibboleth.conf
+              readOnly: true
       volumes:
         - name: moodle-data
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-moodle-data
+        - name: shibboleth-sp-config
+          configMap:
+            name: moodle-shibboleth-sp-config
+        - name: shibboleth-sp-certs
+          secret:
+            secretName: moodle-shibboleth-sp-secret
+        - name: apache-shibboleth-config
+          configMap:
+            name: moodle-apache-shibboleth-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

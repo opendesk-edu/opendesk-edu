@@ -17,6 +17,14 @@ data:
     ShibCompatValidUser Off
     LogLevel mod_shib:debug
 
+    # Trust X-Forwarded-Proto header from ingress to detect HTTPS behind TLS termination
+    SetEnvIf X-Forwarded-Proto https HTTPS=on
+
+    <Location />
+      ShibUseHeaders On
+      SetEnvIf X-Forwarded-Proto https HTTPS=on
+    </Location>
+
     <Location /Shibboleth.sso>
       SetHandler shib
       AuthType None
@@ -31,22 +39,22 @@ data:
       Alias /shibboleth-sp/main.css /usr/share/shibboleth/main.css
     </IfModule>
 
-     <Location /auth/shibboleth>
-       AuthType shibboleth
-       ShibRequestSetting requireSession 1
-       ShibRequestSetting applicationId default
-       require valid-user
-     </Location>
+    <Location /auth/shibboleth>
+      AuthType shibboleth
+      ShibRequestSetting requireSession 1
+      ShibRequestSetting applicationId default
+      require valid-user
+    </Location>
 
-     <Location /admin>
-       AuthType Basic
-       AuthName "Admin Portal Access"
-       AuthLDAPBindDN "cn=admin,dc=swp-ldap,dc=internal"
-       AuthLDAPBindPasswordFile "/var/secrets/ldap_admin_pass"
-       AuthLDAPURL "ldap://ums-ldap-server-primary/dc=swp-ldap,dc=internal?uid"
-       require ldap-group cn=Domain Admins,cn=groups,dc=swp-ldap,dc=internal
-     </Location>
+    <Location /admin>
+      AuthType Basic
+      AuthName "Admin Portal Access"
+      AuthLDAPBindDN "cn=admin,dc=swp-ldap,dc=internal"
+      AuthLDAPBindPasswordFile "/var/secrets/ldap_admin_pass"
+      AuthLDAPURL "ldap://ums-ldap-server-primary/dc=swp-ldap,dc=internal?uid"
+      require ldap-group cn=Domain Admins,cn=groups,dc=swp-ldap,dc=internal
+    </Location>
 
-     <Location /admin/bbb-shared-secret>
-       require ldap-group cn=Domain Admins,cn=groups,dc=swp-ldap,dc=internal
-     </Location>
+    <Location /admin/bbb-shared-secret>
+      require ldap-group cn=Domain Admins,cn=groups,dc=swp-ldap,dc=internal
+    </Location>

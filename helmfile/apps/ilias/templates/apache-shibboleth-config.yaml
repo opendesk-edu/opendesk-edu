@@ -17,6 +17,14 @@ data:
     ShibCompatValidUser Off
     LogLevel mod_shib:debug
 
+    # Trust X-Forwarded-Proto header from ingress to detect HTTPS behind TLS termination
+    SetEnvIf X-Forwarded-Proto https HTTPS=on
+
+    <Location />
+      ShibUseHeaders On
+      SetEnvIf X-Forwarded-Proto https HTTPS=on
+    </Location>
+
     <Location /Shibboleth.sso>
       SetHandler shib
       AuthType None

@@ -7,11 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 <div align="center">
 
 ### TL;DR 🚀
-- 🔐 **Single Sign-On** – One login (Keycloak) for all educational services
-- 🎓 **Learning Management** – ILIAS + Moodle for university workflows
-- 🏫 **Education-optimized** – BigBlueButton (lectures) and OpenCloud (file sharing)
-- 🚀 **One-command deploy** – Helmfile on Kubernetes (23 services: 10 openDesk CE + 13 education)
-- 🧩 **Modular** – Choose Jitsi/Nextcloud OR BBB/OpenCloud
+openDesk CE + 13 education services (ILIAS, Moodle, BigBlueButton, OpenCloud, ...) — one-command Kubernetes deploy with unified Keycloak SSO
 
 # 🎓 openDesk Edu
 

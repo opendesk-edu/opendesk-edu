@@ -18,10 +18,10 @@ data:
       <OutOfProcess tranLogFormat="%u|%s|%IDP|%i|%ac|%t|%attr|%n|%b|%E|%S|%SS|%L|%ua|%a" />
 
         <ApplicationDefaults entityID="ilias-saml"
-                            REMOTE_USER="uid">
+                            REMOTE_USER="USERNAME">
 
         <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
-                  checkAddress="false" handlerSSL="true" cookieProps="; path=/; secure; HttpOnly">
+                  checkAddress="false" handlerSSL="true" cookieProps="; path=/; HttpOnly; Secure">
 
           <SSO entityID="https://id.opendesk.example.com/realms/opendesk" ECP="true" authnRequestsSigned="true">
             SAML2
@@ -43,10 +43,9 @@ data:
         <AttributeExtractor type="XML" validate="true" path="attribute-map.xml"/>
 
         <AttributeResolver type="Query" subjectMatch="true">
-          <Attribute name="username" nameFormat="Basic"/>
           <Attribute name="email" nameFormat="Basic"/>
-          <Attribute name="firstname" nameFormat="Basic"/>
-          <Attribute name="lastname" nameFormat="Basic"/>
+          <Attribute name="givenname" nameFormat="Basic"/>
+          <Attribute name="surname" nameFormat="Basic"/>
         </AttributeResolver>
 
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
@@ -67,10 +66,9 @@ data:
 
   attribute-map.xml: |
     <Attributes xmlns="urn:mace:shibboleth:2.0:attribute-map">
-      <Attribute id="username" name="username"/>
-      <Attribute id="email" name="email"/>
-      <Attribute id="firstname" name="firstname"/>
-      <Attribute id="lastname" name="lastname"/>
+      <Attribute name="email" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" id="USERNAME"/>
+      <Attribute name="givenname" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" id="FIRSTNAME"/>
+      <Attribute name="surname" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" id="LASTNAME"/>
     </Attributes>
 
   attribute-policy.xml: |
@@ -78,16 +76,13 @@ data:
                                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <AttributeFilterPolicy id="PolicyForKeycloak">
         <PolicyRequirementRule xsi:type="ANY"/>
-        <AttributeRule attributeID="username">
+        <AttributeRule attributeID="USERNAME">
           <PermitValueRule xsi:type="ANY"/>
         </AttributeRule>
-        <AttributeRule attributeID="email">
+        <AttributeRule attributeID="FIRSTNAME">
           <PermitValueRule xsi:type="ANY"/>
         </AttributeRule>
-        <AttributeRule attributeID="firstname">
-          <PermitValueRule xsi:type="ANY"/>
-        </AttributeRule>
-        <AttributeRule attributeID="lastname">
+        <AttributeRule attributeID="LASTNAME">
           <PermitValueRule xsi:type="ANY"/>
         </AttributeRule>
       </AttributeFilterPolicy>
@@ -103,7 +98,7 @@ data:
         condition processing, and permits signing and client TLS.
         -->
         <Policy id="default" validate="false">
-            <PolicyRule type="MessageFlow" checkReplay="true" expires="60"/>
+            <PolicyRule type="MessageFlow" checkReplay="true" expires="300"/>
             <PolicyRule type="Conditions">
                 <PolicyRule type="Audience"/>
             </PolicyRule>
@@ -113,7 +108,7 @@ data:
         </Policy>
 
         <Policy id="blockUnsolicited" validate="false">
-            <PolicyRule type="MessageFlow" blockUnsolicited="true" checkReplay="true" expires="60"/>
+            <PolicyRule type="MessageFlow" blockUnsolicited="true" checkReplay="true" expires="300"/>
             <PolicyRule type="Conditions">
                 <PolicyRule type="Audience"/>
             </PolicyRule>

@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-License-Identifier: Apache-2.0
+{{- if .Values.services.parser.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "f13.fullname" . }}-docling-models
+  labels:
+    {{- include "f13.labels" . | nindent 4 }}
+    app.kubernetes.io/component: parser
+spec:
+  accessModes:
+    - {{ .Values.persistence.doclingModels.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.doclingModels.size }}
+{{- end }}
+---
+{{- if .Values.services.transcription.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "f13.fullname" . }}-transcription-data
+  labels:
+    {{- include "f13.labels" . | nindent 4 }}
+    app.kubernetes.io/component: transcription
+spec:
+  accessModes:
+    - {{ .Values.persistence.transcriptionData.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.transcriptionData.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "f13.fullname" . }}-transcription-models
+  labels:
+    {{- include "f13.labels" . | nindent 4 }}
+    app.kubernetes.io/component: transcription-inference
+spec:
+  accessModes:
+    - {{ .Values.persistence.transcriptionModels.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.transcriptionModels.size }}
+{{- end }}

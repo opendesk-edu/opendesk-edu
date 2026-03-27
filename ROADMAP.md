@@ -68,6 +68,18 @@ be terminated.
 - [ ] Implement OIDC backchannel logout for OpenCloud, Nextcloud
 - [ ] Central logout from portal propagates to all services
 
+### User Provisioning & Deprovisioning
+
+Automate the complete user lifecycle — from account creation to permanent deletion — using the
+existing `scripts/user_import/` tooling.
+
+- [ ] Clean up and migrate `user_import` tooling from legacy repo into `scripts/user_import/`
+- [ ] Configurable SAML account linking via Keycloak admin API (federated-identity endpoints)
+- [ ] Two-phase deprovisioning: disable (6-month grace period) → permanent delete
+- [ ] UCS/UDM REST API integration for provisioning (LDAP groups, CSV/ODS import)
+- [ ] Docker image for standalone execution
+- [ ] Documentation and operational runbook
+
 ---
 
 ## v1.5 — Campus Management Integration (HISinOne / Marvin)
@@ -403,6 +415,28 @@ Capture learning activity across all services (LMS, video, portfolio) with xAPI 
 - [ ] GDPR-compliant analytics dashboards (anonymized by default)
 - [ ] Instructor dashboards for course engagement
 
+### F13 — Sovereign AI Assistant
+
+[F13](https://f13-os.de/) is an open-source AI assistant developed at Baden-Württemberg universities
+(MPL-2.0, 7 microservices). Provides chat, RAG, document summarization, and transcription — all
+on-premise, no data leaves the cluster.
+
+| What | Details |
+|:-----|:--------|
+| **Core** | FastAPI (Python), Svelte frontend |
+| **Auth** | Keycloak-native (JWT via JWKS, UMA, RBAC) |
+| **Services** | chat, summary, parser (OCR), RAG, transcription (Whisper) |
+| **GPU** | Required for parser (EasyOCR), RAG (embeddings), transcription |
+| **Registry** | `registry.opencode.de/f13/microservices/` |
+
+- [ ] Helm chart for all 7 F13 microservices
+- [ ] Keycloak realm/client configuration (`f13-api`, JWKS, UMA)
+- [ ] GPU scheduling support (optional, for parser/RAG/transcription)
+- [ ] Secret management (LLM API key, feedback DB, transcription DB, RabbitMQ, HuggingFace token)
+- [ ] Configuration via YAML files (general, LLM models, RAG pipeline)
+- [ ] Backup integration with k8up (PostgreSQL, Redis, file storage)
+- [ ] Portal tile for F13 assistant
+
 ---
 
 ## v5.0 — Federation & Multi-Tenancy
@@ -418,6 +452,17 @@ while keeping data separate.
 - [ ] Per-tenant namespace isolation in Kubernetes
 - [ ] Shared Opencast/BBB infrastructure with tenant separation
 - [ ] Shared helmfile environments for multi-university deployments
+
+### SATOSA Proxy for Federated Instances
+
+[SATOSA](https://github.com/IdentityPython/SATOSA) is a SAML/OIDC proxy that enables federated
+identity scenarios — ideal for universities sharing openDesk Edu across federations (eduGAIN, DFN-AAI).
+
+- [ ] Helm chart for SATOSA proxy
+- [ ] SAML-to-OIDC translation for legacy university IdPs
+- [ ] Attribute mapping (eduPerson → Keycloak claims)
+- [ ] Multi-IdP routing (route users to their home institution's IdP)
+- [ ] Integration with existing Keycloak broker setup
 
 ### Research Data Management
 
@@ -436,7 +481,7 @@ Growing EU requirement via European Open Science Cloud (EOSC).
 | **Stud.IP** | No LTI, no Docker/K8s, limited REST API — too hard to integrate. Universities that use it should keep it alongside openDesk. |
 | **Papercut MF** | Proprietary. No viable open-source alternative exists for full print management (web print, follow-me, card readers). |
 | **Canvas LMS** | Proprietary (Instructure). Conflicts with sovereignty principle. |
-| **Shibboleth IdP deployment** | Universities already run their own IdP. openDesk Edu integrates as a SAML SP, not an IdP provider. |
+| **Shibboleth IdP deployment** | Universities already run their own IdP. openDesk Edu integrates as a SAML SP, not an IdP provider. SATOSA proxy (v5.0) handles SAML-to-OIDC translation for federated scenarios. |
 | **Keycloak as eduGAIN IdP** | SAML federation support is incomplete. Use Shibboleth IdP for federation, Keycloak for internal IAM. |
 
 ---
@@ -445,7 +490,7 @@ Growing EU requirement via European Open Science Cloud (EOSC).
 
 ```
 2026 Q2   v1.0  Core platform + 13 education services (ILIAS, Moodle, BBB, OpenCloud, SOGo, Etherpad, BookStack, Planka, Zammad, LimeSurvey, Draw.io, Excalidraw, SSP)
-          v1.1  DFN-AAI federation + semester lifecycle + logout
+           v1.1  DFN-AAI federation + semester lifecycle + logout + user provisioning/deprovisioning
 2026 Q3   v1.2  Opencast + Tobira lecture recording
 2026 Q4   v1.5  HISinOne/Marvin campus management integration (phase 1: identity)
 2027 Q1   v1.5  HISinOne integration (phase 2: courses, phase 3: schedule/exams)
@@ -453,8 +498,8 @@ Growing EU requirement via European Open Science Cloud (EOSC).
 2027 Q3   v2.0  EvaP + Mahara (evaluation + portfolio)
 2027 Q4   v2.1  MRBS + LEIHS (room + equipment booking)
 2028 Q1   v3.0  R/exams + JPlag (digital examination)
-2028 Q2   v4.0  Local LLM + xAPI analytics
-2028 Q3   v5.0  Multi-tenancy + research data management
+2028 Q2   v4.0  Local LLM + xAPI analytics + F13 sovereign AI assistant
+2028 Q3   v5.0  Multi-tenancy + SATOSA proxy + research data management
 ```
 
 ---

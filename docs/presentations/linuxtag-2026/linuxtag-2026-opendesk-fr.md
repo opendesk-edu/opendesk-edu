@@ -6,9 +6,9 @@ paginate: true
 
 <!-- _class: lead -->
 
-# openDesk: Confortable et souverain ?
+# openDesk: Confortable et Souverain ?
 
-🎓 openDesk Edu — Souveraineté numérique dans l'enseignement supérieur
+🎓 openDesk Edu — Souveraineté Numérique dans les Universités
 
 Chemnitzer Linux-Tage 2026 · 28.03.2026
 
@@ -16,15 +16,15 @@ Tobias Weiß · HRZ Zentrale Systeme · Universität Marburg
 
 ---
 
-# Souveraineté numérique — Les quatre piliers
+# Souveraineté Numérique — Les Quatre Piliers
 
-- **Souveraineté infrastructurelle** 🖥️
-  Exploitation propre de serveurs et réseaux
-- **Souveraineté des données** 💾
+- **Souveraineté Infrastructurelle** 🖥️
+  Exploitation autonome de serveurs et réseaux
+- **Souveraineté des Données** 💾
   Contrôle du stockage et des accès aux données
-- **Souveraineté logicielle** 💻
-  Logiciels open source sans verrouillage propriétaire
-- **Souveraineté opérationnelle** 🔧
+- **Souveraineté Logicielle** 💻
+  Logiciels open source sans dépendances propriétaires
+- **Souveraineté Opérationnelle** 🔧
   Contrôle total des mises à jour et de la maintenance
 
 ---
@@ -32,13 +32,13 @@ Tobias Weiß · HRZ Zentrale Systeme · Universität Marburg
 # Qu'est-ce qu'openDesk ?
 
 - **Alternative open source** à M365 et Google Workspace 🐧
-- **Conçu par et pour l'administration** (BMI / ZenDiS) 🏛️
+- **Par le gouvernement pour le gouvernement** (BMI / ZenDiS) 🏛️
 - **Certifié BSI** (souveraineté allemande) 📜
-- **Cloud-native : espace de travail basé sur Kubernetes** ☁️
-- **Composants modulaires:**
-  - Chat, fichiers, wiki, gestion de projet
-  - E-mail, diagrammes, weboffice, vidéo
-- **Self-hosted ou SaaS** 🖥️
+- **Cloud-Native :** Espace de travail basé sur Kubernetes ☁️
+- **Composants Modulaires :**
+  - Chat, Fichiers, Wiki, Gestion de projet
+  - E-mail, Diagrammes, Suite bureautique web, Vidéo
+- **Auto-hébergé** ou **SaaS** 🖥️
 
 ---
 
@@ -52,7 +52,7 @@ Tobias Weiß · HRZ Zentrale Systeme · Universität Marburg
 | Projet ✅ | OpenProject |
 | E-mail ✉️ | OX App Suite |
 | Diagrammes 📊 | CryptPad |
-| Weboffice 📄 | Collabora |
+| Suite bureautique web 📄 | Collabora |
 | Vidéo 📹 | Jitsi |
 
 ---
@@ -63,11 +63,11 @@ Tobias Weiß · HRZ Zentrale Systeme · Universität Marburg
 --------------------------------|---------------------------
 Début : Juillet 2023                | Contributeurs : ~ 70
 Durée : ~ 3 ans           | Organisations : ~ 27
-Commits : ~ 1.500                |
-Releases : ~ 150                 |
+Commits : ~ 1 500                |
+Versions : ~ 150                 |
 
-**OpenCode.de** 🛡️              | **Supply Chain** 🔒
-Plateforme financée par le BMI        | Images de conteneurs signées
+**OpenCode.de** 🛡️              | **Chaîne d'approvisionnement** 🔒
+Plateforme financée par le BMI        | Images conteneurs signées
 Infrastructure cloud souveraine   | SBOM pour tous les composants
 
 ---
@@ -80,8 +80,8 @@ Infrastructure cloud souveraine   | SBOM pour tous les composants
 | **Distribution** | K3s v1.32.3 |
 | **OS** | Debian 12 |
 | **CPU (Minimum)** | 16 cœurs |
-| **RAM (Minimum)** | 64 GB |
-| **Stockage** | 4+ TB Ceph |
+| **RAM (Minimum)** | 64 Go |
+| **Stockage** | 4+ To Ceph |
 
 ---
 
@@ -100,35 +100,35 @@ helmfile apply -e hrz
 
 - **Orchestration Helmfile** ⚓
   - Configuration déclarative dans `helmfile_generic.yaml.gotmpl`
-  - Overrides spécifiques à l'environnement dans `environments/hrz/`
+  - Surcharges spécifiques à l'environnement dans `environments/hrz/`
   - Sauvegarde automatique des dépendances
 - **Environnement HRZ créé** 🖥️
   - Copie de `staging` avec adaptations
   - Configuration spécifique à l'Université de Marburg
-  - Système de test pour le pilote
+  - Système de test pour le pilotage
 
 ---
 
 # Développement local de Charts
 
 ```bash
-# Cloner/tirer les Charts localement
+# Cloner/récupérer les Charts localement
 python3 dev/charts-local.py --match intercom
 python3 dev/charts-local.py --revert
 ```
 
-- **Développement et test local de Charts** 💻
-- **Clone/tirer dans charts-<branch>/** ⬇️
+- **Développement et test locaux de Charts** 💻
+- **Clone/récupération dans charts-<branch>/** ⬇️
 - **Références Helmfile vers les chemins locaux** 📄
-- **Backup & Revert avec --revert** ↩️
+- **Sauvegarde et restauration avec --revert** ↩️
 
 ---
 
 # Import d'utilisateurs : Provisionnement
 
 - **API REST UDM** — Import CSV/ODS, groupes LDAP 👤
-- **Liaison de compte** — Liaison d'identité SAML 🔗
-- **Mode démo** — Comptes de test, images de profil 🖼️
+- **Liaison de comptes** — Liaison d'identité SAML 🔗
+- **Mode démo** — Comptes de test, photos de profil 🖼️
 
 ---
 
@@ -137,11 +137,11 @@ python3 dev/charts-local.py --revert
 **Workflow de déprovisionnement en deux phases :**
 
 - **Phase 1 : Désactiver l'utilisateur**
-  - API IAM → UCS Disable → Timestamp dans la description
-  - Keycloak : supprimer SAML + résoudre les groupes
+  - API IAM → UCS Disable → Horodatage dans la description
+  - Keycloak : Supprimer SAML + dissoudre les groupes
 - **Phase 2 : Supprimer l'utilisateur**
-  - Période de grâce (6 mois) → Suppression permanente
-  - Output : `deprovisioned-*`, `deleted-*`
+  - Délai de grâce (6 mois) → Suppression définitive
+  - Sortie : `deprovisioned-*`, `deleted-*`
 
 ---
 
@@ -149,11 +149,11 @@ python3 dev/charts-local.py --revert
 
 - **Extension d'openDesk CE** pour les universités 🏫
 - **Nouveaux composants :**
-  - Plateformes d'apprentissage (ILIAS, Moodle)
+  - Plates-formes d'apprentissage (ILIAS, Moodle)
   - Visioconférence pour l'enseignement (BigBlueButton)
   - Synchronisation de fichiers alternative (OpenCloud)
 - **Tous intégrés avec Keycloak SSO** 🔐
-- **Tout déployable avec `helmfile apply`** ⚡
+- **Tout déployer avec `helmfile apply`** ⚡
 
 **GitHub :** [github.com/tobias-weiss-ai-xr/opendesk-edu](https://github.com/tobias-weiss-ai-xr/opendesk-edu)
 
@@ -163,9 +163,9 @@ python3 dev/charts-local.py --revert
 
 | Composant | Statut | Description |
 |------------|--------|--------------|
-| 📖 ILIAS | ✅ Stable | LMS avec SAML SSO — Cours, SCORM, tests |
-| 📖 Moodle | 🔄 Beta | LMS avec Shibboleth — Plugins, carnet de notes |
-| 🎥 BigBlueButton | 🔄 Beta | Visioconférence pour l'enseignement — Enregistrement, tableau blanc |
+| 📖 ILIAS | ✅ Stable | LMS avec SAML SSO — Cours, SCORM, Tests |
+| 📖 Moodle | 🔄 Beta | LMS avec Shibboleth — Plugins, Carnet de notes |
+| 🎥 BigBlueButton | 🔄 Beta | Visioconférence pour l'enseignement — Enregistrement, Tableau blanc |
 | ☁️ OpenCloud | 🔄 Beta | Synchronisation de fichiers basée sur CS3 — Alternative à Nextcloud |
 
 ---
@@ -200,16 +200,16 @@ python3 dev/charts-local.py --revert
 
 <div style="font-size: 0.85em;">
 
-# 🔧 ILIAS Deployment — Lessons Learned
+# 🔐 Déploiement ILIAS — Leçons apprises
 
 | Problème | Solution |
 |---------|---------|
-| `Wrong Login or Password` | SAML NameFormat manquait dans attribute-map.xml |
+| `Wrong Login or Password` | SAML NameFormat manquant dans attribute-map.xml |
 | Noms d'attributs incorrects | Uni-IdP envoie `givenname`/`surname` |
 | `handlerSSL` → 404 | TLS interne : Apache SSL sur le port 8443 (v5) |
 | Comptes désactivés | `shib_activate_new = 0` |
-| Timeout SAML | 60s → 300s |
-| Health Check | CronJob : curl SSO-Redirect (horaire) |
+| Délai d'attente SAML | 60 s → 300 s |
+| Contrôle de santé | CronJob : curl SSO-Redirect (horaire) |
 
 ---
 
@@ -222,7 +222,7 @@ cd opendesk-edu
 
 # 2. Configurer votre environnement
 # Modifier helmfile/environments/default/global.yaml.gotmpl
-# Définir votre domaine, domaine mail et registre d'images
+# Définir votre domaine, domaine de messagerie et registre d'images
 
 # 3. Déployer
 helmfile -e default apply
@@ -236,7 +236,7 @@ helmfile -e default apply
 
 - **Contrôleur d'Ingress :** haproxy-ingress
 - **Proxy inverse :** Traefik — Terminaison HTTP/HTTPS 🔄
-- **Équilibreur de charge :** MetalLB
+- **Répartiteur de charge :** MetalLB
 - **Tous les Ingress** migrés vers haproxy ✅
 
 ---
@@ -250,7 +250,7 @@ helmfile -e default apply
 # Processus de mise à jour
 
 ```bash
-# Charger les dernières releases
+# Charger les dernières versions
 git checkout -b myrelease upstream/tags/v1.12.2
 git pull
 
@@ -260,7 +260,7 @@ helmfile diff -e hrz
 # Appliquer les mises à jour
 helmfile apply -e hrz
 
-# Revenir en arrière si nécessaire
+# Retour en arrière si nécessaire
 helmfile rollback -e hrz
 ```
 
@@ -276,7 +276,7 @@ helmfile rollback -e hrz
   - Tous les Ingress migrés vers haproxy ✅
 - **Classes Ingress :**
   - `ingressClassName: haproxy`
-  - nginx complètement déprécié
+  - nginx entièrement déprécié
 - **Configuration :**
   - `replicaCount: 2`, LoadBalancer
   - `tune.bufsize: 65536`, `tune.http.maxhdr: 256`
@@ -289,31 +289,31 @@ helmfile rollback -e hrz
 - **Stratégie :** Compatible S3 avec backend restic 🔄
   - Primaire : `s3.example.org:9000/backup-primary`
   - Secondaire : `s3-backup.example.org:9000/backup-secondary`
-- **Planification :** Quotidien 00:42, Vérification hebdomadaire, Prune le dimanche ⏰
-- **Rétention :** 14 Daily, Keep Last 5 📦
+- **Planification :** Quotidien à 00 h 42, Vérification hebdomadaire, Purge le dimanche ⏰
+- **Rétention :** 14 quotidiens, Conserver les 5 derniers 📦
 
 ---
 
 # Obstacles institutionnels
 
 - **Service juridique** ⚖️
-  - RGPD, contrats AVV, conformité des licences
+  - RGPD, contrats AVV, Conformité des licences
 - **Comité du personnel** 👥
-  - Accord de service, codétermination pour les systèmes IT
+  - Convention de service, Codétermination pour les systèmes IT
 - **Administration** 🏢
-  - Préférences Microsoft, compatibilité des formats
+  - Préférences Microsoft, Compatibilité des formats
 - **Documents requis** 📄
-  - DSFA, calcul TCO
+  - DSFA, Calcul TCO
 
 ---
 
 # Prochaines étapes & Recommandations
 
-1. Démarrer un pilote ▶️
-2. Déploiement progressif (10 → 100 → 1000 utilisateurs) 👥
-3. Séparation claire des systèmes de production 🔗
-4. Évaluation : Catégoriser les cas d'utilisation selon les exigences de souveraineté ✅
-5. Prévoir un budget pour l'équipe d'exploitation (pas seulement l'implémentation) 💰
+1. Lancer le pilotage ▶️
+2. Déploiement progressif (10 → 100 → 1 000 utilisateurs) 👥
+3. Séparation nette des systèmes de production 🔗
+4. Évaluation : Catégoriser les cas d'usage selon les exigences de souveraineté ✅
+5. Budgétiser une équipe d'exploitation (pas seulement l'implémentation) 💰
 
 ---
 
@@ -321,12 +321,12 @@ helmfile rollback -e hrz
 
 **Aidez-nous à construire openDesk Edu pour les universités !**
 
-- ⭐ **Favoriser le dépôt :** [github.com/tobias-weiss-ai-xr/opendesk-edu](https://github.com/tobias-weiss-ai-xr/opendesk-edu)
-- 🧪 **Tester localement :** Déployer avec Helmfile et donner des retours
+- ⭐ **Étoiler le dépôt :** [github.com/tobias-weiss-ai-xr/opendesk-edu](https://github.com/tobias-weiss-ai-xr/opendesk-edu)
+- 🧪 **Tester localement :** Déployer avec Helmfile et fournir des retours
 - 🐛 **Signaler des problèmes :** Issues pour les bugs ou demandes de fonctionnalités
 - 💻 **Contribuer :** PRs bienvenus — voir CONTRIBUTING.md
 
-**Construisons ensemble un logiciel souverain pour l'enseignement supérieur !** 🎓
+**Construisons ensemble un logiciel souverain pour les universités !** 🎓
 
 ---
 
@@ -346,7 +346,7 @@ helmfile rollback -e hrz
 
 # Ressources organisationnelles
 
-- **Recommandation HBDI (évaluation M365) :**
+- **Recommandation HBDI (Évaluation M365) :**
   [PDF](https://datenschutz.hessen.de/sites/datenschutz.hessen.de/files/2025-11/hbdi_bericht_m365_2025_11_15.pdf)
 - **Pacte numérique hessois pour l'enseignement supérieur :**
   [PDF](https://wissenschaft.hessen.de/sites/wissenschaft.hessen.de/files/2025-12/hessischer_digitalpakt_hochschulen_2026-2031.pdf)
@@ -354,7 +354,7 @@ helmfile rollback -e hrz
   [zendis.de](https://www.zendis.de/newsroom/presse/evb-it-open-source)
 - **EVB-IT & BVB (digitale-verwaltung.de) :**
   [digitale-verwaltung.de](https://www.digitale-verwaltung.de/Webs/DV/DE/aktuelles-service/it-einkauf/evb-it-und-bvb/aktuelle_evb-it-node.html)
-- **Souveraineté numérique dans l'enseignement supérieur :**
+- **Souveraineté numérique dans les universités :**
   [PDF](https://tobias-weiss.org/downloads/digitale_souveraenitaet_an_hochschulen.pdf)
 - **CoCreate-Werkstattgespräch :**
   [PDF](https://tobias-weiss.org/downloads/CoCreate-Werkstattgespraech-Digitale-Souveraenitaet_75dpi.pdf)

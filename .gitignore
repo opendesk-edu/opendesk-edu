@@ -42,6 +42,12 @@ logs
 helmfile-child.yaml-*/
 *.tgz
 
+# Ignore Python virtual environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
 # Ignore sensitive credential files
 k8up-*.yaml
 *secrets*.yaml

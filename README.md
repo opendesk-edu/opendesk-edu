@@ -40,7 +40,7 @@ all integrated with openDesk's existing Keycloak SSO and portal. Deploy everythi
 
 <br/>
 
-**🎤 Presentations available in 28 languages** — [see all →](./docs/presentations/linuxtag-2026/README-presentation.md)
+**🎤 Presentations available in 30 languages** — [see all →](./docs/presentations/linuxtag-2026/README-presentation.md)
 
 | Language | Source | HTML |
 |:---------|:-------|:-----|
@@ -172,7 +172,7 @@ drop-in alternatives, not replacements. This is a **superset** of openDesk CE, n
 
 ## 🎤 Presentations
 
-> Available in **28 languages** — [see the full list](./docs/presentations/linuxtag-2026/README-presentation.md)
+> Available in **30 languages** — [see the full list](./docs/presentations/linuxtag-2026/README-presentation.md)
 
 | Event | Language | Source | HTML |
 |:------|:--------|:-------|:-----:|

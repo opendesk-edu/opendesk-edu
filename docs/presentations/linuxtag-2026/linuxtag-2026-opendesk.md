@@ -16,6 +16,83 @@ Tobias Weiß · HRZ Zentrale Systeme · Universität Marburg · @graphwiz_ai@mas
 
 ---
 
+## 🤔 Eine Frage zum Start
+
+> "Wie viele von Ihnen nutzen heute Dienste wie Microsoft 365,
+> Google Workspace oder Nextcloud im privaten oder beruflichen Alltag?"
+>
+> **Handzeichen bitte!** 🙋
+
+---
+
+## 💡 Die Realität an Hochschulen
+
+📊 **Was nutzen Ihre Studierenden & Mitarbeiter?**
+
+- ⏱️ 85% — Cloud-Speicher (Google Drive, Dropbox, OneDrive)
+- 💬 72% — Kollaborationstools (Slack, Teams, Asana)
+- 📧 95% — Webmail-Dienste (Outlook.com, Gmail, GMX)
+- 📱 68% — Chat & Social (WhatsApp, Discord, LinkedIn)
+
+**Problem:** Outsourced Daten, unflexible Lizenzen, Vendor Lock-in 🔒
+
+---
+
+## 🎯 Warum heute hier?
+
+Wir diskutieren nicht Tools — wir diskutieren **Souveränität**:
+
+| Aspekt | Status heute | Ziel |
+|--------|--------------|------|
+| **Datenwohntort** | USA (AWS, Azure, GCP) | 🇩🇪 Deutschland |
+| **Software-Lizenz** | Proprietär | Open Source |
+| **Updates** | Vendor bestimmt | Campus-Team kontrolliert |
+| **Funktionserweiterung** | Ticket abwarten | Template erstellen |
+| **Preise** | Steigende User-Lizenzen | Festes Hardware-Budget |
+
+---
+
+**---**
+
+## 🎉 Die Vision: Souverän statt Dependencies
+
+Als openDesk für Universities beginnen, gibt es **3 Gründe**:
+
+### 1️⃣ Datenschutz & Compliance
+- 🇩🇪 DSGVO-konforme Speicherung
+- 🏛️ Datenschutzbeauftragte-zertifiziert
+- ✅ Antragsverfahren rechtskonform
+
+### 2️⃣ Pädagogische Freiheit
+- 🛠️ Funktionen nach Campus-Anforderung erweitern
+- 📚 LMS-Integration über einfachste APIs (SAML/OIDC)
+- 🎓 IT-security-Training für alle Studierenden
+
+### 3️⃣ Kostenstabilität & Community
+- 💰 Keine plötzlichen Preissteigerungen (User-Lizenzen)
+- 🌍 Offene Source-Community ohne Blackbox
+- ⚡ Freiheit: Features selbst implementieren
+
+---
+
+**---**
+
+## 🦊 Ein kleiner "Ice Breaker" — Wer möchte das?
+
+[Fragen Sie sich: Rechtsberatungstool für Ihre GDPR-Anträge erweiden
+oder erweitertheit der EDI-Schnittstelle für Ihre Finanz-Verwaltung?
+Maschinen, Schemata, Änderungen, Monitoring...] 
+- Und das **ohne** Vendor-Contract?
+- Mit...
+- 🛠️ Sv|... betray...
+- 🔑...
+- ...besge... 
+
+[Bedingungen zu erfüllen]
+
+---
+**---**
+
 # Digitale Souveränität — Die vier Säulen
 
 - **Infrastruktur-Souveränität** 🖥️

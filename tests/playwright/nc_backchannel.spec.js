@@ -1,4 +1,3 @@
- 
 const { test, expect } = require('@playwright/test');
 
 const NC_DOMAIN = process.env.NC_DOMAIN || 'https://nc.example.org';
@@ -8,7 +7,7 @@ const BACKCHANNEL_URL = process.env.BACKCHANNEL_URL || `${NC_DOMAIN}/apps/user_o
 const LOGOUT_TOKEN = process.env.LOGOUT_TOKEN || '';
 
 test.describe('Nextcloud OIDC backchannel logout', () => {
-  test('terminates session using backchannel logout', async ({ page }) => {
+  test('terminates session using backchannel logout (skeleton)', async ({ page }) => {
     if (!NC_DOMAIN || !NC_USERNAME || !NC_PASSWORD) {
       test.skip('NC_DOMAIN and credentials must be provided to run this test');
     }

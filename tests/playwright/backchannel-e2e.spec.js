@@ -197,7 +197,7 @@ test.describe('Backchannel Logout E2E Tests', () => {
     const allAuthenticated = Object.values(results).every(r => r.authenticated);
     expect(allAuthenticated).toBeTruthy();
     
-    console.log('Pre-logout session states:', JSON.stringify(results, null, 2));
+  
   });
 
   test('2. Portal logout terminates all service sessions', async ({ page, context }) => {
@@ -279,7 +279,7 @@ test.describe('Backchannel Logout E2E Tests', () => {
     // Assert all sessions terminated
     expect(timingReport.allServicesTerminated).toBeTruthy();
     
-    console.log('Logout propagation results:', JSON.stringify(timingReport, null, 2));
+  
   });
 
   test('3. Logout propagation time within acceptable bounds', async ({ page, context }) => {
@@ -321,7 +321,7 @@ test.describe('Backchannel Logout E2E Tests', () => {
     const maxAllowedTime = 60000;
     const allWithinBounds = Object.values(propagationTimes).every(t => t <= maxAllowedTime);
     
-    console.log('Propagation times (ms):', propagationTimes);
+  
     expect(allWithinBounds).toBeTruthy();
   });
 
@@ -372,7 +372,7 @@ test.describe('Backchannel Logout E2E Tests', () => {
       cookiesCleared: sessionCookiesBefore.length > sessionCookiesAfter.length
     };
 
-    console.log('Cookie state:', evidence);
+  
     
     // Note: Some cookies may remain but be invalidated server-side
     // This test verifies cookie behavior is consistent
@@ -459,7 +459,7 @@ test.describe('Backchannel Logout E2E Tests', () => {
       });
     }
 
-    console.log('Captured screenshots:', screenshots);
+  
     expect(screenshots.length).toBeGreaterThan(0);
   });
 });

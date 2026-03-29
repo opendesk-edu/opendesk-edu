@@ -242,6 +242,25 @@
             font-style: italic;
             font-size: 0.95em;
         }
+
+        .video-teaser {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .video-teaser iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -249,7 +268,7 @@
         <header>
             <h1>🎓 openDesk Edu - Presentations</h1>
             <h2>LinuxTag 2026 · Chemnitz · 28.03.2026</h2>
-            <img src="presentations-media/opendesk-edu-readme.svg" alt="openDesk Edu Illustration" class="hero-image">
+            <img src="presentations-media/readme-lead-image.svg" alt="openDesk Edu Illustration" class="hero-image">
         </header>
 
         <div class="content">
@@ -448,6 +467,10 @@
                     <span class="tag">☁️ Cloud-Native</span>
                     <span class="tag">🔒 BSI-Certified</span>
                     <span class="tag">🇩🇪 Open Source</span>
+                </div>
+
+                <div class="video-teaser">
+                    <iframe src="https://www.youtube.com/embed/s-Y93fyIzH4" title="openDesk Edu Teaser" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                 </div>
 
                 <div class="gif-showcase">

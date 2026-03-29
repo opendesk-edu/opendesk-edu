@@ -4,9 +4,12 @@ theme: default
 paginate: true
 ---
 
-![bg](media/readme-lead-image.svg)
-
 <!-- _class: lead -->
+
+![width:900](media/readme-lead-image.svg)
+
+
+
 
 # 🏛️ openDesk: Komfortabel og Suveræn?
 
@@ -200,7 +203,7 @@ python3 dev/charts-local.py --revert
 
 ---
 
-<div style="font-size: 0.85em;">
+<div style="font-size: 0.65em;">
 
 # 🔧 ILIAS Deployment — Erfaringer
 

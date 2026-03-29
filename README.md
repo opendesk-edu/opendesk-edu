@@ -14,7 +14,7 @@ one-command Kubernetes deploy with unified Keycloak SSO
 
 **openDesk + Educational Services for Universities**
 
-![openDesk Edu](docs/assets/readme-lead-image.svg)
+![openDesk Edu](docs/presentations/linuxtag-2026/media/opendesk-edu-readme.svg)
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kubernetes](https://img.shields.io/badge/Platform-Kubernetes-326CE5?logo=kubernetes&logoColor=white)](https://kubernetes.io)

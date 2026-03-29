@@ -1,0 +1,86 @@
+# SPDX-FileCopyrightText: 2025 openDesk Edu Contributors
+# SPDX-License-Identifier: Apache-2.0
+#
+# SAML Metadata Generator Configuration Template
+# Copy this file to: saml-metadata-generator-config.yaml
+#
+# This configuration defines the settings for generating SAML 2.0 SP metadata
+# for DFN-AAI/eduGAIN federation registration.
+
+organization:
+  name: "Example University"
+  display_name: "Example University - openDesk Edu"
+  url: "https://www.example.edu"
+  lang: "en"
+
+contacts:
+  - type: "technical"
+    given_name: "IT"
+    surname: "Support"
+    email: "it-support@example.edu"
+    company: "Example University"
+  - type: "administrative"
+    given_name: "Admin"
+    surname: "Team"
+    email: "admin@example.edu"
+    company: "Example University"
+  - type: "support"
+    given_name: "Helpdesk"
+    surname: "Team"
+    email: "helpdesk@example.edu"
+    company: "Example University"
+
+requested_attributes:
+  - mail
+  - displayName
+  - eduPersonAffiliation
+  - eduPersonPrincipalName
+  - givenName
+  - sn
+  - eduPersonScopedAffiliation
+  - eduPersonUniqueID
+
+environments:
+  dev:
+    base_url: "https://id.dev.opendesk.example.edu"
+    realm: "opendesk"
+    entity_id: null
+    acs_url: null
+    slo_url: null
+    cache_duration: "PT24H"
+    valid_until_days: 30
+    certificates:
+      signing: "/path/to/dev-signing-cert.pem"
+      encryption: null
+
+  staging:
+    base_url: "https://id.staging.opendesk.example.edu"
+    realm: "opendesk"
+    entity_id: null
+    acs_url: null
+    slo_url: null
+    cache_duration: "PT24H"
+    valid_until_days: 90
+    certificates:
+      signing: "/path/to/staging-signing-cert.pem"
+      encryption: null
+
+  production:
+    base_url: "https://id.opendesk.example.edu"
+    realm: "opendesk"
+    entity_id: null
+    acs_url: null
+    slo_url: null
+    cache_duration: "PT24H"
+    valid_until_days: 365
+    certificates:
+      signing: "/path/to/production-signing-cert.pem"
+      encryption: null
+
+# DFN-AAI Federation Endpoints (for reference)
+dfn_aai:
+  test_metadata_url: "https://test.aai.dfn.de/metadata/"
+  production_metadata_url: "https://www.aai.dfn.de/metadata/"
+  test_discovery_url: "https://test.discovery.aai.dfn.de/"
+  production_discovery_url: "https://discovery.aai.dfn.de/"
+  support_email: "support@aai.dfn.de"

@@ -7,8 +7,8 @@ To access the service:
   kubectl port-forward --namespace {{ .Release.Namespace }} $POD_NAME 8080:80
 
 Next steps:
-  1. Complete the LimeSurvey initial setup wizard
-  2. Configure SSO/SSO integration if needed
-  3. Set up persistent storage for survey data and uploads
+  1. Complete the Moodle installation wizard
+  2. Configure Shibboleth SSO integration with Keycloak
+  3. Set up persistent storage for moodledata
 
 Documentation: https://github.com/tobias-weiss-ai-xr/opendesk-edu

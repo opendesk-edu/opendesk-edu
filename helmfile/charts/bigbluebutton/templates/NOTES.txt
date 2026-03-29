@@ -7,8 +7,8 @@ To access the service:
   kubectl port-forward --namespace {{ .Release.Namespace }} $POD_NAME 8080:80
 
 Next steps:
-  1. Complete the LimeSurvey initial setup wizard
-  2. Configure SSO/SSO integration if needed
-  3. Set up persistent storage for survey data and uploads
+  1. Configure SAML/SSO integration with Keycloak
+  2. Set up persistent storage for session recordings
+  3. Review values.yaml for Greenlight and database configuration
 
 Documentation: https://github.com/tobias-weiss-ai-xr/opendesk-edu

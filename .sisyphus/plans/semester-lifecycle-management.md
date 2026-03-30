@@ -1001,7 +1001,7 @@ ARCHIVE_RETENTION_YEARS=5
 
 ## TODOs
 
-- [ ] Create course provisioning API
+- [x] Create course provisioning API
 - [ ] Implement role synchronization engine
 - [ ] Create semester lifecycle manager
 - [ ] Implement course archival logic

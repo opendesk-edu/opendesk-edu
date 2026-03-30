@@ -1002,7 +1002,7 @@ ARCHIVE_RETENTION_YEARS=5
 ## TODOs
 
 - [x] Create course provisioning API
-- [ ] Implement role synchronization engine
+- [x] Implement role synchronization engine
 - [ ] Create semester lifecycle manager
 - [ ] Implement course archival logic
 - [ ] Create Helm chart for deployment

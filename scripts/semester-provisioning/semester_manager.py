@@ -227,8 +227,10 @@ class SemesterManager:
         # Get semester config
         if semester_name:
             config = self.get_semester_config(semester_name)
+        elif self._config is not None:
+            config = self._config.current
         else:
-            config = self.get_current_semester(check_date)
+            config = None
 
         if config is None:
             logger.warning(
@@ -239,50 +241,29 @@ class SemesterManager:
 
         phases = config.phases
 
-        # Check each phase in order
-        # Enrollment phase
+        # Enrollment phase (may start before semester start_date)
         enrollment_start = phases.enrollment.get_start_date()
         enrollment_end = phases.enrollment.get_end_date()
         if enrollment_start <= check_date <= enrollment_end:
-            logger.debug(
-                f"Date {check_date} is in ENROLLMENT phase"
-                f" / Datum {check_date} ist in der EINSCHREIBUNGSPHase"
-            )
             return SemesterPhase.ENROLLMENT
 
         # Teaching phase
         teaching_start = phases.teaching.get_start_date()
         teaching_end = phases.teaching.get_end_date()
         if teaching_start <= check_date <= teaching_end:
-            logger.debug(
-                f"Date {check_date} is in TEACHING phase"
-                f" / Datum {check_date} ist in der LEHRPhase"
-            )
             return SemesterPhase.TEACHING
 
         # Exam phase
         exam_start = phases.exam.get_start_date()
         exam_end = phases.exam.get_end_date()
         if exam_start <= check_date <= exam_end:
-            logger.debug(
-                f"Date {check_date} is in EXAM phase"
-                f" / Datum {check_date} ist in der PRÜFUNGSPhase"
-            )
             return SemesterPhase.EXAM
 
         # Archival phase (after exam end)
         if check_date > exam_end:
-            logger.debug(
-                f"Date {check_date} is in ARCHIVAL phase"
-                f" / Datum {check_date} ist in der ARCHIVIERUNGSPHase"
-            )
             return SemesterPhase.ARCHIVAL
 
         # Between phases (gap)
-        logger.debug(
-            f"Date {check_date} is in a gap between phases"
-            f" / Datum {check_date} liegt in einer Lücke zwischen den Phasen"
-        )
         return None
 
     def transition_semester(

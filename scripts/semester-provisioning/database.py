@@ -493,6 +493,48 @@ class Database:
             rows = cursor.fetchall()
             return [dict(row) for row in rows]
 
+    def update_enrollment(
+        self, enrollment_id: str, update_data: dict
+    ) -> Optional[dict]:
+        """
+        Update an enrollment.
+        Einschreibung aktualisieren.
+
+        EN: Updates the enrollment record with new data. Only 'status' is currently supported.
+        DE: Aktualisiert den Einschreibungsdatensatz mit neuen data. Nur 'status' wird derzeit unterstützt.
+
+        Args:
+            enrollment_id: Enrollment identifier / Einschreibungskennung.
+            update_data: Fields to update / Zu aktualisierende Felder.
+
+        Returns:
+            Updated enrollment data or None / Aktualisierte Einschreibungsdaten oder None.
+        """
+        now = datetime.now(timezone.utc).isoformat()
+
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            set_clauses = []
+            params = []
+
+            if "status" in update_data:
+                set_clauses.append("status = ?")
+                params.append(update_data["status"])
+
+            if not set_clauses:
+                return self.get_enrollment(enrollment_id)
+
+            set_clauses.append("updated_at = ?")
+            params.append(now)
+            params.append(enrollment_id)
+
+            query = f"UPDATE enrollments SET {', '.join(set_clauses)} WHERE enrollment_id = ?"
+            cursor.execute(query, params)
+            conn.commit()
+
+            return self.get_enrollment(enrollment_id)
+
     def _row_to_course(self, row: sqlite3.Row) -> dict:
         """Convert a database row to course dict / Datenbankzeile zu Kurs-Dictionary konvertieren."""
         data = dict(row)

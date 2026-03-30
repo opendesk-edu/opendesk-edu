@@ -1003,7 +1003,7 @@ ARCHIVE_RETENTION_YEARS=5
 
 - [x] Create course provisioning API
 - [x] Implement role synchronization engine
-- [ ] Create semester lifecycle manager
+- [x] Create semester lifecycle manager
 - [ ] Implement course archival logic
 - [ ] Create Helm chart for deployment
 - [ ] Write automation cronJobs

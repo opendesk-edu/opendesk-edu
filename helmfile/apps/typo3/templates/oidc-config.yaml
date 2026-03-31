@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: typo3-oidc-config
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}  # yamllint disable-line rule:braces
   labels:
     app.kubernetes.io/name: typo3
     app.kubernetes.io/component: oidc

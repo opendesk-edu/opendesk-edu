@@ -34,6 +34,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install TYPO3 CMS via Composer (Composer mode)
 RUN composer create-project typo3/cms-core:^13.4 /var/www/html --no-dev --no-interaction
+RUN composer require causal/oidc --no-interaction
 
 # Configure Apache document root for TYPO3 Composer mode
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public

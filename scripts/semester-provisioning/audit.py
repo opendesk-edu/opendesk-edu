@@ -221,7 +221,7 @@ class AuditLogger:
     def export_logs(self, file_path: str) -> None:
         """Export logs to JSON file / Logs in JSON-Datei exportieren."""
         with open(file_path, "w") as f:
-            json.dump([log.model_dump() for log in self.logs], f, indent=2)
+            json.dump([log.model_dump(mode="json") for log in self.logs], f, indent=2)
 
 
 # Global audit logger instance

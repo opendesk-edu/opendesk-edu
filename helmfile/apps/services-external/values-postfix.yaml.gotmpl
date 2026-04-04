@@ -158,6 +158,8 @@ postfix:
   # Only deliver mail to Dovecot, if it is available
   {{- if .Values.apps.oxAppSuite.enabled }}
   virtualTransport: "lmtps:dovecot:24"
+  {{- else if .Values.global.grommunio.enabled }}
+  virtualTransport: "lmtp:grommunio:24"
   {{- else }}
   virtualMailboxDomains: []
   {{- end }}

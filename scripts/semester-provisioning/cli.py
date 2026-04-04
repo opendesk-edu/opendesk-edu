@@ -130,8 +130,21 @@ def cmd_transition(args: argparse.Namespace) -> int:
 
 
 def cmd_phases(args: argparse.Namespace) -> int:
-    manager = SemesterManager(config_path=args.config)
-    phases = manager.get_all_phases()
+    config_file = args.config
+
+    if config_file is None:
+        print("No config loaded.")
+        return 1
+
+    try:
+        manager = SemesterManager(config_path=config_file)
+        phases = manager.get_all_phases()
+    except FileNotFoundError:
+        print(f"Configuration file not found: {config_file}")
+        return 1
+    except Exception as e:
+        print(f"Error loading config: {e}")
+        return 1
 
     if not phases:
         print("No semester configuration loaded.")
@@ -139,11 +152,11 @@ def cmd_phases(args: argparse.Namespace) -> int:
         return 1
 
     if args.json:
-        # Wrap phases under a top-level key and include current semester name
-        current_semester = manager.get_current_semester()
+        config = manager._config
+        semester_name = config.current.name if config else None
         payload = {
             "phases": phases,
-            "semester": current_semester.name if current_semester else None,
+            "semester": semester_name,
         }
         print(json.dumps(payload, indent=2, default=str))
     else:

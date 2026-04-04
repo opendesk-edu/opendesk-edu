@@ -449,7 +449,9 @@ class SemesterManager:
         if semester_name:
             config = self.get_semester_config(semester_name)
         else:
-            config = self.get_current_semester()
+            if self._config is None:
+                return {}
+            config = self._config.current
 
         if config is None:
             return {}

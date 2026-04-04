@@ -17,7 +17,11 @@ from typing import Any, Optional
 from uuid import uuid4
 from enum import Enum
 
+import logging
+
 from pydantic import BaseModel
+
+logger = logging.getLogger(__name__)
 
 
 class AuditAction(str, Enum):
@@ -99,10 +103,10 @@ class AuditLogger:
             created_at=datetime.now(timezone.utc),
         )
 
-        self.logs.append(log_entry)
-
         if self.db_path != ":memory:":
             self._persist_log(log_entry)
+        else:
+            self.logs.append(log_entry)
 
         return log_entry
 
@@ -143,9 +147,12 @@ class AuditLogger:
                     ),
                 )
                 conn.commit()
-        except Exception:
-            # Fall back to memory storage if persistence fails
-            self.logs.append(log_entry)
+        except Exception as exc:
+            # Fall back to memory storage if persistence fails.
+            # Do NOT re-append to self.logs — it was already appended above.
+            logging.getLogger(__name__).warning(
+                f"Failed to persist audit log {log_entry.log_id} to database: {exc}"
+            )
 
     def get_logs(
         self,
@@ -170,14 +177,24 @@ class AuditLogger:
         filtered = self.logs
 
         if entity_type:
-            filtered = [l for l in filtered if l.entity_type == entity_type]
+            filtered = [
+                log_entry
+                for log_entry in filtered
+                if log_entry.entity_type == entity_type
+            ]
         if entity_id:
-            filtered = [l for l in filtered if l.entity_id == entity_id]
+            filtered = [
+                log_entry for log_entry in filtered if log_entry.entity_id == entity_id
+            ]
         if action:
             if isinstance(action, list):
-                filtered = [l for l in filtered if l.action in action]
+                filtered = [
+                    log_entry for log_entry in filtered if log_entry.action in action
+                ]
             else:
-                filtered = [l for l in filtered if l.action == action]
+                filtered = [
+                    log_entry for log_entry in filtered if log_entry.action == action
+                ]
 
         return filtered[:limit]
 

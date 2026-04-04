@@ -13,6 +13,7 @@ easily migratable to PostgreSQL for production deployments.
 from __future__ import annotations
 
 import json
+import logging
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -21,6 +22,8 @@ from typing import Any, Generator, Optional
 from uuid import uuid4
 
 from pydantic import BaseModel
+
+_db_logger = logging.getLogger(__name__)
 
 
 class DatabaseConfig(BaseModel):
@@ -51,7 +54,7 @@ class Database:
             )
         self._connection.row_factory = sqlite3.Row
         if self.config.echo:
-            self._connection.set_trace_callback(print)
+            self._connection.set_trace_callback(_db_logger.debug)
         self._create_tables()
 
     def close(self) -> None:

@@ -1,8 +1,9 @@
-# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der öffentlichen Verwaltung (ZenDiS) GmbH
+# SPDX-FileCopyrightText: 2024 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+# SPDX-License-Identifier: Apache-2.0
 """HISinOne webhook receiver.
 
-- SPDX-License-Identifier: MIT
-- English / Deutsch docstring.
+English / Deutsch bilingual docstring.
 """
 
 from __future__ import annotations
@@ -33,11 +34,14 @@ app = FastAPI(title=APP_TITLE)
 
 def _verify_signature(body_bytes: bytes, signature_header: Optional[str]) -> bool:
     if not SECRET:
-        # Warn but allow to proceed; in production always set a secret
-        logger.warning(
-            "No HISinOne webhook secret configured; signature verification skipped."
+        # SECURITY: Fail closed when no secret is configured.
+        # In production, HISINONE_WEBHOOK_SECRET must always be set.
+        logger.error(
+            "HISINONE_WEBHOOK_SECRET is not configured; "
+            "webhook signature verification is disabled. "
+            "Set the HISINONE_WEBHOOK_SECRET environment variable."
         )
-        return True
+        return False
     if not signature_header:
         return False
     computed = hmac.new(SECRET.encode(), body_bytes, hashlib.sha256).hexdigest()

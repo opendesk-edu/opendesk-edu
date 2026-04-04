@@ -1,8 +1,8 @@
+# SPDX-FileCopyrightText: 2025 openDesk Edu Contributors
+# SPDX-License-Identifier: Apache-2.0
 """Bulk HISinOne export sync utility.
-# SPDX-License-Identifier: MIT
 
-- SPDX-License-Identifier: MIT
-- English / Deutsch bilingual docstring.
+EN / DE bilingual docstring.
 """
 
 from __future__ import annotations

@@ -421,6 +421,10 @@ class SemesterManager:
         if self._course_api is not None:
             # In production, this would call the course API
             # For now, return empty list
+            logger.debug(
+                f"Course API available but _archive_semester_courses is a placeholder"
+                f" / Kurs-API verfügbar, aber _archive_semester_courses ist ein Platzhalter"
+            )
             pass
 
         return archived_ids

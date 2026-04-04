@@ -52,6 +52,7 @@ data:
   GROMMUNIO_OIDC_ISSUER: {{ .Values.grommunio.auth.oidc.issuerUrl | quote }}
   GROMMUNIO_OIDC_CLIENT_ID: {{ .Values.grommunio.auth.oidc.clientId | quote }}
   GROMMUNIO_OIDC_SCOPE: {{ .Values.grommunio.auth.oidc.scope | quote }}
+  GROMMUNIO_OIDC_DISCOVERY_URL: {{ include "grommunio.oidcDiscoveryUrl" . | quote }}
   {{- else if .Values.grommunio.auth.saml.enabled }}
   GROMMUNIO_AUTH_METHOD: "saml"
   GROMMUNIO_SAML_ENTITY_ID: {{ .Values.grommunio.auth.saml.entityId | quote }}
@@ -65,4 +66,5 @@ data:
   GROMMUNIO_LDAP_BASE_DN: {{ .Values.grommunio.ldap.baseDN | quote }}
   GROMMUNIO_LDAP_BIND_DN: {{ .Values.grommunio.ldap.bindDN | quote }}
   GROMMUNIO_LDAP_USER_FILTER: {{ .Values.grommunio.ldap.userFilter | quote }}
+  GROMMUNIO_LDAP_URL: {{ include "grommunio.ldapUrl" . | quote }}
   {{- end }}

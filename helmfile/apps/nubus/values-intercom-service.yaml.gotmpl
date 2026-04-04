@@ -92,6 +92,11 @@ ics:
     origin: {{ .Values.global.hosts.nextcloud | quote }}
     subdomain: {{ .Values.global.hosts.nextcloud | quote }}
     audience: "opendesk-nextcloud"
+  {{- if .Values.global.grommunio.enabled }}
+  grommunio:
+    url: "https://{{ .Values.global.hosts.grommunio }}.{{ .Values.global.domain }}"
+    audience: "opendesk-grommunio"
+  {{- end }}
   {{- if .Values.apps.opencloud.enabled }}
   opencloud:
     origin: {{ .Values.global.hosts.opencloud | quote }}

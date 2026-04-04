@@ -96,6 +96,20 @@ Create container image
 {{- end -}}
 
 {{/*
+LDAP URL from grommunio.ldap values
+*/}}
+{{- define "grommunio.ldapUrl" -}}
+ldap://{{ .Values.grommunio.ldap.host }}:{{ .Values.grommunio.ldap.port }}
+{{- end -}}
+
+{{/*
+OIDC Discovery URL from grommunio.auth.oidc values
+*/}}
+{{- define "grommunio.oidcDiscoveryUrl" -}}
+{{ .Values.grommunio.auth.oidc.issuerUrl }}/.well-known/openid-configuration
+{{- end -}}
+
+{{/*
 Resource requests and limits
 */}}
 {{- define "grommunio.resources" -}}

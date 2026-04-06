@@ -155,13 +155,45 @@ class UserDeprovisioner:
 
         logger.info(f"Stored deprovisioning metadata for {user['username']}")
 
-    def _archive_user_data(self, user: Dict):
-        """Archive user data before deletion"""
-        username = user["username"]
+def _archive_user_data(self, user: Dict):
+        """Archive user data from all services before deletion"""
+        username = user['username']
+
+        try:
+            # Use service archiver to archive from all services
+            from archive_service_user import ServiceArchiver
+
+            archiver = ServiceArchiver()
+
+            logger.info(f"Starting service-wide archive for {username}")
+            archives = archiver.archive_user(username)
+
+            if archives:
+                logger.info(f"Archived data from {len(archives)} services for {username}")
+
+                # Create combined tarball
+                complete_archive = archiver.compress_all_archives(username)
+                if complete_archive:
+                    logger.info(f"Complete archive: {complete_archive}")
+            else:
+                logger.warning(f"No service archives created for {username}")
+
+        except ImportError:
+            logger.warning("Service archiver not available, skipping service archives")
+            # Fall back to simple Keycloak-only archive
+            self._fallback_archive(user)
+        except Exception as e:
+            logger.error(f"Failed to archive service data for {username}: {e}")
+            # Attempt fallback archive
+            self._fallback_archive(user)
+
+    def _fallback_archive(self, user: Dict):
+        """Fallback to simple Keycloak-only archive if service archiver fails"""
+        username = user['username']
 
         try:
             # Create archive directory
-            archive_dir = "/var/lib/opendesk-archives"
+            archive_dir = '/var/lib/opendesk-archives'
             os.makedirs(archive_dir, exist_ok=True)
 
             # Create user-specific archive
@@ -170,18 +202,14 @@ class UserDeprovisioner:
 
             # Export user data
             import json
-
-            user_data_file = os.path.join(user_archive_dir, "user-data.json")
-            with open(user_data_file, "w") as f:
+            user_data_file = os.path.join(user_archive_dir, 'user-data.json')
+            with open(user_data_file, 'w') as f:
                 json.dump(user, f, indent=2)
 
-            logger.info(f"Archived user data for {username} to {user_archive_dir}")
-
-            # Note: Service-specific archives (ILIAS, Moodle, etc.) should be handled
-            # by their respective backup/retention policies
+            logger.info(f"Archived Keycloak user data for {username} to {user_archive_dir}")
 
         except Exception as e:
-            logger.error(f"Failed to archive user data for {username}: {e}")
+            logger.error(f"Fallback archive failed for {username}: {e}")
 
     def _grace_period_expired(self, user: Dict) -> bool:
         """Check if grace period has expired for a disabled user"""

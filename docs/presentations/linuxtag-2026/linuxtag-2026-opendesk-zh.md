@@ -221,7 +221,7 @@ python3 dev/charts-local.py --revert
 # 🚀 快速开始 — 3 步部署
 
 ```bash
-# 1. 克隆仓库
+# 1. 克隆代码库
 git clone https://github.com/tobias-weiss-ai-xr/opendesk-edu.git
 cd opendesk-edu
 
@@ -322,16 +322,16 @@ helmfile rollback -e hrz
 
 ---
 
-# 🤝 参与贡献！
+# 🤝 欢迎参与贡献！
 
 **帮助我们为高校构建 openDesk Edu！**
 
-- ⭐ **收藏仓库:** [github.com/tobias-weiss-ai-xr/opendesk-edu](https://github.com/tobias-weiss-ai-xr/opendesk-edu)
+- ⭐ **收藏代码库:** [github.com/tobias-weiss-ai-xr/opendesk-edu](https://github.com/tobias-weiss-ai-xr/opendesk-edu)
 - 🧪 **本地测试:** 使用 Helmfile 部署并提供反馈
 - 🐛 **报告问题:** 提交 bug 或功能请求
 - 💻 **贡献代码:** 欢迎 PR — 详见 CONTRIBUTING.md
 
-**共同构建主权高校软件！** 🎓
+**让我们共同构建主权高校软件！** 🎓
 
 ---
 

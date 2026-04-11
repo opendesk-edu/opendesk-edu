@@ -503,5 +503,66 @@ class HISinOneClient:
                 },
             ]
 
+        elif "pruefung" in endpoint_lower:
+            # Exams
+            course_id = params.get("course_id") if params else None
+            all_exams = [
+                {
+                    "id": "EXM-001",
+                    "courseId": "LV-001",
+                    "title": "Einführung in die Informatik - Klausur",
+                    "beginn": "20270120T090000Z",
+                    "ende": "20270120T120000Z",
+                    "raum": "H1.1",
+                    "typ": "schriftlich",
+                    "teilnehmer_count": 150,
+                },
+                {
+                    "id": "EXM-002",
+                    "courseId": "LV-002",
+                    "title": "Mathematik I - Klausur",
+                    "beginn": "20270121T090000Z",
+                    "ende": "20270121T120000Z",
+                    "raum": "H2.3",
+                    "typ": "schriftlich",
+                    "teilnehmer_count": 80,
+                },
+                {
+                    "id": "EXM-003",
+                    "courseId": "LV-001",
+                    "title": "Programmierung I - Mündliche Prüfung",
+                    "beginn": "20270122T100000Z",
+                    "ende": "20270122T180000Z",
+                    "raum": "H3.1",
+                    "typ": "mündlich",
+                    "teilnehmer_count": 30,
+                },
+                {
+                    "id": "EXM-004",
+                    "courseId": "LV-002",
+                    "title": "Lineare Algebra - Klausur",
+                    "beginn": "20270123T140000Z",
+                    "ende": "20270123T170000Z",
+                    "raum": "H1.2",
+                    "typ": "schriftlich",
+                    "teilnehmer_count": 80,
+                },
+                {
+                    "id": "EXM-005",
+                    "courseId": "LV-001",
+                    "title": "Algorithmen und Datenstrukturen - Abschlussklausur",
+                    "beginn": "20270210T090000Z",
+                    "ende": "20270210T120000Z",
+                    "raum": "H1.1",
+                    "typ": "schriftlich",
+                    "teilnehmer_count": 150,
+                },
+            ]
+            # Filter by course_id if provided
+            if course_id:
+                filtered_exams = [e for e in all_exams if e["courseId"] == course_id]
+                return filtered_exams
+            return all_exams
+
         # Default empty response
         return []

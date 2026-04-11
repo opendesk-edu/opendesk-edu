@@ -54,6 +54,10 @@ class Settings(BaseSettings):
     bbb_url: str = ""
     bbb_secret: str = ""
 
+    opencloud_url: str = ""
+    opencloud_username: str = ""
+    opencloud_password: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

@@ -356,7 +356,7 @@ class SemesterManager:
             # Placeholder for actual provisioning logic
             # This would integrate with HISinOne or similar systems
 
-        # Step 4: Sync enrollments
+        # Step 4: Sync enrollments from campus management
         if self._role_sync is not None:
             try:
                 # Placeholder for enrollment sync
@@ -370,6 +370,15 @@ class SemesterManager:
                 error_msg = f"Failed to sync enrollments for {new_semester}: {e}"
                 logger.error(error_msg)
                 report.errors.append({"step": "sync_enrollments", "error": str(e)})
+
+        # Step 4.5: Sync semesters from Marvin
+        logger.info("Step 4.5: Sync semesters from Marvin campus management")
+        # Note: Marvin client would be passed in if we had dependency injection
+        # For now, log that Marvin sync would happen here
+        logger.info(
+            f"Marvin semester sync to be implemented for {new_semester}"
+            f" / Marvin-Semester-Synchronisierung für {new_semester} zu implementieren"
+        )
 
         # Step 5: Activate new courses
         if self._course_api is not None:
@@ -422,6 +431,33 @@ class SemesterManager:
             return archived_ids
 
         # Query all active courses for this semester
+
+    async def sync_marvin_semesters(self, marvin_client: Any) -> dict[str, Any]:
+        """
+        Sync semesters from Marvin campus management system.
+
+        Args:
+            marvin_client: Marvin client instance.
+
+        Returns:
+            Dictionary with sync results.
+        """
+        logger.info("Syncing semesters from Marvin...")
+        try:
+            semesters = await marvin_client.get_semesters()
+            logger.info(f"Retrieved {len(semesters)} semesters from Marvin")
+            return {
+                "success": True,
+                "semesters": semesters,
+                "count": len(semesters),
+            }
+        except Exception as e:
+            logger.error(f"Failed to sync semesters from Marvin: {e}")
+            return {
+                "success": False,
+                "error": str(e),
+                "semesters": [],
+            }
         courses, total = self._database.list_courses(
             semester_id=self._config.semester_id,
             status="active",

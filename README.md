@@ -87,6 +87,14 @@ core services universities need — all integrated with openDesk's existing Keyc
 |:--------|:----------|:------:|:------------|
 | 📝 **Collaborative Editing** | [Etherpad](https://etherpad.org/) | 🔄 Beta | Real-time collaborative document editor — meeting notes, workshops, live editing |
 | 📚 **Knowledge Base** | [BookStack](https://www.bookstackapp.com/) | 🔄 Beta | Wiki with book/chapter structure — course materials, SOPs, documentation |
+| 
+### Campus Management 🏫
+| Service | Component | Status | Description |
+|:--------|:----------|:------:|:------------|
+| 📖 [HISinOne](https://hisinone.org/) | 🔄 Beta | SOAP API + SSO — courses, enrollments, students |
+| 📖 [HISinOne-Proxy](https://hisinone.org/) | 🔄 Beta | REST API with OAuth 2.0 — courses, enrollments, students |
+| 📖 [Marvin](https://marvin.org/) | 🔄 Beta | REST API with OAuth 2.0 + Webhooks — courses, enrollments, students |
+| 🎯 [Custom](https://example.com/) | 📝 Dev | Follows `docs/integration/campus-management-hooks.md` pattern — build your own adapter |
 | 📋 **Project Management** | [Planka](https://planka.app/) | 🔄 Beta | Kanban boards with OIDC — student projects, research planning |
 | 🎫 **Service Desk** | [Zammad](https://zammad.com/) | 🔄 Beta | Helpdesk with SAML — IT support, multi-channel (email, chat, phone) |
 | 📊 **Surveys** | [LimeSurvey](https://www.limesurvey.org/) | 🔄 Beta | Survey platform — course evaluations, academic research |

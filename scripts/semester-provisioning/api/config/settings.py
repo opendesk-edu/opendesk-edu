@@ -36,6 +36,12 @@ class Settings(BaseSettings):
     hisinone_webhook_secret: Optional[str] = None
     hisinone_webhook_port: int = 8001
 
+    marvin_api_url: Optional[str] = None
+    marvin_client_id: Optional[str] = None
+    marvin_client_secret: Optional[str] = None
+    marvin_webhook_secret: Optional[str] = None
+    marvin_webhook_port: int = 8002
+
 
 @lru_cache
 def get_settings() -> Settings:

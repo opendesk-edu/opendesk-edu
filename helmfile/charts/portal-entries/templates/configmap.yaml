@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-portal-entries
+  labels:
+    app.kubernetes.io/name: portal-entries
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  {{- range .Values.entries }}
+  {{ .id }}.ldif: |
+    dn: cn={{ .id }},cn=entry,cn=portals,cn=univention,{{ $.Values.ldap.baseDn }}
+    objectClass: univentionNewPortalEntry
+    objectClass: top
+    cn: {{ .id }}
+    univentionNewPortalEntryActivate: TRUE
+    univentionNewPortalEntryLink: en_US {{ .url }}
+    univentionNewPortalEntryLinkTarget: newwindow
+    univentionNewPortalEntryDisplayName: en_US {{ .displayName.en }}
+    univentionNewPortalEntryDisplayName: de_DE {{ .displayName.de }}
+    univentionNewPortalEntryDescription: en_US {{ .description.en }}
+    univentionNewPortalEntryDescription: de_DE {{ .description.de }}
+    univentionNewPortalEntryOnlyAnonymous: FALSE
+  {{- end }}
+  apply.sh: |
+    #!/bin/sh
+    set -e
+    LDAP_PASSWORD=$1
+    BASE_DN="{{ $.Values.ldap.baseDn }}"
+    ADMIN_DN="{{ $.Values.ldap.adminDn }}"
+
+    # Add collab-service portal entries
+    for f in /entries/*.ldif; do
+      entry_id=$(basename "$f" .ldif)
+      echo "Checking $entry_id..."
+      exists=$(ldapsearch -x -LLL -H ldap://localhost \
+        -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
+        -b "cn=$entry_id,cn=entry,cn=portals,cn=univention,$BASE_DN" \
+        dn 2>/dev/null | grep -c "^dn:" || echo "0")
+      if [ "$exists" -gt 0 ]; then
+        echo "  ✓ $entry_id already exists"
+      else
+        echo "  Creating $entry_id..."
+        ldapadd -x -H ldap://localhost \
+          -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
+          -f "$f"
+      fi
+    done
+    echo "Done"

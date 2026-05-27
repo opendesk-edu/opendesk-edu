@@ -1,0 +1,71 @@
+# Portal entries for collab-services
+# Each entry maps a CoCalc-like feature to its open-source K8s app
+# Add or remove entries to control which tiles appear in the portal
+entries:
+  - id: jupyterhub
+    displayName:
+      en: JupyterHub
+      de: JupyterHub
+    description:
+      en: Interactive notebooks (Python, R, Julia)
+      de: Interaktive Notebooks (Python, R, Julia)
+    url: https://jupyter.opendesk.example.com
+
+  - id: rstudio
+    displayName:
+      en: RStudio
+      de: RStudio
+    description:
+      en: R statistics environment
+      de: R Statistik-Umgebung
+    url: https://r.opendesk.example.com
+
+  - id: ttyd
+    displayName:
+      en: Web Terminal
+      de: Web Terminal
+    description:
+      en: Browser-based Linux terminal
+      de: Browser-basiertes Linux-Terminal
+    url: https://term.opendesk.example.com
+
+  - id: code-server
+    displayName:
+      en: code-server
+      de: code-server
+    description:
+      en: VS Code in the browser
+      de: VS Code im Browser
+    url: https://code.opendesk.example.com
+
+  - id: slidev
+    displayName:
+      en: Slidev
+      de: Slidev
+    description:
+      en: Markdown presentations
+      de: Markdown-Präsentationen
+    url: https://slides.opendesk.example.com
+
+  - id: collab-dashboard
+    displayName:
+      en: Collab Dashboard
+      de: Collab Dashboard
+    description:
+      en: Feature catalog for all tools
+      de: Feature-Katalog für alle Tools
+    url: https://collab.opendesk.example.com
+
+  - id: open-webui
+    displayName:
+      en: Open WebUI
+      de: Open WebUI
+    description:
+      en: AI assistant interface
+      de: KI-Assistenten-Oberfläche
+    url: https://ai.opendesk.example.com
+
+ldap:
+  baseDn: "dc=swp-ldap,dc=internal"
+  adminDn: "cn=admin,dc=swp-ldap,dc=internal"
+  # Password is read from secret at runtime

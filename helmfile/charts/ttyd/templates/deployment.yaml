@@ -18,13 +18,16 @@ spec:
         - name: ttyd
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            - "-p"
+          command:
+            - /usr/bin/tini
+            - --
+            - ttyd
+            - -p
             - "{{ .Values.service.port }}"
             {{- range .Values.extraArgs }}
             - {{ . | quote }}
             {{- end }}
-            - /bin/bash
+            - bash
           ports:
             - containerPort: {{ .Values.service.port }}
               protocol: TCP

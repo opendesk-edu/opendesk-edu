@@ -1,7 +1,7 @@
 ---
 replicaCount: 1
 image:
-  repository: opendesk-edu/collab-dashboard
+  repository: weissto/collab-dashboard
   tag: "latest"
   pullPolicy: IfNotPresent
 service:

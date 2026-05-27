@@ -1,6 +1,10 @@
 ---
 replicaCount: 1
 image:
+  repository: node
+  tag: "20-alpine"
+  pullPolicy: IfNotPresent
+slidevImage:
   repository: ghcr.io/slidevjs/slidev
   tag: "0.49.0"
   pullPolicy: IfNotPresent

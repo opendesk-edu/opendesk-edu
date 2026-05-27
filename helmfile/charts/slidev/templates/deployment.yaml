@@ -18,11 +18,11 @@ spec:
         - name: build
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command:
-            - npx
-            - slidev
-            - build
-            - "--out"
-            - /slidev/dist
+            - sh
+            - -c
+            - |
+              npm install -g @slidev/cli@{{ .Values.slidevVersion | default "0.49.0" | quote }}
+              npx slidev build --out /slidev/dist || true
           volumeMounts:
             - name: slides
               mountPath: /slidev

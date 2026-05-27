@@ -13,3 +13,10 @@ ingress:
 image:
   repository: rocker/rstudio
   tag: "4.4.2"
+
+# OpenCloud storage integration — enable and configure per deployment
+opencloud:
+  enabled: {{ .Values.apps.rstudio.opencloud.enabled | default false }}
+  url: {{ .Values.apps.rstudio.opencloud.url | default (printf "https://opencloud.%s" .Values.global.domain) | quote }}
+  username: {{ .Values.apps.rstudio.opencloud.username | default "" | quote }}
+  password: {{ .Values.apps.rstudio.opencloud.password | default "" | quote }}

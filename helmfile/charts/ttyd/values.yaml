@@ -29,3 +29,12 @@ extraArgs: []
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+# OAuth2-proxy sidecar for Keycloak SSO
+oauth2:
+  enabled: false
+  provider: "keycloak-oidc"
+  clientId: "opendesk-ttyd"
+  clientSecret: ""
+  oidcIssuerUrl: "https://id.opendesk.example.com/realms/opendesk"
+  cookieSecret: ""

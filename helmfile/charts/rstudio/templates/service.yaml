@@ -8,7 +8,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ if .Values.oauth2.enabled }}oauth2{{ else }}http{{ end }}
       protocol: TCP
       name: http
   selector:

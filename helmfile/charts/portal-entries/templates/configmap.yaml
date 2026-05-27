@@ -14,6 +14,7 @@ data:
     cn: {{ .id }}
     univentionNewPortalEntryActivate: TRUE
     univentionNewPortalEntryLink: en_US {{ .url }}
+    univentionNewPortalEntryLink: de_DE {{ .url }}
     univentionNewPortalEntryLinkTarget: newwindow
     univentionNewPortalEntryDisplayName: en_US {{ .displayName.en }}
     univentionNewPortalEntryDisplayName: de_DE {{ .displayName.de }}
@@ -43,6 +44,25 @@ data:
         ldapadd -x -H ldap://localhost \
           -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
           -f "$f"
+      fi
+    done
+
+    # Add entries to portal central navigation (makes them visible)
+    CENTRAL_DN="cn=domain,cn=portal,cn=portals,cn=univention,$BASE_DN"
+    for f in /entries/*.ldif; do
+      entry_id=$(basename "$f" .ldif)
+      entry_dn="cn=$entry_id,cn=entry,cn=portals,cn=univention,$BASE_DN"
+      # Check if already in central navigation
+      in_central=$(ldapsearch -x -LLL -H ldap://localhost \
+        -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
+        -b "$CENTRAL_DN" univentionNewPortalCentralNavigation 2>/dev/null | grep -c "$entry_dn" || echo "0")
+      if [ "$in_central" -eq 0 ]; then
+        echo "Adding $entry_id to central navigation..."
+        echo "dn: $CENTRAL_DN
+changetype: modify
+add: univentionNewPortalCentralNavigation
+univentionNewPortalCentralNavigation: $entry_dn" | ldapmodify -x -H ldap://localhost \
+          -D "$ADMIN_DN" -w "$LDAP_PASSWORD" 2>/dev/null || true
       fi
     done
     echo "Done"

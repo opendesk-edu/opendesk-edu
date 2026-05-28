@@ -10,6 +10,6 @@ spec:
   containers:
     - name: wget
       image: registry.hrz.uni-marburg.de/dockerio-cache/busybox:latest
-      command: ['wget']
-      args: ['{{ include "rstudio.name" . }}:{{ .Values.service.port }}']
+      command: ['nc', '-z', '-w', '3', '{{ include "rstudio.name" . }}', '{{ .Values.service.port | toString }}']
+
   restartPolicy: Never

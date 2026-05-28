@@ -10,6 +10,5 @@ spec:
   containers:
     - name: wget
       image: registry.hrz.uni-marburg.de/dockerio-cache/busybox:latest
-      command: ['wget']
-      args: ['{{ include "ttyd.name" . }}:{{ .Values.service.port }}']
+      command: ['nc', '-z', '-w', '3', '{{ include "ttyd.name" . }}', '{{ .Values.service.port | toString }}']
   restartPolicy: Never

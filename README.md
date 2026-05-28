@@ -227,6 +227,7 @@ This is a **superset** of openDesk CE, not a fork.
 | 💾 Data Storage | [docs/data-storage.md](./docs/data-storage.md) |
 | 🧪 Testing | [docs/testing.md](./docs/testing.md) |
 | 🧪 Collab Services | [docs/superpowers/specs/2026-05-27-collab-services-design.md](./docs/superpowers/specs/2026-05-27-collab-services-design.md) |
+| 🚀 Collab Deployment | [docs/collab-services-deployment.md](./docs/collab-services-deployment.md) |
 | 🔧 ILIAS SAML Fix | [docs/ilias-shibboleth-attribute-fix.md](./docs/ilias-shibboleth-attribute-fix.md) |
 
 ---

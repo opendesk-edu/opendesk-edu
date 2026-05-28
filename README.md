@@ -228,6 +228,8 @@ This is a **superset** of openDesk CE, not a fork.
 | 🧪 Testing | [docs/testing.md](./docs/testing.md) |
 | 🧪 Collab Services | [docs/superpowers/specs/2026-05-27-collab-services-design.md](./docs/superpowers/specs/2026-05-27-collab-services-design.md) |
 | 🚀 Collab Deployment | [docs/collab-services-deployment.md](./docs/collab-services-deployment.md) |
+| 🔐 OAuth2-Proxy Config | [docs/oauth2-proxy-config.md](./docs/oauth2-proxy-config.md) |
+| ☁️ OpenCloud Sidecar | [helmfile/charts/opencloud-sidecar/README.md](./helmfile/charts/opencloud-sidecar/README.md) |
 | 🔧 ILIAS SAML Fix | [docs/ilias-shibboleth-attribute-fix.md](./docs/ilias-shibboleth-attribute-fix.md) |
 
 ---

@@ -23,9 +23,18 @@ spec:
             - containerPort: 8080
               protocol: TCP
               name: http
+          env:
+            {{- if not .Values.oauth2.enabled }}
+            - name: PASSWORD
+              value: "changeme"
+            {{- end }}
           volumeMounts:
             - name: workspace
               mountPath: /home/coder
+            {{- if .Values.opencloud.enabled }}
+            - name: opencloud
+              mountPath: /home/coder/{{ .Values.opencloud.mountPath }}
+            {{- end }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.oauth2.enabled }}
         - name: oauth2-proxy
@@ -56,6 +65,35 @@ spec:
               cpu: 200m
               memory: 256Mi
         {{- end }}
+        {{- if .Values.opencloud.enabled }}
+        - name: opencloud-sync
+          image: rclone/rclone:latest
+          command:
+            - sh
+            - -c
+            - |
+              rclone config create opencloud webdav \
+                url "{{ .Values.opencloud.url }}/dav/files/{{ .Values.opencloud.username }}" \
+                vendor "other" \
+                user "{{ .Values.opencloud.username }}" \
+                pass "{{ .Values.opencloud.password }}"
+              while true; do
+                echo "Syncing OpenCloud..."
+                rclone sync opencloud:{{ .Values.opencloud.remotePath }} /data/ \
+                  --verbose --progress
+                sleep {{ .Values.opencloud.syncInterval }}
+              done
+          volumeMounts:
+            - name: opencloud
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+        {{- end }}
       volumes:
         - name: workspace
           {{- if .Values.persistence.enabled }}
@@ -64,3 +102,7 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        {{- if .Values.opencloud.enabled }}
+        - name: opencloud
+          emptyDir: {}
+        {{- end }}

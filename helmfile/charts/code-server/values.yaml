@@ -36,3 +36,13 @@ oauth2:
   clientSecret: ""
   oidcIssuerUrl: "https://id.opendesk.example.com/realms/opendesk"
   cookieSecret: ""
+
+# OpenCloud storage integration via rclone sidecar
+opencloud:
+  enabled: false
+  url: "https://opencloud.opendesk.example.com"
+  username: ""
+  password: ""
+  syncInterval: "60s"
+  remotePath: "/"
+  mountPath: "opencloud"

@@ -14,18 +14,6 @@ spec:
       labels:
         {{- include "slidev.selectorLabels" . | nindent 8 }}
     spec:
-      initContainers:
-        - name: build
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          command:
-            - sh
-            - -c
-            - |
-              npm install -g @slidev/cli@{{ .Values.slidevVersion | default "0.49.0" | quote }}
-              npx slidev build --out /slidev/dist || true
-          volumeMounts:
-            - name: slides
-              mountPath: /slidev
       containers:
         - name: slidev
           image: nginx:alpine
@@ -36,7 +24,14 @@ spec:
           volumeMounts:
             - name: slides
               mountPath: /usr/share/nginx/html
-              subPath: dist
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - |
+                    echo '<!DOCTYPE html><html><head><title>Slidev</title></head><body><h1>Slidev - Markdown Presentations</h1><p>Upload your slides to the slides volume.</p></body></html>' > /usr/share/nginx/html/index.html
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.oauth2.enabled }}

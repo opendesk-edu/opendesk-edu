@@ -50,8 +50,9 @@ spec:
           livenessProbe:
             tcpSocket:
               port: {{ .Values.etherpad.port }}
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            failureThreshold: 5
           readinessProbe:
             tcpSocket:
               port: {{ .Values.etherpad.port }}

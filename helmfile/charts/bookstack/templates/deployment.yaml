@@ -28,9 +28,9 @@ spec:
               - ALL
             privileged: false
             readOnlyRootFilesystem: false
-            runAsGroup: 33
-            runAsNonRoot: true
-            runAsUser: 33
+            runAsGroup: 0
+            runAsNonRoot: false
+            runAsUser: 0
             seLinuxOptions: {}
             seccompProfile:
               type: RuntimeDefault
@@ -39,6 +39,12 @@ spec:
           env:
             - name: APP_URL
               value: "https://{{ (index .Values.ingress.hosts 0).host }}"
+            - name: APP_KEY
+              value: {{ .Values.bookstack.appKey | quote }}
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
             - name: APP_ENV
               value: "production"
             - name: DB_HOST

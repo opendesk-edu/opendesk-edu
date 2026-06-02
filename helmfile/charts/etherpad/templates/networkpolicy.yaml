@@ -27,6 +27,9 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/instance: {{ .Release.Name }}
+    - to: []
+      ports:
+        - protocol: TCP
   ingress:
     - from:
         - podSelector:

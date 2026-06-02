@@ -23,13 +23,13 @@ ingress:
   annotations:
     {{ .Values.annotations.excalidraw.ingress | toYaml | nindent 4 }}
     haproxy-ingress.github.io/ssl-redirect: "true"
-    haproxy-ingress.github.io/headers: "X-Forwarded-Host excalidraw.opendesk.example.com"
+    haproxy-ingress.github.io/headers: "X-Forwarded-Host excalidraw.{{ .Values.global.domain }}"
   hosts:
-    - host: "excalidraw.opendesk.example.com"
+    - host: "excalidraw.{{ .Values.global.domain }}"
       paths:
         - path: /
           pathType: "ImplementationSpecific"
   tls:
     - secretName: "opendesk-certificates-tls"
       hosts:
-        - "excalidraw.opendesk.example.com"
+        - "excalidraw.{{ .Values.global.domain }}"

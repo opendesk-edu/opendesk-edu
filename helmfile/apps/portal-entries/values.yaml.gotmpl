@@ -65,6 +65,60 @@ entries:
       de: KI-Assistenten-Oberfläche
     url: "https://ai.{{ .Values.global.domain }}"
 
+  - id: drawio
+    displayName:
+      en: Draw.io
+      de: Draw.io
+    description:
+      en: Diagrams and flowcharts
+      de: Diagramme und Flussdiagramme
+    url: "https://draw.{{ .Values.global.domain }}"
+
+  - id: excalidraw
+    displayName:
+      en: Excalidraw
+      de: Excalidraw
+    description:
+      en: Collaborative whiteboard
+      de: Whiteboard für Zusammenarbeit
+    url: "https://excalidraw.{{ .Values.global.domain }}"
+
+  - id: planka
+    displayName:
+      en: Planka
+      de: Planka
+    description:
+      en: Kanban project management
+      de: Kanban-Projektmanagement
+    url: "https://planka.{{ .Values.global.domain }}"
+
+  - id: etherpad
+    displayName:
+      en: Etherpad
+      de: Etherpad
+    description:
+      en: Collaborative text editor
+      de: Kollaborativer Texteditor
+    url: "https://etherpad.{{ .Values.global.domain }}"
+
+  - id: bookstack
+    displayName:
+      en: BookStack
+      de: BookStack
+    description:
+      en: Wiki and documentation
+      de: Wikis und Dokumentation
+    url: "https://wiki.{{ .Values.global.domain }}"
+
+  - id: ssp
+    displayName:
+      en: Change Password
+      de: Passwort ändern
+    description:
+      en: LDAP Self-Service Password
+      de: LDAP Self-Service Password
+    url: "https://ssp.{{ .Values.global.domain }}"
+
 ldap:
   baseDn: {{ .Values.ldap.baseDn | default "dc=swp-ldap,dc=internal" | quote }}
   adminDn: {{ .Values.ldap.adminDn | default "cn=admin,dc=swp-ldap,dc=internal" | quote }}

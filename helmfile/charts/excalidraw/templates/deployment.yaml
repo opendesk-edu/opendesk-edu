@@ -25,8 +25,13 @@ spec:
           ports:
             - containerPort: {{ .Values.excalidraw.port }}
           securityContext:
-            runAsUser: 1000
-            runAsNonRoot: true
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: nginx-tmp
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /var/run
           livenessProbe:
             tcpSocket:
               port: {{ .Values.excalidraw.port }}
@@ -38,3 +43,8 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           resources: {{ .Values.excalidraw.resources | toYaml | nindent 12 }}
+      volumes:
+        - name: nginx-tmp
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}

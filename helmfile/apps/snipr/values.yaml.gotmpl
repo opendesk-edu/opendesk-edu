@@ -13,7 +13,7 @@ snipr:
   transcription:
     enabled: {{ .Values.apps.snipr.transcription.enabled | default true }}
     f13:
-      endpoint: {{ .Values.services.f13.endpoint | default "https://f13.opendesk.example.com" | quote }}
+      endpoint: {{ .Values.services.f13.endpoint | default (printf "https://f13.%s" .Values.global.domain) | quote }}
       model: {{ .Values.services.f13.model | default "whisper-medium" | quote }}
       language: {{ .Values.services.f13.language | default "de" | quote }}
 
@@ -37,10 +37,10 @@ snipr:
     platforms:
       ilias:
         deploymentId: {{ .Values.apps.snipr.lti.ilias.deploymentId | default "ilias-snipr" | quote }}
-        launchUrl: {{ .Values.apps.snipr.lti.ilias.launchUrl | default "https://ilias.opendesk.example.com/snipr/lti/launch" | quote }}
+        launchUrl: {{ .Values.apps.snipr.lti.ilias.launchUrl | default (printf "https://ilias.%s/snipr/lti/launch" .Values.global.domain) | quote }}
       moodle:
         deploymentId: {{ .Values.apps.snipr.lti.moodle.deploymentId | default "moodle-snipr" | quote }}
-        launchUrl: {{ .Values.apps.snipr.lti.moodle.launchUrl | default "https://moodle.opendesk.example.com/mod/lti/launch" | quote }}
+        launchUrl: {{ .Values.apps.snipr.lti.moodle.launchUrl | default (printf "https://moodle.%s/mod/lti/launch" .Values.global.domain) | quote }}
 
 # Ingress configuration
 ingress:
@@ -52,14 +52,14 @@ ingress:
     haproxy-ingress.github.io/timeout-client: "120000ms"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - host: "snipr.opendesk.example.com"
+    - host: "snipr.{{ .Values.global.domain }}"
       paths:
         - path: "/"
           pathType: "Prefix"
   tls:
     - secretName: "opendesk-certificates-tls"
       hosts:
-        - "snipr.opendesk.example.com"
+        - "snipr.{{ .Values.global.domain }}"
 
 # Resources
 resources:

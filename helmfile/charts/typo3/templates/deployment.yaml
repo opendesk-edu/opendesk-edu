@@ -21,7 +21,9 @@ spec:
       initContainers:
         - name: typo3-init
           image: {{ .Values.typo3.image }}:{{ .Values.typo3.tag }}
-          command: ["vendor/bin/typo3", "install:fixfolderstructure"]
+          command: ["/bin/sh", "-c"]
+          args:
+            - "mkdir -p /var/www/html/typo3temp/var/assets /var/www/html/typo3temp/var/cache /var/www/html/typo3temp/var/charset /var/www/html/typo3temp/var/locks /var/www/html/typo3temp/var/log /var/www/html/typo3temp/var/session /var/www/html/typo3temp/var/transient /var/www/html/l10n /var/www/html/assets && chown -R www-data:www-data /var/www/html/fileadmin /var/www/html/var /var/www/html/typo3temp /var/www/html/typo3conf /var/www/html/l10n /var/www/html/assets"
           volumeMounts:
             - name: typo3-fileadmin
               mountPath: /var/www/html/fileadmin

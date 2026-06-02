@@ -74,6 +74,60 @@ entries:
       de: Cloud-Dateispeicher und Synchronisation
     url: https://opencloud.opendesk.example.com
 
+  - id: drawio
+    displayName:
+      en: Draw.io
+      de: Draw.io
+    description:
+      en: Create and edit diagrams
+      de: Diagramme erstellen und bearbeiten
+    url: https://diagrams.opendesk.example.com
+
+  - id: excalidraw
+    displayName:
+      en: Excalidraw
+      de: Excalidraw
+    description:
+      en: Hand-drawn style whiteboard
+      de: Handgezeichnetes Whiteboard
+    url: https://whiteboard.opendesk.example.com
+
+  - id: bookstack
+    displayName:
+      en: BookStack
+      de: BookStack
+    description:
+      en: Document and knowledge base
+      de: Dokumenten- und Wissensdatenbank
+    url: https://docs.opendesk.example.com
+
+  - id: limesurvey
+    displayName:
+      en: LimeSurvey
+      de: LimeSurvey
+    description:
+      en: Online surveys and polls
+      de: Online-Umfragen und Abstimmungen
+    url: https://survey.opendesk.example.com
+
+  - id: typo3
+    displayName:
+      en: TYPO3
+      de: TYPO3
+    description:
+      en: Enterprise content management
+      de: Enterprise Content-Management
+    url: https://typo3.opendesk.example.com
+
+  - id: ilias
+    displayName:
+      en: ILIAS
+      de: ILIAS
+    description:
+      en: Learning management system
+      de: Lernplattform
+    url: https://ilias.opendesk.example.com
+
 ldap:
   baseDn: "dc=swp-ldap,dc=internal"
   adminDn: "cn=admin,dc=swp-ldap,dc=internal"

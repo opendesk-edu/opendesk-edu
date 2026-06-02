@@ -21,7 +21,7 @@ spec:
       initContainers:
         - name: setup
           image: {{ .Values.limesurvey.image }}:{{ .Values.limesurvey.tag }}
-          command: ["/bin/sh", "/setup.sh"]
+          command: ["/bin/bash", "/setup.sh"]
           env:
               - name: LS_DB_HOST
                 value: {{ include "limesurvey.dbHost" . | quote }}
@@ -73,6 +73,26 @@ spec:
           ports:
             - containerPort: {{ .Values.limesurvey.port }}
           env:
+            - name: DB_HOST
+              value: {{ include "limesurvey.dbHost" . | quote }}
+            - name: DB_PORT
+              value: {{ include "limesurvey.dbPort" . | quote }}
+            - name: DB_USER
+              value: {{ include "limesurvey.dbUser" . | quote }}
+            - name: DB_PASSWORD
+              value: {{ include "limesurvey.dbPassword" . | quote }}
+            - name: DB_NAME
+              value: {{ include "limesurvey.dbName" . | quote }}
+            - name: ADMIN_PASSWORD
+              value: "limesurvey123"
+            - name: ADMIN_NAME
+              value: {{ .Values.limesurvey.adminName | quote }}
+            - name: ADMIN_EMAIL
+              value: {{ .Values.limesurvey.adminEmail | quote }}
+            - name: SITE_NAME
+              value: {{ .Values.limesurvey.siteName | quote }}
+            - name: TABLE_PREFIX
+              value: {{ .Values.limesurvey.tablePrefix | quote }}
             - name: LS_DB_HOST
               value: {{ include "limesurvey.dbHost" . | quote }}
             - name: LS_DB_PORT
@@ -110,8 +130,9 @@ spec:
           livenessProbe:
             tcpSocket:
               port: {{ .Values.limesurvey.port }}
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            failureThreshold: 5
           readinessProbe:
             tcpSocket:
               port: {{ .Values.limesurvey.port }}

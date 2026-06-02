@@ -65,6 +65,15 @@ entries:
       de: KI-Assistenten-Oberfläche
     url: https://ai.opendesk.example.com
 
+  - id: opencloud
+    displayName:
+      en: File Storage (OpenCloud)
+      de: Dateispeicher (OpenCloud)
+    description:
+      en: Cloud file storage and sync
+      de: Cloud-Dateispeicher und Synchronisation
+    url: https://opencloud.opendesk.example.com
+
 ldap:
   baseDn: "dc=swp-ldap,dc=internal"
   adminDn: "cn=admin,dc=swp-ldap,dc=internal"

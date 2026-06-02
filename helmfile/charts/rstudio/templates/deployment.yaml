@@ -45,7 +45,9 @@ spec:
             - --client-secret={{ .Values.oauth2.clientSecret }}
             - --oidc-issuer-url={{ .Values.oauth2.oidcIssuerUrl }}
             - --cookie-secret={{ .Values.oauth2.cookieSecret }}
-            - --scope=openid,email,profile
+            # Note: --scope intentionally omitted; defaults to "openid email profile"
+            # which is what Keycloak requires. oauth2-proxy v7.6.0 sends comma-separated
+            # scopes when --scope is explicit, which Keycloak rejects as invalid.
             - --set-authorization-header=true
             - --set-xauthrequest=true
             - --email-domain=*

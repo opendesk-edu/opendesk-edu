@@ -65,7 +65,7 @@ spec:
             - --client-secret={{ .Values.oauth2.clientSecret }}
             - --oidc-issuer-url={{ .Values.oauth2.oidcIssuerUrl }}
             - --cookie-secret={{ .Values.oauth2.cookieSecret }}
-            - --scope=openid,email,profile
+            # --scope intentionally omitted; defaults work correctly with Keycloak
             - --set-authorization-header=true
             - --set-xauthrequest=true
             - --email-domain=*

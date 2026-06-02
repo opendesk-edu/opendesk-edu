@@ -27,16 +27,15 @@ spec:
             - "weed"
             - "master"
             - "-port=9333"
-            - "-port.grpc=9324"
             - "-mdir=/data"
             - "-defaultReplication=000"
             - "-volumeSizeLimitMB=30000"
           ports:
-            - name: grpc
+            - name: http
               containerPort: 9333
               protocol: TCP
-            - name: http
-              containerPort: 9324
+            - name: grpc
+              containerPort: 19333
               protocol: TCP
           {{- if .Values.master.persistence.enabled }}
           volumeMounts:

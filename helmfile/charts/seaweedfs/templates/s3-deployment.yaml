@@ -1,3 +1,4 @@
+{{- if .Values.s3.enabled }}
 # SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
 # SPDX-License-Identifier: Apache-2.0
 apiVersion: apps/v1
@@ -28,7 +29,7 @@ spec:
             - "s3"
             - "-port=8333"
             - "-filer={{ include "seaweedfs.masterFullname" . }}:9333"
-            - "-s3.config=/etc/seaweedfs/s3.json"
+            - "-config=/etc/seaweedfs/s3.json"
           ports:
             - name: http
               containerPort: 8333
@@ -65,3 +66,4 @@ spec:
         - name: config
           configMap:
             name: {{ include "seaweedfs.fullname" . }}
+{{- end }}

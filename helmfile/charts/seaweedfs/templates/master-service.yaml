@@ -10,13 +10,13 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - name: grpc
-      port: 9333
-      targetPort: grpc
-      protocol: TCP
     - name: http
-      port: 9324
+      port: 9333
       targetPort: http
+      protocol: TCP
+    - name: grpc
+      port: 19333
+      targetPort: grpc
       protocol: TCP
   selector:
     {{- include "seaweedfs.selectorLabels" . | nindent 4 }}

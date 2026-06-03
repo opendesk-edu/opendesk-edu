@@ -30,8 +30,8 @@ limesurvey:
     enabled: {{ .Values.apps.limesurvey.oidc.enabled | default true }}
     issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
     clientId: "opendesk-limesurvey"
-    clientSecret: ""
-    cookieSecret: ""
+    clientSecret: "{{ .Values.secrets.keycloak.clientSecret.limesurvey | default "" }}"
+    cookieSecret: "{{ .Values.secrets.keycloak.cookieSecret.limesurvey | default "" }}"
 
 # Ingress configuration
 ingress:

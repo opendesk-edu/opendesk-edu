@@ -7,7 +7,7 @@ image:
 
 config:
   host: n8n.opendesk.hrz.uni-marburg.de
-  encryptionKey: {{ .Values.apps.n8n.encryptionKey | default "" }}
+  encryptionKey: {{ .Values.secrets.n8n.encryptionKey | quote }}
   dbType: sqlite
 
 resources:

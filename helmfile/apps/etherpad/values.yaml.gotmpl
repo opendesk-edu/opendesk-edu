@@ -28,7 +28,7 @@ sso:
     enabled: {{ .Values.apps.etherpad.oidc.enabled | default false }}
     issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
     clientId: "opendesk-etherpad"
-    clientSecret: "{{ .Values.secrets.etherpad.oidc.clientSecret | default "" }}"
+    clientSecret: "{{ .Values.secrets.keycloak.clientSecret.etherpad | default "" }}"
 
 securityContext:
   enabled: true

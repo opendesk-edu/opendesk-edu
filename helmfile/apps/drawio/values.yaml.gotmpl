@@ -22,8 +22,8 @@ sso:
     enabled: {{ .Values.apps.drawio.oidc.enabled | default false }}
     issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
     clientId: "opendesk-drawio"
-    clientSecret: "{{ .Values.secrets.drawio.oidc.clientSecret | default \"\" }}"
-    cookieSecret: "{{ .Values.secrets.drawio.oidc.cookieSecret | default \"\" }}"
+    clientSecret: "{{ .Values.secrets.keycloak.clientSecret.drawio | default "" }}"
+    cookieSecret: "{{ .Values.secrets.keycloak.cookieSecret.drawio | default "" }}"
 
 ingress:
   enabled: {{ .Values.ingress.enabled }}

@@ -21,8 +21,8 @@ excalidraw:
     enabled: {{ .Values.apps.excalidraw.oidc.enabled | default true }}
     issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
     clientId: "opendesk-excalidraw"
-    clientSecret: ""
-    cookieSecret: ""
+    clientSecret: "{{ .Values.secrets.keycloak.clientSecret.excalidraw | default "" }}"
+    cookieSecret: "{{ .Values.secrets.keycloak.cookieSecret.excalidraw | default "" }}"
 
 ingress:
   enabled: {{ .Values.ingress.enabled }}

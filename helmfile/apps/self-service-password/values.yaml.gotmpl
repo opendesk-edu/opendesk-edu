@@ -29,7 +29,7 @@ selfServicePassword:
     enabled: {{ .Values.apps.selfServicePassword.oidc.enabled | default true }}
     issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
     clientId: "opendesk-ssp"
-    clientSecret: "f6b27fd25951049f84c44f55766ba227"
+    clientSecret: "{{ .Values.secrets.keycloak.clientSecret.ssp | default "" }}"
 
 ingress:
   enabled: {{ .Values.ingress.enabled }}

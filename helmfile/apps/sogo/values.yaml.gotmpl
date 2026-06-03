@@ -23,7 +23,7 @@ sogo:
   sieve:
     server: {{ .Values.apps.sogo.sieveServer | default "sieve://dovecot:4190" }}
 
-  mailDomain: {{ .Values.apps.sogo.mailDomain | default "opendesk.example.com" }}
+  mailDomain: {{ .Values.apps.sogo.mailDomain | default "opendesk.hrz.uni-marburg.de" }}
 
   oidc:
     enabled: {{ .Values.apps.sogo.oidc.enabled | default true }}

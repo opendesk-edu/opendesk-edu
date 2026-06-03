@@ -275,7 +275,7 @@ ingress:
 
   # Host configuration / Host-Konfiguration
   hosts:
-    - host: semester.opendesk.example.com
+    - host: semester.opendesk.hrz.uni-marburg.de
       paths:
         - path: /
           pathType: Prefix
@@ -284,7 +284,7 @@ ingress:
   tls: []
     # - secretName: semester-provisioning-tls
     #   hosts:
-    #     - semester.opendesk.example.com
+    #     - semester.opendesk.hrz.uni-marburg.de
 
 # ==============================================================================
 # Service Settings / Service-Einstellungen

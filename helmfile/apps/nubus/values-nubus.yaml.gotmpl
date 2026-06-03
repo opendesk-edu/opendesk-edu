@@ -1281,7 +1281,7 @@ nubusStackDataUms:
     portalTiles: {{ toYaml .Values.theme.imagery.portalTiles | nindent 6 }}
     portalRealtimeCollaborationLinkBase: {{ printf "https://%s.%s" .Values.global.hosts.element .Values.global.domain }}
     portalRealtimeVideoconferenceLinkBase: {{ printf "https://%s.%s" .Values.global.hosts.jitsi .Values.global.domain }}
-    portalManagementLearnLinkBase: "https://lms.opendesk.example.com"
+    portalManagementLearnLinkBase: "https://lms.opendesk.hrz.uni-marburg.de"
     portalManagementProjectLinkBase: {{ printf "https://%s.%s" .Values.global.hosts.openproject .Values.global.domain }}
     portalManagementKnowledgeLinkBase: {{ printf "https://%s.%s" .Values.global.hosts.xwiki .Values.global.domain }}
     portalGroupwareLinkBase: {{ printf "https://%s.%s" .Values.global.hosts.openxchange .Values.global.domain }}
@@ -1379,9 +1379,9 @@ nubusStackDataUms:
             en_US: "OpenDesk Learning Management System"
           link:
             - - "en_US"
-              - "https://lms.opendesk.example.com/shib_login.php"
+              - "https://lms.opendesk.hrz.uni-marburg.de/shib_login.php"
             - - "de_DE"
-              - "https://lms.opendesk.example.com/shib_login.php"
+              - "https://lms.opendesk.hrz.uni-marburg.de/shib_login.php"
 
         # Modify existing entry to set linkTarget
         # The 'create' action uses 'ensure' semantics (skip if exists),
@@ -1444,9 +1444,9 @@ nubusStackDataUms:
             en_US: "OpenDesk E-Learning Platform"
           link:
             - - "en_US"
-              - "https://moodle.opendesk.example.com"
+              - "https://moodle.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://moodle.opendesk.example.com"
+              - "https://moodle.opendesk.hrz.uni-marburg.de"
 
         # Modify existing entry to set linkTarget
         # The 'create' action uses 'ensure' semantics (skip if exists),
@@ -1499,9 +1499,9 @@ nubusStackDataUms:
             en_US: "BigBlueButton Videoconferencing Platform"
           link:
              - - "en_US"
-               - "https://bbb.opendesk.example.com"
+               - "https://bbb.opendesk.hrz.uni-marburg.de"
              - - "de_DE"
-               - "https://bbb.opendesk.example.com"
+               - "https://bbb.opendesk.hrz.uni-marburg.de"
 
         # Modify existing entry to set linkTarget
         # The 'create' action uses 'ensure' semantics (skip if exists),
@@ -1554,9 +1554,9 @@ nubusStackDataUms:
             en_US: "OpenCloud File Storage"
           link:
             - - "en_US"
-              - "https://files.opendesk.example.com"
+              - "https://files.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://files.opendesk.example.com"
+              - "https://files.opendesk.hrz.uni-marburg.de"
 
         # Modify existing entry to set linkTarget
         ---
@@ -1693,9 +1693,9 @@ nubusStackDataUms:
             en_US: "Collaborative Text Editor"
           link:
             - - "en_US"
-              - "https://etherpad.opendesk.example.com"
+              - "https://etherpad.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://etherpad.opendesk.example.com"
+              - "https://etherpad.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1732,9 +1732,9 @@ nubusStackDataUms:
             en_US: "Knowledge Base and Documentation"
           link:
             - - "en_US"
-              - "https://wiki.opendesk.example.com"
+              - "https://wiki.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://wiki.opendesk.example.com"
+              - "https://wiki.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1771,9 +1771,9 @@ nubusStackDataUms:
             en_US: "Project Management (Kanban Boards)"
           link:
             - - "en_US"
-              - "https://planka.opendesk.example.com"
+              - "https://planka.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://planka.opendesk.example.com"
+              - "https://planka.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1810,9 +1810,9 @@ nubusStackDataUms:
             en_US: "IT Support and Service Desk"
           link:
             - - "en_US"
-              - "https://helpdesk.opendesk.example.com"
+              - "https://helpdesk.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://helpdesk.opendesk.example.com"
+              - "https://helpdesk.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1849,9 +1849,9 @@ nubusStackDataUms:
             en_US: "Online Surveys and Course Evaluations"
           link:
             - - "en_US"
-              - "https://survey.opendesk.example.com"
+              - "https://survey.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://survey.opendesk.example.com"
+              - "https://survey.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1888,9 +1888,9 @@ nubusStackDataUms:
             en_US: "Diagrams and Architecture Visualization"
           link:
             - - "en_US"
-              - "https://drawio.opendesk.example.com"
+              - "https://drawio.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://drawio.opendesk.example.com"
+              - "https://drawio.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1927,9 +1927,9 @@ nubusStackDataUms:
             en_US: "Freehand Whiteboard and Brainstorming"
           link:
             - - "en_US"
-              - "https://excalidraw.opendesk.example.com"
+              - "https://excalidraw.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://excalidraw.opendesk.example.com"
+              - "https://excalidraw.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -1966,9 +1966,9 @@ nubusStackDataUms:
             en_US: "Password Reset for LDAP Accounts"
           link:
             - - "en_US"
-              - "https://ssp.opendesk.example.com"
+              - "https://ssp.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://ssp.opendesk.example.com"
+              - "https://ssp.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"
@@ -2005,9 +2005,9 @@ nubusStackDataUms:
             en_US: "Groupware — Email, Calendar & Contacts"
           link:
             - - "en_US"
-              - "https://sogo.opendesk.example.com"
+              - "https://sogo.opendesk.hrz.uni-marburg.de"
             - - "de_DE"
-              - "https://sogo.opendesk.example.com"
+              - "https://sogo.opendesk.hrz.uni-marburg.de"
 
         action: "modify"
         module: "portals/entry"

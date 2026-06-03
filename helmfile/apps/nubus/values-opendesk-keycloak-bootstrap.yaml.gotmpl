@@ -1066,10 +1066,10 @@ config:
         clientAuthenticatorType: "client-secret"
         secret: {{ .Values.secrets.keycloak.clientSecret.ncoidc | quote }}
         redirectUris:
-          - "https://files.opendesk.example.com/apps/user_saml/saml/acs"
-          - "https://files.opendesk.example.com/*"
-        rootUrl: "https://files.opendesk.example.com"
-        adminUrl: "https://files.opendesk.example.com"
+          - "https://files.opendesk.hrz.uni-marburg.de/apps/user_saml/saml/acs"
+          - "https://files.opendesk.hrz.uni-marburg.de/*"
+        rootUrl: "https://files.opendesk.hrz.uni-marburg.de"
+        adminUrl: "https://files.opendesk.hrz.uni-marburg.de"
         consentRequired: false
         frontchannelLogout: true
         publicClient: false
@@ -1084,8 +1084,8 @@ config:
           saml.client.signature: "false"
           saml.authnstatement: "true"
           saml_name_id_format: "persistent"
-          frontchannel.logout.url: "https://files.opendesk.example.com/apps/user_saml/saml/sls"
-          saml entityId: "https://files.opendesk.example.com/apps/user_saml/saml/metadata"
+          frontchannel.logout.url: "https://files.opendesk.hrz.uni-marburg.de/apps/user_saml/saml/sls"
+          saml entityId: "https://files.opendesk.hrz.uni-marburg.de/apps/user_saml/saml/metadata"
         protocolMappers:
           - name: "email"
             protocol: "saml"

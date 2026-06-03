@@ -36,6 +36,25 @@
 
 ---
 
+## v1.0.1 — Operational Hardening (HRZ Maui)
+
+> Sprint 5+6: First production deployment hardening at University of Marburg.
+
+| What | Status |
+|:-----|:------:|
+| SSO audit — all 44 Keycloak clients verified | ✅ |
+| Domain migration — from `opendesk-edu.org` to `opendesk.hrz.uni-marburg.de` (12 ingresses) | ✅ |
+| Planka — ingress class fixed (nginx→haproxy), OIDC endpoints fixed | ✅ |
+| SSP — ingress backend service name fixed, OAuth2-proxy working | ✅ |
+| k8up backup operator deployed & verified (33 snapshots) | ✅ |
+| Monitoring — Grafana dashboards deployed (edu-health, k8up) | ✅ |
+| Planka chart — `values.yaml` stripped of unrenderable `.gotmpl` syntax | ✅ |
+| External DNS script — 12 missing A records documented | ✅ |
+| Portal SAML multidomain — hardcoded `opendesk-edu.org` → `opendesk.hrz.uni-marburg.de` | ✅ |
+| Helmfile `.gotmpl` workaround — defined (build works, direct `helm` for targeted syncs) | ✅ |
+
+---
+
 ## v1.1 — Foundation
 
 > Hardening what we have and adding the missing essentials.

@@ -101,10 +101,10 @@ core services universities need — all integrated with openDesk's existing Keyc
 |:--------|:----------|:------:|:------------|
 | 📝 **Collaborative Editing** | [Etherpad](https://etherpad.org/) | 🔄 Beta | Real-time collaborative document editor — meeting notes, workshops, live editing |
 | 📚 **Knowledge Base** | [BookStack](https://www.bookstackapp.com/) | 🔄 Beta | Wiki with book/chapter structure — course materials, SOPs, documentation |
-| 📋 **Project Management** | [Planka](https://planka.app/) | 🔄 Beta | Kanban boards with OIDC — student projects, research planning |
+|| 📋 **Project Management** | [Planka](https://planka.app/) | 🟢 Stable | Kanban boards with OIDC — student projects, research planning |
 | 🎫 **Service Desk** | [Zammad](https://zammad.com/) | 🔄 Beta | Helpdesk with SAML — IT support, multi-channel (email, chat, phone) |
 | 📊 **Surveys** | [LimeSurvey](https://www.limesurvey.org/) | 🔄 Beta | Survey platform — course evaluations, academic research |
-| 🔑 **Password Self-Service** | [LTB SSP](https://ltb-project.org/) | 🔄 Beta | LDAP password reset — reduces helpdesk tickets |
+|| 🔑 **Password Self-Service** | [LTB SSP](https://ltb-project.org/) | 🟢 Stable | LDAP password reset — reduces helpdesk tickets |
 | 📐 **Diagramming** | [Draw.io](https://www.drawio.com/) | 🔄 Beta | Architecture diagrams, flowcharts, UML — export to PDF/VSDX |
 | ✏️ **Whiteboarding** | [Excalidraw](https://excalidraw.com/) | 🔄 Beta | Hand-drawn sketches, brainstorming — lightweight and fast |
 | 📰 **CMS** | [TYPO3](https://typo3.org/) | 🔄 Beta | Enterprise CMS — university websites, department pages, research portals |
@@ -203,6 +203,32 @@ This is a **superset** of openDesk CE, not a fork.
 </p>
 
 </details>
+
+---
+
+## 🏗️ Deployment Status (HRZ Maui)
+
+openDesk Edu is actively deployed on the HRZ Maui cluster (University of Marburg). Current state:
+
+| Metric | Status |
+|:-------|:------:|
+| Pods running | 57/57 ✅ |
+| Services with SSO | 33/33 ✅ |
+| Ingresses on correct domain | 33/33 ✅ |
+| Keycloak clients audited | 44/44 ✅ |
+| Backups active (k8up) | ✅ 33 snapshots |
+| External DNS records needed | ⚠️ 12 A records |
+
+### Latest changes (Sprints 5-6)
+
+- **SSO audit** — verified all 44 Keycloak clients use `*.opendesk.hrz.uni-marburg.de` URIs
+- **Planka** — fixed ingress class (nginx→haproxy), fixed OIDC endpoints (had unrendered `.gotmpl` syntax), OIDC login verified
+- **SSP** — fixed ingress backend service name (was pointing to nonexistent `-oauth2-proxy` service), OAuth2-proxy now redirects to Keycloak correctly
+- **Domain migration** — patched 3 portal ingresses + 9 static-files ingresses from `*.opendesk-edu.org` to `*.opendesk.hrz.uni-marburg.de`
+- **k8up** — deployed operator, backup schedule active (01:22 daily, 14d retention)
+- **External DNS** — script generated for 12 missing A records (`scripts/generate-dns-records.sh`)
+- **Monitoring** — Grafana dashboards deployed (edu-health, k8up, opendesk-simple)
+- **Charts fixed** — `portal-saml-multidomain.yaml.gotmpl` (domain), `planka/values.yaml` (ingress class, OIDC)
 
 ---
 

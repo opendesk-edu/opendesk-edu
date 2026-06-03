@@ -32,6 +32,9 @@ bookstack:
 
   # Replica count
   replicas: 1
+  appKey: ""  # Generate with: docker run --rm --entrypoint /bin/bash lscr.io/linuxserver/bookstack:latest appkey
+  phpFpmPoolOverride:
+    enabled: false
 
 extraVolumes: []
 extraVolumeMounts: []

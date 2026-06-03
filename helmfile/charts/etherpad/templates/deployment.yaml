@@ -8,6 +8,12 @@ metadata:
 {{ include "etherpad.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       etherpad/server: "true"

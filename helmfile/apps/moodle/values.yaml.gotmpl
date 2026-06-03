@@ -5,8 +5,8 @@ commonAnnotations:
   {{ .Values.annotations.moodle.common | default (dict) | toYaml | nindent 2 }}
 
 moodle:
-  image: "ghcr.io/<your-org>/moodle-shib"
-  tag: "v1.0.0"
+  image: "docker.io/weissto/moodle-shib"
+  tag: "v1.4.0"
   replicaCount: 2
 
   # Moodle configuration
@@ -18,7 +18,7 @@ moodle:
 
   # Database configuration (will use external database from task 6)
   externalDatabase:
-    host: "moodle-mariadb"
+    host: "mariadb-standalone"
     port: 3306
     user: "moodle"
     password: "" # Will be set via secret

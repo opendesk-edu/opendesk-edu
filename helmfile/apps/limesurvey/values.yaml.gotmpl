@@ -7,11 +7,15 @@ commonAnnotations:
 limesurvey:
   image: "martialblog/limesurvey"
   tag: "latest"
+  port: 8080
   timezone: "Europe/Berlin"
+  skipInstall: true
 
   db:
+    host: "mariadb-standalone"
     user: "limesurvey"
     name: "limesurvey"
+    password: "limesurvey"
 
   volumes:
     upload:
@@ -56,14 +60,7 @@ ingress:
 
 # Embedded MariaDB configuration
 mariadb:
-  enabled: true
-  auth:
-    username: "limesurvey"
-    database: "limesurvey"
-  primary:
-    persistence:
-      enabled: true
-      size: "5Gi"
+  enabled: false
 
 # Node selector
 nodeSelector: {}

@@ -24,8 +24,15 @@ excalidraw:
     cookieSecret: ""
 
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: haproxy
   annotations: {}
-  hosts: []
-  tls: []
+  hosts:
+    - host: excalidraw.opendesk.hrz.uni-marburg.de
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: excalidraw-tls
+      hosts:
+        - excalidraw.opendesk.hrz.uni-marburg.de

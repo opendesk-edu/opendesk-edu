@@ -21,6 +21,16 @@ spec:
       containers:
         - name: etherpad
           image: {{ .Values.etherpad.image }}:{{ .Values.etherpad.tag }}
+{{- if .Values.sso.oidc.enabled }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              cd /opt/etherpad-lite && \
+               npm install ep_openid_connect@latest --no-save 2>&1 | tail -5 && \
+              echo "OIDC plugin installed, starting etherpad..." && \
+              node node_modules/ep_etherpad-lite/node/server.js
+{{- end }}
           securityContext:
             runAsUser: 0
             runAsGroup: 0

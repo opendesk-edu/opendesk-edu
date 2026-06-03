@@ -24,7 +24,7 @@ spec:
               service:
                 name: {{ $.Release.Name }}-limesurvey
                 port:
-                  number: {{ $.Values.limesurvey.port }}
+                  number: {{ ternary 4180 $.Values.limesurvey.port (and $.Values.sso $.Values.sso.oidc $.Values.sso.oidc.enabled) }}
           {{- end }}
     {{- end }}
   {{- if .Values.ingress.tls }}

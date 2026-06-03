@@ -25,8 +25,15 @@ sso:
     cookieSecret: ""
 
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: haproxy
   annotations: {}
-  hosts: []
-  tls: []
+  hosts:
+    - host: draw.opendesk.hrz.uni-marburg.de
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: drawio-tls
+      hosts:
+        - draw.opendesk.hrz.uni-marburg.de

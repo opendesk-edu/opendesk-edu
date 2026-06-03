@@ -43,14 +43,14 @@ ingress:
   enabled: true
   annotations: {}
   hosts:
-    - host: survey.opendesk.example.com
+    - host: limesurvey.opendesk.hrz.uni-marburg.de
       paths:
         - path: /
           pathType: Prefix
   tls:
     - secretName: limesurvey-tls
       hosts:
-        - survey.opendesk.example.com
+        - limesurvey.opendesk.hrz.uni-marburg.de
 
 mariadb:
   enabled: true

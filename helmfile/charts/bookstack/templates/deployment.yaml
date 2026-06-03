@@ -42,9 +42,9 @@ spec:
             - name: APP_KEY
               value: {{ .Values.bookstack.appKey | quote }}
             - name: PUID
-              value: "0"
+              value: "1000"
             - name: PGID
-              value: "0"
+              value: "1000"
             - name: APP_ENV
               value: "production"
             - name: DB_HOST

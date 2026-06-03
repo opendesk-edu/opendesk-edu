@@ -12,9 +12,9 @@ moodle:
   # Moodle configuration
   moodleUsername: "admin"
   moodlePassword: "" # Will be set via secret
-  moodleEmail: "admin@opendesk.example.com"
+  moodleEmail: "admin@opendesk.hrz.uni-marburg.de"
   moodleSiteName: "openDesk Moodle"
-  moodleSkipInstall: false
+  moodleSkipInstall: true
 
   # Database configuration (will use external database from task 6)
   externalDatabase:
@@ -55,14 +55,14 @@ ingress:
     haproxy-ingress.github.io/timeout-client: "300s"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - host: "moodle.opendesk.example.com"
+    - host: "moodle.opendesk.hrz.uni-marburg.de"
       paths:
         - path: /
           pathType: "ImplementationSpecific"
   tls:
     - secretName: "opendesk-certificates-tls"
       hosts:
-        - "moodle.opendesk.example.com"
+        - "moodle.opendesk.hrz.uni-marburg.de"
 
 # Persistence configuration
 persistence:
@@ -110,7 +110,7 @@ affinity: {}
 # SAML SSO configuration
 sso:
   saml:
-    enabled: true
+    enabled: false
     entityId: "https://moodle.opendesk.example.com/shibboleth"
     idpEntityId: "https://id.opendesk.example.com/realms/opendesk"
     idpSsoUrl: "https://id.opendesk.example.com/realms/opendesk/protocol/saml"

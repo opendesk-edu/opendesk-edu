@@ -36,6 +36,13 @@ bookstack:
 extraVolumes: []
 extraVolumeMounts: []
 
+sso:
+  oidc:
+    enabled: false
+    clientId: ""
+    clientSecret: ""
+    issuerBaseUrl: ""
+
 ingress:
   enabled: true
   annotations: {}

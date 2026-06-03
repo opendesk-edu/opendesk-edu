@@ -38,6 +38,13 @@ serviceAccount:
 extraVolumes: []
 extraVolumeMounts: []
 
+sso:
+  oidc:
+    enabled: false
+    issuerUrl: "https://id.opendesk.example.com/realms/opendesk"
+    clientId: "opendesk-typo3"
+    clientSecret: ""
+
 ingress:
   enabled: true
   hosts:

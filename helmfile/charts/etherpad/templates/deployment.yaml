@@ -41,6 +41,22 @@ spec:
               value: "postgres"
             - name: TRUST_PROXY
               value: "true"
+{{- if .Values.sso.oidc.enabled }}
+            - name: OPENID_CONNECT_CLIENT_ID
+              value: {{ .Values.sso.oidc.clientId | quote }}
+            - name: OPENID_CONNECT_CLIENT_SECRET
+              value: {{ .Values.sso.oidc.clientSecret | quote }}
+            - name: OPENID_CONNECT_ISSUER
+              value: {{ .Values.sso.oidc.issuerUrl | quote }}
+            - name: OPENID_CONNECT_NAME
+              value: "SSO"
+            - name: OPENID_CONNECT_SCOPE
+              value: "openid profile email"
+            - name: OPENID_CONNECT_AUTH_METHOD
+              value: "none"
+            - name: OPENID_CONNECT_REDIRECT_URI
+              value: "https://{{ index .Values.ingress.hosts 0 "host" }}/auth/openid_connect/callback"
+{{- end }}
           volumeMounts:
             - name: etherpad-data
               mountPath: /opt/etherpad/var

@@ -27,6 +27,22 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/instance: {{ .Release.Name }}
+    # Egress to shared services (Redis, Elasticsearch)
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: open-webui-redis
+      ports:
+        - protocol: TCP
+          port: 6379
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: elasticsearch
+      ports:
+        - protocol: TCP
+          port: 9200
   ingress:
     - from:
         - podSelector:

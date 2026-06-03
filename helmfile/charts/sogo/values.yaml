@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 sogo:
   image:
-    repository: codeberg.org/opendesk-edu/opendesk-edu/sogo
-    tag: "dev"
+    repository: weissto/sogo
+    tag: "bookworm-5.8.0"
     pullPolicy: IfNotPresent
 
   replicaCount: 1

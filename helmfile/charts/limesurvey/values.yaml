@@ -27,6 +27,15 @@ limesurvey:
       cpu: 500m
       memory: 512Mi
 
+  oidc:
+    enabled: false
+    proxyImage: quay.io/oauth2-proxy/oauth2-proxy
+    proxyTag: latest
+    issuerUrl: "https://keycloak.opendesk.example.com/realms/opendesk"
+    clientId: "opendesk-limesurvey"
+    clientSecret: ""
+    cookieSecret: ""
+
 extraVolumes: []
 extraVolumeMounts: []
 

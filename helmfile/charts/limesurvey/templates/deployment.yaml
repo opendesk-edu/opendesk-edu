@@ -17,6 +17,10 @@ spec:
       labels:
         limesurvey/server: "true"
 {{ include "limesurvey.labels" . | nindent 8 }}
+{{- if .Values.limesurvey.oidc.enabled }}
+      annotations:
+        sidecar.istio.io/inject: "false"
+{{- end }}
     spec:
       initContainers:
         - name: setup
@@ -139,6 +143,33 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           resources: {{ .Values.limesurvey.resources | toYaml | nindent 12 }}
+{{- if .Values.limesurvey.oidc.enabled }}
+        - name: oauth2-proxy
+          image: {{ .Values.limesurvey.oidc.proxyImage }}:{{ .Values.limesurvey.oidc.proxyTag }}
+          ports:
+            - containerPort: 4180
+              protocol: TCP
+          args:
+            - --provider=oidc
+            - --oidc-issuer-url={{ .Values.limesurvey.oidc.issuerUrl }}
+            - --upstream=http://127.0.0.1:{{ .Values.limesurvey.port }}
+            - --http-address=0.0.0.0:4180
+            - --email-domain=*
+            - --client-id={{ .Values.limesurvey.oidc.clientId }}
+            - --client-secret={{ .Values.limesurvey.oidc.clientSecret }}
+            - --cookie-secret={{ .Values.limesurvey.oidc.cookieSecret }}
+            - --cookie-secure=true
+            - --pass-authorization-header=true
+            - --set-xauthrequest=true
+            - --ssl-insecure-skip-verify=true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+{{- end }}
       securityContext:
         sysctls:
           - name: net.ipv4.ip_unprivileged_port_start

@@ -31,7 +31,7 @@ spec:
             - name: PGUSER
               value: postgres
             - name: PGPASSWORD
-              value: b20a9e9dce16e5a4da2b59b6f265e9055f6bc9b9
+              value: postgres
             - name: SOGO_DB_USER
               value: {{ .Values.sogo.db.user }}
             - name: SOGO_DB_PASSWORD

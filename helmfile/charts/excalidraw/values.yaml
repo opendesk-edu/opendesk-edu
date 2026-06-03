@@ -14,6 +14,15 @@ excalidraw:
       cpu: 200m
       memory: 256Mi
 
+  oidc:
+    enabled: false
+    proxyImage: quay.io/oauth2-proxy/oauth2-proxy
+    proxyTag: latest
+    issuerUrl: "https://keycloak.opendesk.example.com/realms/opendesk"
+    clientId: "opendesk-excalidraw"
+    clientSecret: ""
+    cookieSecret: ""
+
 ingress:
   enabled: false
   className: ""

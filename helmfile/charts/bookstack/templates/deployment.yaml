@@ -57,6 +57,18 @@ spec:
               value: {{ include "bookstack.dbPassword" . | quote }}
             - name: DB_DATABASE
               value: {{ include "bookstack.dbName" . | quote }}
+{{- if .Values.sso.oidc.enabled }}
+            - name: AUTH_METHOD
+              value: "oidc"
+            - name: OIDC_NAME
+              value: "Keycloak"
+            - name: OIDC_CLIENT_ID
+              value: "{{ .Values.sso.oidc.clientId }}"
+            - name: OIDC_CLIENT_SECRET
+              value: "{{ .Values.sso.oidc.clientSecret }}"
+            - name: OIDC_ISSUER_BASE_URL
+              value: "{{ .Values.sso.oidc.issuerBaseUrl }}"
+{{- end }}
           volumeMounts:
             - name: bookstack-uploads
               mountPath: /config

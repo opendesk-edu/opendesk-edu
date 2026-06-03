@@ -25,10 +25,7 @@ spec:
           image: {{ .Values.sogo.image.repository }}:{{ .Values.sogo.image.tag }}
           imagePullPolicy: {{ .Values.sogo.image.pullPolicy }}
           securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
+            allowPrivilegeEscalation: true
             privileged: false
             readOnlyRootFilesystem: false
             runAsGroup: 0
@@ -39,6 +36,12 @@ spec:
           env:
             - name: SOGO_DEFAULT_ENCODING
               value: "UTF-8"
+            - name: HTTP_PROXY
+              value: "http://www-proxy2.uni-marburg.de:3128"
+            - name: HTTPS_PROXY
+              value: "http://www-proxy2.uni-marburg.de:3128"
+            - name: NO_PROXY
+              value: "localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.opendesk.hrz.uni-marburg.de"
           envFrom:
             - configMapRef:
                 name: {{ include "sogo.fullname" . }}

@@ -68,29 +68,36 @@ spec:
           volumeMounts:
             - name: moodle-data
               mountPath: /bitnami/moodle
+            - name: moodle-data
+              mountPath: /var/www/moodledata
+              subPath: moodledata
+{{- if .Values.sso.saml.enabled }}
             - name: shibboleth-sp-config
               mountPath: /etc/shibboleth
-              readOnly: true
-            - name: shibboleth-sp-certs
-              mountPath: /etc/shibboleth/certs
               readOnly: true
             - name: apache-shibboleth-config
               mountPath: /etc/apache2/conf-enabled/shibboleth.conf
               subPath: shibboleth.conf
               readOnly: true
+            - name: entity-metadata
+              mountPath: /etc/shibboleth/metadata
+              readOnly: true
+{{- end }}
       volumes:
         - name: moodle-data
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-moodle-data
+{{- if .Values.sso.saml.enabled }}
         - name: shibboleth-sp-config
           configMap:
-            name: moodle-shibboleth-sp-config
-        - name: shibboleth-sp-certs
-          secret:
-            secretName: moodle-shibboleth-sp-secret
+            name: {{ .Release.Name }}-shibboleth-sp-config
         - name: apache-shibboleth-config
           configMap:
-            name: moodle-apache-shibboleth-config
+            name: {{ .Release.Name }}-apache-shibboleth-config
+        - name: entity-metadata
+          secret:
+            secretName: {{ .Release.Name }}-entity-metadata
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

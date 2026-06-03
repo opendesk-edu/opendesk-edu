@@ -39,5 +39,9 @@ spec:
               {{- include "drawio.selectorLabels" . | nindent 14 }}
       ports:
         - protocol: TCP
-          port: 8080
+          port: {{ .Values.drawio.port }}
+{{- if .Values.sso.oidc.enabled }}
+        - protocol: TCP
+          port: 4180
+{{- end }}
 {{- end }}

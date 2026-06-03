@@ -40,10 +40,7 @@ spec:
       ports:
         - protocol: TCP
           port: {{ .Values.drawio.port }}
-{{- if .Values.sso.oidc.enabled }}
-        - protocol: TCP
-          port: 4180
-    # Allow ingress from HAProxy ingress controller
+  # Allow ingress from HAProxy ingress controller
     - from:
         - namespaceSelector:
             matchLabels:
@@ -51,5 +48,4 @@ spec:
           podSelector:
             matchLabels:
               app.kubernetes.io/name: haproxy-ingress
-{{- end }}
 {{- end }}

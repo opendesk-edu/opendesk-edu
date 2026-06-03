@@ -43,5 +43,13 @@ spec:
 {{- if .Values.sso.oidc.enabled }}
         - protocol: TCP
           port: 4180
+    # Allow ingress from HAProxy ingress controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-controller
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: haproxy-ingress
 {{- end }}
 {{- end }}

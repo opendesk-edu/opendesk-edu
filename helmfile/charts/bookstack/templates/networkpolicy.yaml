@@ -43,4 +43,12 @@ spec:
       ports:
         - protocol: TCP
           port: 80
+    # Allow ingress from HAProxy ingress controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-controller
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: haproxy-ingress
 {{- end }}

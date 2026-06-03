@@ -12,7 +12,7 @@ planka:
   baseUrl: "https://planka.{{ .Values.global.domain }}"
 
   oidc:
-    clientId: {{ .Values.oidc.planka.clientId | default "planka" | quote }}
+    clientId: {{ .Values.oidc.planka.clientId | default "opendesk-planka" | quote }}
     authEndpoint: {{ .Values.oidc.authEndpoint | default "https://id.{{ .Values.global.domain }}/realms/opendesk/protocol/openid-connect/auth" | quote }}
     tokenEndpoint: {{ .Values.oidc.tokenEndpoint | default "https://id.{{ .Values.global.domain }}/realms/opendesk/protocol/openid-connect/token" | quote }}
     userinfoEndpoint: {{ .Values.oidc.userinfoEndpoint | default "https://id.{{ .Values.global.domain }}/realms/opendesk/protocol/openid-connect/userinfo" | quote }}

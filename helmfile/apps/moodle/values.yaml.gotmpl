@@ -107,20 +107,14 @@ tolerations: []
 # Affinity
 affinity: {}
 
+# SAML SSO configuration
+sso:
+  saml:
+    enabled: true
+    entityId: "https://moodle.opendesk.example.com/shibboleth"
+    idpEntityId: "https://id.opendesk.example.com/realms/opendesk"
+    idpSsoUrl: "https://id.opendesk.example.com/realms/opendesk/protocol/saml"
+    idpMetadataUrl: "https://id.opendesk.example.com/realms/opendesk/protocol/saml/descriptor"
+
 # PHP configuration (will be updated in task 11)
 phpConfig: {}
-
-# Apache configuration
-existingApacheConfigmap: ""
-
-# Shibboleth configuration
-shibboleth:
-  enabled: true
-  sp:
-    host: "moodle.opendesk.example.com"
-    entityID: "https://moodle.opendesk.example.com/shibboleth"
-  idp:
-    metadataProvider: "https://id.opendesk.example.com/realms/opendesk/protocol/saml/descriptor"
-
-# Apache extra configuration for Shibboleth
-existingApacheExtraConfigmap: "moodle-apache-shibboleth-config"

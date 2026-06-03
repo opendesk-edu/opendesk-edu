@@ -17,6 +17,13 @@ excalidraw:
       cpu: 200m
       memory: 256Mi
 
+  oidc:
+    enabled: {{ .Values.apps.excalidraw.oidc.enabled | default true }}
+    issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
+    clientId: "opendesk-excalidraw"
+    clientSecret: ""
+    cookieSecret: ""
+
 ingress:
   enabled: {{ .Values.ingress.enabled }}
   className: "haproxy"

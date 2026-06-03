@@ -146,6 +146,12 @@ extraVolumeMounts:
     subPath: shibboleth.conf
     readOnly: true
 
+# SAML SSO configuration (SimpleSAMLphp native volumes)
+sso:
+  saml:
+    enabled: true
+    idpMetadataUrl: "https://id.opendesk.example.com/realms/opendesk/protocol/saml/descriptor"
+
 # Node selector
 nodeSelector: {}
 

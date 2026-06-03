@@ -39,6 +39,13 @@ typo3:
   # Install tool password (hashed)
   installToolPassword: {{ .Values.secrets.typo3.installToolPassword | default "changeme" | quote }}
 
+sso:
+  oidc:
+    enabled: {{ .Values.apps.typo3.oidc.enabled | default false }}
+    issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
+    clientId: "opendesk-typo3"
+    clientSecret: "{{ .Values.secrets.typo3.oidc.clientSecret | default "" }}"
+
 # Ingress configuration
 ingress:
   enabled: {{ .Values.ingress.enabled }}

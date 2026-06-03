@@ -108,7 +108,7 @@ entries:
     description:
       en: Wiki and documentation
       de: Wikis und Dokumentation
-    url: "https://wiki.{{ .Values.global.domain }}"
+    url: "https://books.{{ .Values.global.domain }}"
 
   - id: ssp
     displayName:
@@ -118,6 +118,51 @@ entries:
       en: LDAP Self-Service Password
       de: LDAP Self-Service Password
     url: "https://ssp.{{ .Values.global.domain }}"
+
+  - id: limesurvey
+    displayName:
+      en: LimeSurvey
+      de: LimeSurvey
+    description:
+      en: Online surveys and polls
+      de: Online-Umfragen und Abstimmungen
+    url: "https://limesurvey.{{ .Values.global.domain }}"
+
+  - id: typo3
+    displayName:
+      en: TYPO3
+      de: TYPO3
+    description:
+      en: Enterprise content management
+      de: Enterprise Content-Management
+    url: "https://typo3.{{ .Values.global.domain }}"
+
+  - id: sogo
+    displayName:
+      en: SOGo
+      de: SOGo
+    description:
+      en: Groupware (Mail, Calendar, Contacts)
+      de: Groupware (E-Mail, Kalender, Kontakte)
+    url: "https://sogo.{{ .Values.global.domain }}"
+
+  - id: snipr
+    displayName:
+      en: SNIpR
+      de: SNIpR
+    description:
+      en: Lecture recording and transcription
+      de: Vorlesungsaufzeichnung und Transkription
+    url: "https://snipr.{{ .Values.global.domain }}"
+
+  - id: zammad
+    displayName:
+      en: Zammad
+      de: Zammad
+    description:
+      en: Ticketing and helpdesk system
+      de: Ticketsystem und Helpdesk
+    url: "https://helpdesk.{{ .Values.global.domain }}"
 
 ldap:
   baseDn: {{ .Values.ldap.baseDn | default "dc=swp-ldap,dc=internal" | quote }}

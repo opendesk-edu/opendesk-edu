@@ -17,6 +17,14 @@ drawio:
       cpu: "1"
       memory: 2Gi
 
+sso:
+  oidc:
+    enabled: {{ .Values.apps.drawio.oidc.enabled | default false }}
+    issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
+    clientId: "opendesk-drawio"
+    clientSecret: "{{ .Values.secrets.drawio.oidc.clientSecret | default \"\" }}"
+    cookieSecret: "{{ .Values.secrets.drawio.oidc.cookieSecret | default \"\" }}"
+
 ingress:
   enabled: {{ .Values.ingress.enabled }}
   className: "haproxy"

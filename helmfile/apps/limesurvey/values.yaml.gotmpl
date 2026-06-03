@@ -26,6 +26,13 @@ limesurvey:
       cpu: "500m"
       memory: "512Mi"
 
+  oidc:
+    enabled: {{ .Values.apps.limesurvey.oidc.enabled | default true }}
+    issuerUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
+    clientId: "opendesk-limesurvey"
+    clientSecret: ""
+    cookieSecret: ""
+
 # Ingress configuration
 ingress:
   enabled: {{ .Values.ingress.enabled }}

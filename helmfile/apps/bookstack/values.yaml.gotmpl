@@ -75,6 +75,13 @@ serviceAccount:
 volumePermissions:
   enabled: true
 
+sso:
+  oidc:
+    enabled: true
+    clientId: "opendesk-bookstack"
+    clientSecret: "590c87c16cf98b88b78480c52be731d6"
+    issuerBaseUrl: "https://{{ .Values.global.hosts.keycloak }}.{{ .Values.global.domain }}/realms/opendesk"
+
 # Node selector
 nodeSelector: {}
 

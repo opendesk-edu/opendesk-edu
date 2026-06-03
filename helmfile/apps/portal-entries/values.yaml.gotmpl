@@ -65,6 +65,15 @@ entries:
       de: KI-Assistenten-Oberfläche
     url: "https://ai.{{ .Values.global.domain }}"
 
+  - id: n8n
+    displayName:
+      en: n8n
+      de: n8n
+    description:
+      en: Workflow automation platform
+      de: Workflow-Automatisierungsplattform
+    url: "https://n8n.{{ .Values.global.domain }}"
+
   - id: drawio
     displayName:
       en: Draw.io
@@ -108,7 +117,25 @@ entries:
     description:
       en: Wiki and documentation
       de: Wikis und Dokumentation
-    url: "https://books.{{ .Values.global.domain }}"
+    url: "https://bookstack.{{ .Values.global.domain }}"
+
+  - id: moodle
+    displayName:
+      en: Moodle
+      de: Moodle
+    description:
+      en: Learning management platform
+      de: Lernplattform
+    url: "https://moodle.{{ .Values.global.domain }}"
+
+  - id: ilias
+    displayName:
+      en: ILIAS
+      de: ILIAS
+    description:
+      en: Learning management system
+      de: Lernplattform
+    url: "https://lms.{{ .Values.global.domain }}"
 
   - id: ssp
     displayName:
@@ -163,6 +190,33 @@ entries:
       en: Ticketing and helpdesk system
       de: Ticketsystem und Helpdesk
     url: "https://helpdesk.{{ .Values.global.domain }}"
+
+  - id: openproject
+    displayName:
+      en: OpenProject
+      de: OpenProject
+    description:
+      en: Project management platform
+      de: Projektmanagement-Plattform
+    url: "https://projects.{{ .Values.global.domain }}"
+
+  - id: nextcloud
+    displayName:
+      en: Nextcloud
+      de: Nextcloud
+    description:
+      en: File sync and collaboration
+      de: Dateisynchronisation und Kollaboration
+    url: "https://files.{{ .Values.global.domain }}"
+
+  - id: opencloud
+    displayName:
+      en: File Storage (OpenCloud)
+      de: Dateispeicher (OpenCloud)
+    description:
+      en: Cloud file storage and sync
+      de: Cloud-Dateispeicher und Synchronisation
+    url: "https://opencloud.{{ .Values.global.domain }}"
 
 ldap:
   baseDn: {{ .Values.ldap.baseDn | default "dc=swp-ldap,dc=internal" | quote }}

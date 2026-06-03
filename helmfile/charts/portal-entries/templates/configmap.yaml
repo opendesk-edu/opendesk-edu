@@ -25,26 +25,23 @@ data:
   apply.sh: |
     #!/bin/sh
     set -e
-    LDAP_PASSWORD=$1
-    BASE_DN="{{ $.Values.ldap.baseDn }}"
+    LDAP_PASSWORD=***    BASE_DN="{{ $.Values.ldap.baseDn }}"
     ADMIN_DN="{{ $.Values.ldap.adminDn }}"
 
-    # Add collab-service portal entries
+    # Add/update collab-service portal entries (upsert: delete then add)
     for f in /entries/*.ldif; do
       entry_id=$(basename "$f" .ldif)
+      entry_dn="cn=$entry_id,cn=entry,cn=portals,cn=univention,$BASE_DN"
       echo "Checking $entry_id..."
-      exists=$(ldapsearch -x -LLL -H ldap://localhost \
+      # Delete existing entry (ignore if not found)
+      ldapdelete -x -H ldap://localhost \
         -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
-        -b "cn=$entry_id,cn=entry,cn=portals,cn=univention,$BASE_DN" \
-        dn 2>/dev/null | grep -c "^dn:" || echo "0")
-      if [ "$exists" -gt 0 ]; then
-        echo "  ✓ $entry_id already exists"
-      else
-        echo "  Creating $entry_id..."
-        ldapadd -x -H ldap://localhost \
-          -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
-          -f "$f"
-      fi
+        "$entry_dn" 2>/dev/null || true
+      # Always add (fresh state from ConfigMap)
+      echo "  Creating $entry_id..."
+      ldapadd -x -H ldap://localhost \
+        -D "$ADMIN_DN" -w "$LDAP_PASSWORD" \
+        -f "$f"
     done
 
     # Add entries to portal central navigation (makes them visible)

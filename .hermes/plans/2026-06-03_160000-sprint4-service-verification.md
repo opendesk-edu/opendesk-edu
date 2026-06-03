@@ -13,9 +13,10 @@ Recover openproject from init container crash (regression from TLS fix), then sy
 
 ## Current State
 
-- **OpenProject:** `openproject-web` Init:CrashLoopBackOff, `openproject-worker` Init:Error — regression triggered by TLS fix (`helm upgrade --set ingress.tls.secretName`)
-- **All 57 other pods** Running (27d+ stable)
-- **All 33 ingresses** TLS-enabled
+- **OpenProject:** All 6 pods 1/1 Running, SECRET_KEY_BASE persisted via extraEnvVars in values template
+- **All 57 pods** Running (no errors)
+- **All 33 ingresses** TLS-enabled, DNS entries missing for 12 services
+- **Internal test DNS:** 12 missing entries added to /etc/hosts (n8n, code, collab, draw, jupyter, limesurvey, typo3, zammad, r, slides, term, ai)
 - **Moodle OIDC** configured but not browser-tested
 - **Keycloak** has 44 clients; many not verified for correct redirect URIs
 

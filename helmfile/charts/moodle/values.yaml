@@ -66,6 +66,14 @@ hpa:
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
 
+# External database configuration
+externalDatabase:
+  host: ""
+  port: 3306
+  name: "moodle"
+  user: "moodle"
+  password: ""
+
 persistence:
   enabled: true
   size: "8Gi"

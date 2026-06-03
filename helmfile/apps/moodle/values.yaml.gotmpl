@@ -16,14 +16,15 @@ moodle:
   moodleSiteName: "openDesk Moodle"
   moodleSkipInstall: true
 
-  # Database configuration (will use external database from task 6)
+  # Database configuration
   externalDatabase:
-    host: "mariadb-standalone"
-    port: 3306
-    user: "moodle"
-    password: "" # Will be set via secret
+    type: "pgsql"
+    host: "postgresql"
+    port: 5432
+    user: "moodle_user"
+    password: "moodle_db_pass"
     database: "moodle"
-    existingSecret: "moodle-database-credentials"
+    existingSecret: ""
 
 # Security context
 securityContext:

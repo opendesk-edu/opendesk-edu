@@ -53,6 +53,23 @@ spec:
               value: "false"
             - name: XML_CATALOG_FILES
               value: "/usr/share/xml/shibboleth/catalog.xml:/usr/share/xml/xmltooling/catalog.xml:/usr/share/xml/opensaml/saml20-catalog.xml:/usr/share/xml/opensaml/saml11-catalog.xml"
+{{- if .Values.externalDatabase.host }}
+            - name: MOODLE_DATABASE_TYPE
+              value: {{ .Values.externalDatabase.type | default "pgsql" | quote }}
+            - name: MOODLE_DATABASE_HOST
+              value: {{ .Values.externalDatabase.host | quote }}
+            - name: MOODLE_DATABASE_PORT
+              value: {{ .Values.externalDatabase.port | toString | quote }}
+            - name: MOODLE_DATABASE_NAME
+              value: {{ .Values.externalDatabase.database | quote }}
+            - name: MOODLE_DATABASE_USER
+              value: {{ .Values.externalDatabase.user | quote }}
+            - name: MOODLE_DATABASE_PASSWORD
+              value: {{ .Values.externalDatabase.password | quote }}
+{{- else }}
+            - name: MOODLE_DATABASE_HOST
+              value: "postgresql"
+{{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:

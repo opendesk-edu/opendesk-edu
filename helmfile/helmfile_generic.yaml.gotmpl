@@ -6,8 +6,8 @@
 #
 helmfiles:
   # Path to the helmfile state file being processed BEFORE releases in this state file
-- path: "helmfile/apps/opendesk-migrations-pre/helmfile-child.yaml.gotmpl"
-    values: &values
+  - path: "helmfile/apps/opendesk-migrations-pre/helmfile-child.yaml.gotmpl"
+    values:
       # Note: backchannel-logout.yaml.gotmpl moved to default-enterprise-overrides/ (OX-only, not used in opendesk-edu)
       - "helmfile/environments/default/*.yaml.gotmpl"
       - {{ toYaml .Values | nindent 8 }}
@@ -15,64 +15,128 @@ helmfiles:
       - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
       {{- end }}
   - path: "helmfile/apps/opendesk-services/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/services-external/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/nubus/helmfile-child.yaml.gotmpl"
-    values: *values
-  # path: "helmfile/apps/open-xchange/helmfile-child.yaml.gotmpl"  # Edu: using SOGo
-  #   values: *values
-  # path: "helmfile/apps/nextcloud/helmfile-child.yaml.gotmpl"  # Edu: using OpenCloud
-  #   values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
+  # Edu: using SOGo instead of Open-Xchange
+  #- path: "helmfile/apps/open-xchange/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/nextcloud/helmfile-child.yaml.gotmpl"  # Edu: using OpenCloud
   - path: "helmfile/apps/opencloud/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/collabora/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/cryptpad/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/jitsi/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/element/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/openproject/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/xwiki/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/notes/helmfile-child.yaml.gotmpl"
-    values: *values
-  # path: "helmfile/apps/moodle/helmfile-child.yaml.gotmpl"
-  # values: *values
-  # path: "helmfile/apps/bigbluebutton/helmfile-child.yaml.gotmpl"
-  # values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
+  # Disabled in opendesk-edu:
+  #- path: "helmfile/apps/moodle/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/bigbluebutton/helmfile-child.yaml.gotmpl"
   # Education infrastructure (openDesk Edu)
   - path: "helmfile/apps/seaweedfs/helmfile-child.yaml.gotmpl"
-    values: *values
-  - #path: "helmfile/apps/snipr/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
+  # snipr disabled for initial deployment
+  #- path: "helmfile/apps/snipr/helmfile-child.yaml.gotmpl"
   # Education-specific services (openDesk Edu)
-  # - path: "helmfile/apps/etherpad/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/bookstack/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/planka/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/zammad/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/limesurvey/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/drawio/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/excalidraw/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
-  # - path: "helmfile/apps/self-service-password/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
+  # Disabled for initial deployment:
+  #- path: "helmfile/apps/etherpad/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/bookstack/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/planka/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/zammad/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/limesurvey/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/drawio/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/excalidraw/helmfile-child.yaml.gotmpl"
+  #- path: "helmfile/apps/self-service-password/helmfile-child.yaml.gotmpl"
   - path: "helmfile/apps/sogo/helmfile-child.yaml.gotmpl"
-  values: *values
-  # - path: "helmfile/apps/typo3/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
-  # values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
+  #- path: "helmfile/apps/typo3/helmfile-child.yaml.gotmpl"  # Disabled for initial deployment
   - path: "helmfile/apps/opendesk-openproject-bootstrap/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
   - path: "helmfile/apps/opendesk-migrations-post/helmfile-child.yaml.gotmpl"
-    values: *values
+    values:
+      - "helmfile/environments/default/*.yaml.gotmpl"
+      - {{ toYaml .Values | nindent 8 }}
+      {{- if eq (env "OPENDESK_ENTERPRISE") "true" }}
+      - "helmfile/environments/default-enterprise-overrides/*.yaml.gotmpl"
+      {{- end }}
 missingFileHandler: "Error"
-...

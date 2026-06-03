@@ -108,14 +108,12 @@ tolerations: []
 # Affinity
 affinity: {}
 
-# SAML SSO configuration
-sso:
-  saml:
-    enabled: false
-    entityId: "https://moodle.opendesk.hrz.uni-marburg.de/shibboleth"
-    idpEntityId: "https://id.opendesk.hrz.uni-marburg.de/realms/opendesk"
-    idpSsoUrl: "https://id.opendesk.hrz.uni-marburg.de/realms/opendesk/protocol/saml"
-    idpMetadataUrl: "https://id.opendesk.hrz.uni-marburg.de/realms/opendesk/protocol/saml/descriptor"
+# SSO is handled via native Moodle OAuth2/OIDC (Keycloak)
+# SAML via Shibboleth is DISABLED because the mod_shib.so binary in the
+# moodle-shib image (Apr 2022) is incompatible with Apache 2.4.52+.
+# The image would need a full rebuild with apt-get distro matching.
+# OIDC works natively without any Apache module and is the preferred path.
+#sso: {}
 
 # PHP configuration (will be updated in task 11)
 phpConfig: {}

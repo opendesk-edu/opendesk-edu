@@ -11,6 +11,6 @@ ingress:
     kubernetes.io/ingress.class: haproxy
     haproxy-ingress.github.io/ssl-redirect: "true"
 image:
-  registry: ghcr.io
-  repository: sharelatex/sharelatex
-  tag: "5.0.2"
+  registry: "registry.opendesk.svc.cluster.local:5000"
+  repository: "opendesk/sharelatex"
+  tag: "latest"

@@ -4,8 +4,8 @@
 commonAnnotations: {}
 
 bigbluebutton:
-  image: "ghcr.io/<your-org>/greenlight-saml"
-  tag: "v1.3.0"
+  image: "registry.opendesk.svc.cluster.local:5000/opendesk/greenlight"
+  tag: "latest"
   replicaCount: 2
 
   # Greenlight SAML configuration for Sharad
@@ -24,7 +24,7 @@ ingress:
     haproxy-ingress.github.io/ssl-redirect: "true"
     haproxy-ingress.github.io/timeout-server: "120000ms"
     haproxy-ingress.github.io/timeout-client: "120000ms"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: "opendesk-ca"
   hosts:
     host: "bbb.opendesk.hrz.uni-marburg.de"
     paths:

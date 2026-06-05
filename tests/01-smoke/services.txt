@@ -1,4 +1,4 @@
-id.opendesk.hrz.uni-marburg.de
+id.opendesk.hrz.uni-marburg.de/realms/opendesk
 portal.opendesk.hrz.uni-marburg.de
 files.opendesk.hrz.uni-marburg.de
 chat.opendesk.hrz.uni-marburg.de

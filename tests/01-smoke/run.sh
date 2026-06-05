@@ -44,7 +44,8 @@ while IFS= read -r host; do
     
     total_tests=$((total_tests + 1))
     
-    days_left=$(check_ssl_expiry "$host" 2>/dev/null || echo "-999")
+    ssl_host=$(echo "$host" | cut -d/ -f1)
+    days_left=$(check_ssl_expiry "$ssl_host" 2>/dev/null || echo "-999")
     
     if [ "$days_left" -ge 0 ]; then
         if [ "$days_left" -ge "$SSL_EXPIRY_DAYS" ]; then

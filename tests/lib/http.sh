@@ -87,7 +87,7 @@ get_http_code() {
 # Check if HTTP code is acceptable
 is_http_code_acceptable() {
     local code="$1"
-    local acceptable_codes="${ACCEPTABLE_HTTP_CODES:-200 302 401 403}"
+    local acceptable_codes="${ACCEPTABLE_HTTP_CODES:-200 301 302 401 403}"
     
     for acceptable in $acceptable_codes; do
         if [ "$code" = "$acceptable" ]; then

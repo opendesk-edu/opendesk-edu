@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
 # SPDX-License-Identifier: Apache-2.0
 #
-# Quick deployment script for SOGo fixes verification in opendesk-edu namespace
+# Quick deployment script for SOGo fixes verification in opendesk namespace
 
 set -euo pipefail
 
@@ -13,7 +13,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
-NAMESPACE="${NAMESPACE:-opendesk-edu}"
+NAMESPACE="${NAMESPACE:-opendesk}"
 DRY_RUN="${DRY_RUN:-false}"
 
 echo -e "${GREEN}=== SOGo Fixes Deployment Verification ===${NC}"

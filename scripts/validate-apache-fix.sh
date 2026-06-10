@@ -23,7 +23,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: apache-fix-test
-  namespace: opendesk-edu
+  namespace: opendesk
 data:
   apache.conf: |
     ServerRoot /etc/apache2
@@ -54,7 +54,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: apache-fix-test-pod
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   containers:
   - name: webapp
@@ -91,13 +91,13 @@ echo -e "${GREEN}✓ Test deployment created${NC}"
 sleep 10
 
 echo -e "${YELLOW}Checking pod status...${NC}"
-kubectl get pod apache-fix-test-pod -n opendesk-edu
+kubectl get pod apache-fix-test-pod -n opendesk
 echo ""
 
 # Wait for pod to be ready
 echo -e "${YELLOW}Waiting for containers to start...${NC}"
 for i in {1..30}; do
-    if kubectl get pod apache-fix-test-pod -n opendesk-edu -o jsonpath='{.status.containerStatuses[*].ready}' | grep -q "true true"; then
+    if kubectl get pod apache-fix-test-pod -n opendesk -o jsonpath='{.status.containerStatuses[*].ready}' | grep -q "true true"; then
         echo -e "${GREEN}✓ Both containers ready${NC}"
         break
     fi
@@ -110,22 +110,22 @@ echo -e "${GREEN}=== Running Fix Validation ===${NC}"
 echo ""
 
 echo -e "${YELLOW}1. Apache DefaultRuntimeDir Configuration Check...${NC}"
-kubectl exec apache-fix-test-pod -n opendesk-edu -c apache -- \
+kubectl exec apache-fix-test-pod -n opendesk -c apache -- \
   httpd -V | grep -i defaultruntime || echo "DefaultRuntimeDir check failed"
 echo ""
 
 echo -e "${YELLOW}2. Apache Process Check...${NC}"
-kubectl exec apache-fix-test-pod -n opendesk-edu -c apache -- \
+kubectl exec apache-fix-test-pod -n opendesk -c apache -- \
   ps aux | grep httpd || echo "Apache process check failed"
 echo ""
 
 echo -e "${YELLOW}3. Port 80 Binding Check...${NC}"
-kubectl exec apache-fix-test-pod -n opendesk-edu -c apache -- \
+kubectl exec apache-fix-test-pod -n opendesk -c apache -- \
   netstat -tlnp || echo "Port check failed"
 echo ""
 
 echo -e "${YELLOW}4. HTTP Access Test (Through Apache Proxy)...${NC}"
-RESPONSE=$(kubectl exec apache-fix-test-pod -n opendesk-edu -c apache -- \
+RESPONSE=$(kubectl exec apache-fix-test-pod -n opendesk -c apache -- \
   wget -qO- http://localhost:80/ || echo "Failed")
 if echo "$RESPONSE" | grep -q "Directory listing"; then
     echo -e "${GREEN}✓ Apache proxy working - DefaultRuntimeDir fix successful${NC}"
@@ -136,7 +136,7 @@ fi
 echo ""
 
 echo -e "${YELLOW}5. Direct Webapp Access (Port 8000)...${NC}"
-kubectl exec apache-fix-test-pod -n opendesk-edu -c webapp -- \
+kubectl exec apache-fix-test-pod -n opendesk -c webapp -- \
   wget -qO- http://localhost:8000/ | head -3 || echo "Direct access check failed"
 echo ""
 
@@ -148,7 +148,7 @@ echo "✓ Port 80 binding works correctly"
 echo "✓ HTTP proxy functioning as expected"
 echo ""
 echo "Deployment Status:"
-kubectl get pod apache-fix-test-pod -n opendesk-edu
+kubectl get pod apache-fix-test-pod -n opendesk
 
 echo ""
 echo -e "${GREEN}=== Success! Apache DefaultRuntimeDir Fix Proven ===${NC}"

@@ -6,7 +6,7 @@ commonAnnotations:
 
 typo3:
   # Image configuration
-  image: {{ .Values.images.typo3.repository | default "ghcr.io/opendesk-edu/typo3" | quote }}
+  image: {{ .Values.images.typo3.repository | default "ghcr.io/opendesk/typo3" | quote }}
   tag: {{ .Values.images.typo3.tag | default "13.4.0" | quote }}
   port: 80
 

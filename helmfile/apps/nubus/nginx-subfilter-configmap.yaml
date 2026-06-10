@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ums-portal-frontend-nginx
-  namespace: opendesk-edu
+  namespace: opendesk
 data:
   nginx.conf: |
     worker_processes  auto;

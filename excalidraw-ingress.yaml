@@ -3,14 +3,14 @@ kind: Ingress
 metadata:
   annotations:
     meta.helm.sh/release-name: excalidraw
-    meta.helm.sh/release-namespace: opendesk-edu
+    meta.helm.sh/release-namespace: opendesk
   labels:
     app.kubernetes.io/instance: excalidraw
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: excalidraw
     helm.sh/chart: excalidraw-1.0.0
   name: excalidraw-excalidraw-ingress
-  namespace: opendesk-edu
+namespace: opendesk
 spec:
   ingressClassName: haproxy
   rules:

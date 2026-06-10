@@ -10,7 +10,7 @@ echo "=== SOGo Fixes Apache Proxy Verification ==="
 echo "Testing Apache DefaultRuntimeDir fix in pod environment"
 
 # Create test deployment with Apache only
-kubectl delete deployment sogo-apache-test -n opendesk-edu --ignore-not-found=true
+kubectl delete deployment sogo-apache-test -n opendesk --ignore-not-found=true
 
 echo "Creating Apache test deployment..."
 kubectl apply -f - <<EOF
@@ -18,7 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sogo-apache-test
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   replicas: 1
   selector:
@@ -54,7 +54,7 @@ EOF
 echo "Waiting for pod to be ready..."
 sleep 10
 
-POD=$(kubectl get pods -n opendesk-edu -l app=sogo-apache-test -o name | head -1)
+POD=$(kubectl get pods -n opendesk -l app=sogo-apache-test -o name | head -1)
 if [ -z "$POD" ]; then
     echo "ERROR: Pod not found"
     exit 1
@@ -62,26 +62,26 @@ fi
 
 echo "Pod: $POD"
 echo "Waiting for pod to start..."
-kubectl wait --for=condition=ready pod -n opendesk-edu -l app=sogo-apache-test --timeout=60s
+kubectl wait --for=condition=ready pod -n opendesk -l app=sogo-apache-test --timeout=60s
 
 echo ""
 echo "✓ Apache pod is ready"
 echo ""
 echo "Testing Apache process..."
-kubectl exec -n opendesk-edu $POD -- pgrep -a httpd || echo "Apache processes check skipped (ps unavailable)"
+kubectl exec -n opendesk $POD -- pgrep -a httpd || echo "Apache processes check skipped (ps unavailable)"
 
 echo ""
 echo "Testing port 80 bindings..."
-kubectl exec -n opendesk-edu $POD -- wget -qO- http://localhost:80/server-status || echo "Checking with curl..."
-kubectl exec -n opendesk-edu $POD -- curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" http://localhost:80/
+kubectl exec -n opendesk $POD -- wget -qO- http://localhost:80/server-status || echo "Checking with curl..."
+kubectl exec -n opendesk $POD -- curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" http://localhost:80/
 
 echo ""
 echo "Testing HTTP response..."
-kubectl exec -n opendesk-edu $POD -- curl -s localhost:80 | head -10
+kubectl exec -n opendesk $POD -- curl -s localhost:80 | head -10
 
 echo ""
 echo "✓ Apache DefaultRuntimeDir fix verified successfully!"
 echo ""
 echo "Deployment summary:"
-kubectl get deployment sogo-apache-test -n opendesk-edu
-kubectl get pod -n opendesk-edu -l app=sogo-apache-test
+kubectl get deployment sogo-apache-test -n opendesk
+kubectl get pod -n opendesk -l app=sogo-apache-test

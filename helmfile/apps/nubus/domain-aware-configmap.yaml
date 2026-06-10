@@ -99,4 +99,4 @@ data:
 kind: ConfigMap
 metadata:
   name: ums-portal-frontend-domain-aware
-  namespace: opendesk-edu
+  namespace: opendesk

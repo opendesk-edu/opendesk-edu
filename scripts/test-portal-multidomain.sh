@@ -81,10 +81,10 @@ fi
 
 echo "6. Verifying portal pod environment variables..."
 echo "   Portal server OIDC configuration:"
-kubectl -n opendesk-edu get pods -l app.kubernetes.io/name=portal-server -o jsonpath='{.items[0].spec.containers[*].env[?(@.name=="PORTAL_SERVER_OIDC_KEYCLOAK_URL")].value}'
+kubectl -n opendesk get pods -l app.kubernetes.io/name=portal-server -o jsonpath='{.items[0].spec.containers[*].env[?(@.name=="PORTAL_SERVER_OIDC_KEYCLOAK_URL")].value}'
 
 echo "   Portal server SME OIDC configuration:"
-kubectl -n opendesk-edu get pods -l app.kubernetes.io/name=portal-server -o jsonpath='{.items[0].spec.containers[*].env[?(@.name=="PORTAL_SERVER_OIDC_KEYCLOAK_URL_SME")].value}'
+kubectl -n opendesk get pods -l app.kubernetes.io/name=portal-server -o jsonpath='{.items[0].spec.containers[*].env[?(@.name=="PORTAL_SERVER_OIDC_KEYCLOAK_URL_SME")].value}'
 
 echo ""
 echo "🎉 E2E Test Results Summary:"

@@ -9,7 +9,7 @@ set -euo pipefail
 echo "=== SOGo Fixes Apache Proxy Verification ==="
 echo "Testing Apache DefaultRuntimeDir fix with full Apache image"
 
-kubectl delete deployment apache-test -n opendesk-edu --ignore-not-found=true
+kubectl delete deployment apache-test -n opendesk --ignore-not-found=true
 
 echo "Creating Apache test deployment with Debian base..."
 kubectl apply -f - <<EOF
@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: apache-test
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   replicas: 1
   selector:
@@ -47,10 +47,10 @@ EOF
 echo "Waiting for pod to be ready..."
 sleep 15
 
-POD=$(kubectl get pods -n opendesk-edu -l app=apache-test -o name | head -1)
+POD=$(kubectl get pods -n opendesk -l app=apache-test -o name | head -1)
 if [ -z "$POD" ]; then
     echo "ERROR: Pod not found"
-    kubectl get pods -n opendesk-edu -l app=apache-test
+    kubectl get pods -n opendesk -l app=apache-test
     exit 1
 fi
 
@@ -60,23 +60,23 @@ sleep 20
 
 echo ""
 echo "=== Apache Process Status ==="
-kubectl exec -n opendesk-edu $POD -- ps aux | grep apache
+kubectl exec -n opendesk $POD -- ps aux | grep apache
 
 echo ""
 echo "=== Port 80 Bindings ==="
-kubectl exec -n opendesk-edu $POD -- netstat -tlnp | grep :80
+kubectl exec -n opendesk $POD -- netstat -tlnp | grep :80
 
 echo ""
 echo "=== HTTP Response Test ==="
-kubectl exec -n opendesk-edu $POD -- curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" http://localhost:80/
+kubectl exec -n opendesk $POD -- curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" http://localhost:80/
 
 echo ""
 echo "=== Apache Self-Test ==="
-kubectl exec -n opendesk-edu $POD -- curl -s http://localhost:80/ | head -5
+kubectl exec -n opendesk $POD -- curl -s http://localhost:80/ | head -5
 
 echo ""
 echo "✓ Apache DefaultRuntimeDir fix verified successfully!"
 echo ""
 echo "Deployment summary:"
-kubectl get deployment apache-test -n opendesk-edu
-kubectl get pod -n opendesk-edu -l app=apache-test
+kubectl get deployment apache-test -n opendesk
+kubectl get pod -n opendesk -l app=apache-test

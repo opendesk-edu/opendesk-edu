@@ -1,6 +1,20 @@
 # SPDX-FileCopyrightText: 2024 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH
 # SPDX-License-Identifier: Apache-2.0
 ---
+# ╔═══════════════════════════════════════════════════════════╗
+# ║  DEPRECATED — Consolidation in progress                  ║
+# ║  All services migrating to opendesk namespace.           ║
+# ║  See opendesk/helmfile_generic.yaml.gotmpl               ║
+# ╚═══════════════════════════════════════════════════════════╝
+#
+# Services remaining here are NOT yet consolidated:
+#   - Stateful services with separate data (moodle, ilias, openproject, etc.)
+#   - Edu-only services pending migration (n8n, typo3, etc.)
+#
+# Consolidated into opendesk (removed from here):
+#   - drawio, excalidraw, collab-dashboard, opendesk-static-files
+#   - clamav-simple, memcached, postfix
+#
 # Advanced Configuration: Nested States
 #
 helmfiles:
@@ -54,10 +68,8 @@ helmfiles:
   ## Documented & knowledge
   - path: "helmfile/apps/bookstack/helmfile-child.yaml.gotmpl"
     values: *values
-  - path: "helmfile/apps/drawio/helmfile-child.yaml.gotmpl"
-    values: *values
-  - path: "helmfile/apps/excalidraw/helmfile-child.yaml.gotmpl"
-    values: *values
+  # drawio — consolidated to opendesk
+  # excalidraw — consolidated to opendesk
   - path: "helmfile/apps/typo3/helmfile-child.yaml.gotmpl"
     values: *values
 
@@ -106,8 +118,7 @@ helmfiles:
     values: *values
 
   ## Dashboard, self-service & integrations
-  - path: "helmfile/apps/collab-dashboard/helmfile-child.yaml.gotmpl"
-    values: *values
+  # collab-dashboard — consolidated to opendesk
   - path: "helmfile/apps/self-service-password/helmfile-child.yaml.gotmpl"
     values: *values
   - path: "helmfile/apps/portal-entries/helmfile-child.yaml.gotmpl"

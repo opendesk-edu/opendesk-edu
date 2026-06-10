@@ -16,8 +16,8 @@ echo "Deploying SOGo with Apache DefaultRuntimeDir fix and all infrastructure"
 echo ""
 
 # Create namespace
-echo -e "${YELLOW}Step 1: Creating opendesk-edu namespace...${NC}"
-kubectl create namespace opendesk-edu --dry-run=client -o yaml | kubectl apply -f -
+echo -e "${YELLOW}Step 1: Creating opendesk namespace...${NC}"
+kubectl create namespace opendesk --dry-run=client -o yaml | kubectl apply -f -
 echo -e "${GREEN}✓ Namespace ready${NC}"
 sleep 2
 
@@ -28,7 +28,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgresql
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   replicas: 1
   selector:
@@ -62,7 +62,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgresql
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   ports:
   - port: 5432
@@ -80,7 +80,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: openldap
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   replicas: 1
   selector:
@@ -110,7 +110,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: openldap
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   ports:
   - port: 389
@@ -123,13 +123,13 @@ echo -e "${GREEN}✓ OpenLDAP deployed${NC}"
 
 # Wait for dependencies
 echo -e "${YELLOW}Step 4: Waiting for dependencies to be ready...${NC}"
-kubectl wait --for=condition=ready pod -n opendesk-edu -l app=postgresql --timeout=120s
-kubectl wait --for=condition=ready pod -n opendesk-edu -l app=openldap --timeout=120s
+kubectl wait --for=condition=ready pod -n opendesk -l app=postgresql --timeout=120s
+kubectl wait --for=condition=ready pod -n opendesk -l app=openldap --timeout=120s
 echo -e "${GREEN}✓ Dependencies ready${NC}"
 
 # Initialize SOGo database
 echo -e "${YELLOW}Step 5: Initializing SOGo database...${NC}"
-kubectl run -n opendesk-edu db-init --rm -i --restart=Never --image=postgres:15-alpine -- \
+kubectl run -n opendesk db-init --rm -i --restart=Never --image=postgres:15-alpine -- \
   psql -h postgresql -U postgres -d sogo -c "
 CREATE USER sogo WITH PASSWORD 'sogopassword';
 GRANT ALL PRIVILEGES ON DATABASE sogo TO sogo;
@@ -143,7 +143,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: sogo-entrypoint
-  namespace: opendesk-edu
+  namespace: opendesk
 data:
   supervisord.conf: |
     [unix_http_server]
@@ -225,7 +225,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: sogo-config
-  namespace: opendesk-edu
+  namespace: opendesk
 data:
   general.yaml: |
     sogo:
@@ -258,7 +258,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: sogo
-  namespace: opendesk-edu
+  namespace: opendesk
 type: Opaque
 stringData:
   LDAP_PASSWORD: admin
@@ -268,7 +268,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sogo
-  namespace: opendesk-edu
+  namespace: opendesk
   labels:
     app: sogo
 spec:
@@ -326,7 +326,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sogo
-  namespace: opendesk-edu
+  namespace: opendesk
 spec:
   ports:
   - port: 80
@@ -340,31 +340,31 @@ echo -e "${GREEN}✓ SOGo deployment configured${NC}"
 # Wait for SOGo to start
 echo -e "${YELLOW}Step 7: Waiting for SOGo pod to be ready...${NC}"
 sleep 10
-kubectl wait --for=condition=ready pod -n opendesk-edu -l app=sogo --timeout=300s
+kubectl wait --for=condition=ready pod -n opendesk -l app=sogo --timeout=300s
 echo -e "${GREEN}✓ SOGo is ready${NC}"
 
 echo ""
 echo -e "${GREEN}=== Running Verification ===${NC}"
 
-SOGO_POD=$(kubectl get pods -n opendesk-edu -l app=sogo -o name | head -1)
+SOGO_POD=$(kubectl get pods -n opendesk -l app=sogo -o name | head -1)
 
 echo -e "${YELLOW}Checking Apache status...${NC}"
-kubectl exec -n opendesk-edu $SOGO_POD -- supervisorctl status apache || echo "Apache status check failed"
+kubectl exec -n opendesk $SOGO_POD -- supervisorctl status apache || echo "Apache status check failed"
 
 echo ""
 echo -e "${YELLOW}Checking SOGo status...${NC}"
-kubectl exec -n opendesk-edu $SOGO_POD -- supervisorctl status sogo || echo "SOGo status check failed"
+kubectl exec -n opendesk $SOGO_POD -- supervisorctl status sogo || echo "SOGo status check failed"
 
 echo ""
 echo -e "${YELLOW}Checking port 80 bindings...${NC}"
-kubectl exec -n opendesk-edu $SOGO_POD -- netstat -tlnp | grep :80 || echo "Port 80 check failed"
+kubectl exec -n opendesk $SOGO_POD -- netstat -tlnp | grep :80 || echo "Port 80 check failed"
 
 echo ""
 echo -e "${YELLOW}Testing HTTP access...${NC}"
-kubectl exec -n opendesk-edu $SOGO_POD -- wget -qO- http://localhost:80/ | head -20 || echo "HTTP access test failed"
+kubectl exec -n opendesk $SOGO_POD -- wget -qO- http://localhost:80/ | head -20 || echo "HTTP access test failed"
 
 echo ""
 echo -e "${GREEN}=== Deployment Complete ===${NC}"
 echo "SOGo deployed successfully with Apache DefaultRuntimeDir fix"
 echo ""
-echo "Access SOGo at: kubectl port-forward -n opendesk-edu $SOGO_POD 8080:80"
+echo "Access SOGo at: kubectl port-forward -n opendesk $SOGO_POD 8080:80"

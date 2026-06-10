@@ -10,7 +10,7 @@ if [ -z "$ADMIN_PASSWORD" ]; then
     echo "Error: KEYCLOAK_ADMIN_PASSWORD environment variable not set"
     echo "Please run: export KEYCLOAK_ADMIN_PASSWORD=<your-admin-password>"
     echo "To get the admin password, check the Keycloak admin credentials in the cluster:"
-    echo "  kubectl get secret -n opendesk-edu | grep keycloak"
+    echo "  kubectl get secret -n opendesk | grep keycloak"
     exit 1
 fi
 
@@ -39,11 +39,11 @@ if [ -n "$EXISTING_CLIENT" ]; then
 fi
 
 echo "Retrieving portal client secret from Kubernetes..."
-SECRET=$(kubectl get secret ums-keycloak-config -n opendesk-edu -o jsonpath='{.data.portal_client_secret}' 2>/dev/null || echo "")
+SECRET=$(kubectl get secret ums-keycloak-config -n opendesk -o jsonpath='{.data.portal_client_secret}' 2>/dev/null || echo "")
 if [ -z "$SECRET" ]; then
     echo "Warning: Could not find portal client secret in ums-keycloak-config secret"
     echo "Attempting to find in configmap..."
-    SECRET=$(kubectl get configmap ums-keycloak-config -n opendesk-edu -o jsonpath='{.data.portal_client_secret}' 2>/dev/null || echo "")
+    SECRET=$(kubectl get configmap ums-keycloak-config -n opendesk -o jsonpath='{.data.portal_client_secret}' 2>/dev/null || echo "")
 fi
 
 if [ -z "$SECRET" ]; then

@@ -12,7 +12,7 @@ echo "======================================"
 echo "SOGo Apache Proxy Deployment Script"
 echo "======================================"
 
-cd /root/opendesk-edu
+cd /root/opendesk
 
 # Step 1: Fetch and checkout the feature branch
 echo ""
@@ -50,7 +50,7 @@ echo ""
 echo "Step 4: Deploying SOGo with Apache proxy..."
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm upgrade --install sogo helmfile/charts/sogo \
-    --namespace opendesk-edu \
+    --namespace opendesk \
     --values sogo-direct-values.yaml \
     --timeout 10m || {
     echo "ERROR: Helm upgrade failed"
@@ -60,7 +60,7 @@ helm upgrade --install sogo helmfile/charts/sogo \
 # Step 4: Wait for the new pod to be ready
 echo ""
 echo "Step 5: Waiting for SOGo pod to be ready..."
-kubectl -n opendesk-edu wait \
+kubectl -n opendesk wait \
     --for=condition=ready pod \
     -l app.kubernetes.io/instance=sogo \
     --timeout=5m || {
@@ -71,7 +71,7 @@ kubectl -n opendesk-edu wait \
 # Step 5: Get the new pod name
 echo ""
 echo "Step 6: Getting SOGo pod name..."
-POD_NAME=$(kubectl -n opendesk-edu get pods \
+POD_NAME=$(kubectl -n opendesk get pods \
     -l app.kubernetes.io/instance=sogo \
     -o jsonpath='{.items[0].metadata.name}')
 echo "SOGo pod: $POD_NAME"
@@ -79,25 +79,25 @@ echo "SOGo pod: $POD_NAME"
 # Step 6: Verify Apache is running
 echo ""
 echo "Step 7: Verifying Apache is running..."
-if kubectl -n opendesk-edu exec "$POD_NAME" -- supervisorctl status apache | grep -q RUNNING; then
+if kubectl -n opendesk exec "$POD_NAME" -- supervisorctl status apache | grep -q RUNNING; then
     echo "✓ Apache is RUNNING"
 else
     echo "ERROR: Apache is not running"
     echo "Supervisord status:"
-    kubectl -n opendesk-edu exec "$POD_NAME" -- supervisorctl status
+    kubectl -n opendesk exec "$POD_NAME" -- supervisorctl status
     exit 1
 fi
 
 # Step 7: Verify port 80 is listening
 echo ""
 echo "Step 8: Verifying port 80 is listening..."
-POD_IP=$(kubectl -n opendesk-edu get pod "$POD_NAME" -o jsonpath='{.status.podIP}')
-if kubectl -n opendesk-edu exec "$POD_NAME" -- netstat -tlnp | grep -q ":80.*LISTEN"; then
+POD_IP=$(kubectl -n opendesk get pod "$POD_NAME" -o jsonpath='{.status.podIP}')
+if kubectl -n opendesk exec "$POD_NAME" -- netstat -tlnp | grep -q ":80.*LISTEN"; then
     echo "✓ Port 80 is listening on $POD_IP"
 else
     echo "ERROR: Port 80 is not listening"
     echo "Listening ports:"
-    kubectl -n opendesk-edu exec "$POD_NAME" -- netstat -tlnp
+    kubectl -n opendesk exec "$POD_NAME" -- netstat -tlnp
     exit 1
 fi
 
@@ -114,7 +114,7 @@ fi
 # Step 9: Verify ConfigMap has supervisord.conf
 echo ""
 echo "Step 10: Verifying ConfigMap has supervisord.conf..."
-CM_DATA_KEYS=$(kubectl -n opendesk-edu get configmap sogo-sogo-entrypoint \
+CM_DATA_KEYS=$(kubectl -n opendesk get configmap sogo-sogo-entrypoint \
     -o jsonpath='{.data}' | jq -r 'keys | .[]')
 if echo "$CM_DATA_KEYS" | grep -q "supervisord.conf"; then
     echo "✓ ConfigMap has supervisord.conf key"
@@ -127,7 +127,7 @@ fi
 # Step 10: Display SOGo logs for verification
 echo ""
 echo "Step 11: Displaying SOGo logs (last 20 lines)..."
-kubectl -n opendesk-edu logs "$POD_NAME" --tail=20
+kubectl -n opendesk logs "$POD_NAME" --tail=20
 
 # Final summary
 echo ""
@@ -148,9 +148,9 @@ echo "3. Verify email functionality works"
 echo "4. Test calendar and contacts integration"
 echo ""
 echo "To view logs:"
-echo "  kubectl -n opendesk-edu logs -f $POD_NAME"
+echo "  kubectl -n opendesk logs -f $POD_NAME"
 echo ""
 echo "To check supervisord status:"
-echo "  kubectl -n opendesk-edu exec $POD_NAME -- supervisorctl status"
+echo "  kubectl -n opendesk exec $POD_NAME -- supervisorctl status"
 echo ""
 echo "====================================================="

@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ums-portal-oidc-routing
-  namespace: opendesk-edu
+  namespace: opendesk
   annotations:
     haproxy-ingress.github.io/ssl-passthrough: "false"
 spec:

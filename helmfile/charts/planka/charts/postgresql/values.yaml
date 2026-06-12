@@ -805,7 +805,9 @@ primary:
     annotations: {}
     ## @param primary.persistence.labels Labels for the PVC
     ##
-    labels: {}
+    labels:
+      backup-tier: "a"
+      k8up/backup: "true"
     ## @param primary.persistence.selector Selector to match an existing Persistent Volume (this value is evaluated as a template)
     ## selector:
     ##   matchLabels:
@@ -1256,7 +1258,9 @@ readReplicas:
     annotations: {}
     ## @param readReplicas.persistence.labels Labels for the PVC
     ##
-    labels: {}
+    labels:
+      backup-tier: "a"
+      k8up/backup: "true"
     ## @param readReplicas.persistence.selector Selector to match an existing Persistent Volume (this value is evaluated as a template)
     ## selector:
     ##   matchLabels:

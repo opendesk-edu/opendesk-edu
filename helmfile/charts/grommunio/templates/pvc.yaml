@@ -7,6 +7,8 @@ metadata:
   name: {{ include "grommunio.fullname" . }}-pvc
   labels:
 {{ include "grommunio.labels" . | nindent 4 }}
+    backup-tier: "b"
+    k8up/backup: "true"
 spec:
   accessModes:
     - {{ .Values.grommunio.persistence.accessMode }}

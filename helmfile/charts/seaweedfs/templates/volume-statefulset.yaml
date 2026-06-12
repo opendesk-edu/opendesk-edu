@@ -54,6 +54,9 @@ spec:
             periodSeconds: 5
   volumeClaimTemplates:
     - metadata:
+    labels:
+      backup-tier: "b"
+      k8up/backup: "true"
         name: data
         labels:
           {{- include "seaweedfs.selectorLabels" . | nindent 10 }}

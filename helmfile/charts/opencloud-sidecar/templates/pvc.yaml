@@ -5,6 +5,8 @@ metadata:
   name: {{ include "opencloud-sidecar.fullname" . }}-data
   labels:
     {{- include "opencloud-sidecar.labels" . | nindent 4 }}
+    backup-tier: "b"
+    k8up/backup: "true"
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}

@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ include "code-server.fullname" . }}-workspace
   labels: {{- include "code-server.labels" . | nindent 4 }}
+    backup-tier: "c"
+    k8up/backup: "true"
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}

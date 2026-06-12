@@ -119,6 +119,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-n8n-data
+  labels:
+    backup-tier: "c"
+    k8up/backup: "true"
 spec:
   accessModes:
     - ReadWriteOnce

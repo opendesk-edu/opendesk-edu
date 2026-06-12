@@ -5,6 +5,8 @@ metadata:
   name: {{ include "slidev.fullname" . }}-slides
   labels:
     {{- include "slidev.labels" . | nindent 4 }}
+    backup-tier: "c"
+    k8up/backup: "true"
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}

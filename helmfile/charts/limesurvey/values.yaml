@@ -55,7 +55,7 @@ mariadb:
       enabled: true
       size: 5Gi
 
-# SSO/OIDC Configuration
 sso:
   oidc:
     enabled: false
+

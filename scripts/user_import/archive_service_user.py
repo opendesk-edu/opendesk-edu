@@ -15,10 +15,11 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 # Configure logging
+log_file = os.getenv("LOG_FILE", "./opendesk-service-archiver.log")
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("/var/log/opendesk-service-archiver.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 

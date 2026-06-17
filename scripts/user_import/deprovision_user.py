@@ -14,10 +14,11 @@ from typing import Dict
 from sync_users import KeycloakAdminClient
 
 # Configure logging
+log_file = os.getenv("LOG_FILE", "./opendesk-user-deprovisioning.log")
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("/var/log/opendesk-user-deprovisioning.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 
@@ -144,7 +145,7 @@ class UserDeprovisioner:
         }
 
         # Write to audit file
-        audit_dir = "/var/log/opendesk-audit"
+        audit_dir = os.getenv("AUDIT_DIR", "./opendesk-audit")
         os.makedirs(audit_dir, exist_ok=True)
         audit_file = os.path.join(audit_dir, f"deprovisioning-{datetime.now().strftime('%Y%m%d')}.log")
 

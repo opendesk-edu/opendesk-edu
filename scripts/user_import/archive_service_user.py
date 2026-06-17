@@ -500,7 +500,7 @@ class ServiceArchiver:
                 logger.warning(f"No archives found for user {username}")
                 return None
 
-            Tarball_name = f"{username}_complete_archive_{datetime.now().strftime('%Y%m%d_%H%M%S')}.tar.gz"
+            f"{username}_complete_archive_{datetime.now().strftime('%Y%m%d_%H%M%S')}.tar.gz"
             tarball_path = os.path.join(self.archive_dir, tarball_name)
 
             with tarfile.open(tarball_path, "w:gz") as tar:

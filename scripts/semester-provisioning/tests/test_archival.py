@@ -211,7 +211,7 @@ class TestBulkArchiveSemester:
         assert len(courses) == 2
 
     def test_bulk_archive_partial_failure(self, database, audit_logger):
-        course1 = database.create_course(
+        database.create_course(
             {
                 "semester_id": "2026fail",
                 "title": "Good Course",

@@ -357,7 +357,7 @@ def main():
 
     # Grace period expired users
     elif args.grace_expired_before and args.phase == "delete":
-        cutoff_date = datetime.strptime(args.grace_expired_before, "%Y-%m-%d")
+        datetime.strptime(args.grace_expired_before, "%Y-%m-%d")
 
         def grace_filter(user: Dict) -> bool:
             return deprovisioner._grace_period_expired(user)

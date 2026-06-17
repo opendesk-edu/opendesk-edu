@@ -429,7 +429,7 @@ class TestCLI:
         args.json = False
         args.date = None
 
-        with mock.patch("builtins.print") as mock_print:
+        with mock.patch("builtins.print"):
             ret = cmd_current(args)
 
         assert ret == 1

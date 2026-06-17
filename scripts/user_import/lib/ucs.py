@@ -131,7 +131,7 @@ class Ucs:
 
     def __add_property(self, obj_json, person, key, list=False):
         if key in person and not pd.isna(person[key]):
-            if list == True:
+            if list:
                 obj_json["properties"][key] = [person[key]]
             else:
                 obj_json["properties"][key] = person[key]

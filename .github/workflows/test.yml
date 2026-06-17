@@ -27,7 +27,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           cd scripts/semester-provisioning
-          pip install pytest httpx
+          pip install -r requirements-dev.txt
 
       - name: Run Python tests
         run: |

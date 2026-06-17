@@ -39,7 +39,7 @@ jobs:
 
       - name: Install helmfile
         run: |
-          wget -O- -q https://github.com/helmfile/helmfile/releases/download/v0.168.0/helmfile_0.168.0_linux_amd64.tar.gz | tar xzf -
+          wget -O- -q https://github.com/helmfile/helmfile/releases/download/v0.168.0/helmfile_0.168.0_linux_amd64.tar.gz | tar xzf - --overwrite
           sudo mv helmfile /usr/local/bin/
 
       - name: Run helm lint

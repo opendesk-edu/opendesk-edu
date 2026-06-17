@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 
 # All edu Helm charts
-CHARTS := $(sort $(wildcard helmfile/charts/*/Chart.yaml | xargs -I{} dirname {}))
+CHARTS := $(sort $(patsubst %/Chart.yaml,%,$(wildcard helmfile/charts/*/Chart.yaml)))
 
 .PHONY: help lint test template unittest spellcheck update-check clean
 

@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 from datetime import datetime, timedelta
-from typing import Dict, List
+from typing import Dict
 
 from sync_users import KeycloakAdminClient
 

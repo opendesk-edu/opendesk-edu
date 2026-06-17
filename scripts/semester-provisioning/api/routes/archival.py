@@ -12,7 +12,7 @@ including single and bulk operations.
 from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
-from fastapi import APIRouter, HTTPException, Query, status, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Query, status
 
 from api.models.archival import (
     ArchiveRequest,

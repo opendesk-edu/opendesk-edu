@@ -27,9 +27,8 @@ from archival.archive_course import (
     MoodleArchivalClient,
     archive_course,
 )
-from archival.bulk_archive import BulkArchiveSummary, bulk_archive_semester
+from archival.bulk_archive import bulk_archive_semester
 from archival.restore_course import (
-    RestoreResult,
     ILIASRestoreClient,
     MoodleRestoreClient,
     restore_course,

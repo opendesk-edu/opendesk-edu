@@ -8,9 +8,8 @@ Kursverwaltungs-API - FastAPI-REST-Endpunkte mit SQLite-Speicherung.
 
 from __future__ import annotations
 
-import json
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Optional
 from uuid import uuid4
 
 from fastapi import (
@@ -19,9 +18,8 @@ from fastapi import (
     HTTPException,
     Query,
     status,
-    Depends,
 )
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 from enum import Enum
 
 

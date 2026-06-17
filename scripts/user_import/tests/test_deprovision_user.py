@@ -3,10 +3,9 @@ Unit tests for deprovision_user.py
 """
 
 import unittest
-from unittest.mock import Mock, patch, MagicMock, call
+from unittest.mock import patch, MagicMock
 import os
 import tempfile
-import json
 
 # Import the module to test
 import sys

@@ -11,7 +11,6 @@ import logging
 import os
 import subprocess
 import tarfile
-import tempfile
 from datetime import datetime
 from typing import Dict, List, Optional
 

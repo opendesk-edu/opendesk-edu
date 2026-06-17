@@ -17,10 +17,8 @@ For DFN-AAI registration, submit the generated metadata to:
 """
 
 import argparse
-import base64
 import datetime
 from datetime import timezone
-import hashlib
 import logging
 import os
 import sys

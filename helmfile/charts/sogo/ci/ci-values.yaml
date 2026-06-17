@@ -9,3 +9,5 @@ sogo:
   oidc:
     enabled: true
     clientSecret: "test"
+  persistence:
+    enabled: false

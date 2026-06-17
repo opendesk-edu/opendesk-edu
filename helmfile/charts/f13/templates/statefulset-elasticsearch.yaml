@@ -77,6 +77,9 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
+        labels:
+          backup-tier: "b"
+          k8up/backup: "true"
       spec:
         accessModes:
           - {{ .Values.persistence.elasticsearchData.accessMode | default "ReadWriteOnce" }}

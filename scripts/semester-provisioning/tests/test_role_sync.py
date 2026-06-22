@@ -1,5 +1,6 @@
 import importlib.util
 import pathlib
+from typing import List
 
 
 def load_role_sync_module():

@@ -12,9 +12,9 @@ metadata:
     {{- toYaml .Values.snipr.storage.filesystem.persistence.annotations | nindent 4 }}
   {{- end }}
   annotations:
-    {{- if .Values.backup.enabled }}
+    {{- if .Values.snipr.backup.enabled }}
     k8up.io/backup: "true"
-    backup.k8up.io/destination: {{ .Values.backup.repositories.recordings.backend | quote }}
+    backup.k8up.io/destination: {{ .Values.snipr.backup.repositories.recordings.backend | quote }}
     {{- end }}
 spec:
   accessModes:

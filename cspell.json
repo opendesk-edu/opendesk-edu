@@ -204,7 +204,9 @@
         "syft",
         "ttyd",
         "unrenderable",
-        "vulns"
+        "Vercel",
+        "vulns",
+        "yourdomain"
     ],
     "ignoreWords": [],
     "import": []

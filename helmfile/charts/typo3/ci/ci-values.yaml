@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 typo3:
   enabled: true
-  image: typo3/cms-core
-  tag: "13.4"
+  image:
+    repository: typo3/cms-core
+    tag: "13.4"
   replicas: 1
   port: 80
   db:

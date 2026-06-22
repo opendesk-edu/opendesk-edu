@@ -350,7 +350,7 @@ async def restore_course(
 
     course = courses_db[archive_info.course_id]
 
-    if dry_run := request.dry_run:
+    if request.dry_run:
         return RestoreResult(
             archive_id=archive_id,
             course_id=archive_info.course_id,

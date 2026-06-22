@@ -17,11 +17,11 @@ tests:
           path: spec.resources.requests.storage
           value: 1Gi
 
-  - it: should set ReadWriteMany access mode
+  - it: should set ReadWriteOnce access mode
     asserts:
       - contains:
           path: spec.accessModes
-          content: ReadWriteMany
+          content: ReadWriteOnce
 
   - it: should have standard Kubernetes labels
     asserts:

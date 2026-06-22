@@ -25,6 +25,7 @@ tests:
   - it: should configure the host from values
     set:
       ingress.enabled: true
+      ingress.hosts[0].host: typo3.opendesk.example.com
     asserts:
       - equal:
           path: spec.rules[0].host
@@ -33,6 +34,9 @@ tests:
   - it: should configure TLS when provided
     set:
       ingress.enabled: true
+      ingress.tls:
+        - hosts:
+            - typo3.opendesk.example.com
     asserts:
       - isNotNull:
           path: spec.tls

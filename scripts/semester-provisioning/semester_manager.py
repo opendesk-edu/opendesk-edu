@@ -20,6 +20,7 @@ from typing import Any, Optional
 
 from pydantic import BaseModel
 
+from audit import AuditAction
 from config import (
     CurrentSemesterConfig,
     load_semester_config,

@@ -295,7 +295,7 @@ def create_ruckmeldung_filter(no_ruckmeldung_since: str) -> callable:
                 last_ruckmeldung = datetime.fromisoformat(user["attributes"]["last_ruckmeldung"][0])
                 return last_ruckmeldung < cutoff_date
             return False
-        except:
+        except Exception:
             return False
 
     return filter_func

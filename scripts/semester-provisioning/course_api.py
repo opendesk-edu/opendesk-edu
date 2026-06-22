@@ -609,12 +609,12 @@ async def list_audit_logs(
     filtered = _audit_logs
 
     if entity_type:
-        filtered = [l for l in filtered if l["entity_type"] == entity_type]
+        filtered = [entry for entry in filtered if entry["entity_type"] == entity_type]
     if entity_id:
-        filtered = [l for l in filtered if l["entity_id"] == entity_id]
+        filtered = [entry for entry in filtered if entry["entity_id"] == entity_id]
 
     return AuditLogListResponse(
-        logs=[AuditLogResponse(**l) for l in filtered[:limit]],
+        logs=[AuditLogResponse(**entry) for entry in filtered[:limit]],
         total=len(filtered),
     )
 

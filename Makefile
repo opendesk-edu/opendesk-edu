@@ -37,7 +37,7 @@ unittest: ## Run helm-unittest on all charts
 	@for chart in $(CHARTS); do \
 		if [ -d "$$chart/tests" ]; then \
 			echo "  $$chart"; \
-			helm unittest --helm3 $$chart || exit 1; \
+			helm unittest $$chart || exit 1; \
 		fi; \
 	done
 	@echo "==> All unit tests passed."

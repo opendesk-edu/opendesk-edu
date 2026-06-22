@@ -4,6 +4,7 @@
 snipr:
   image: ghcr.io/tobias-weiss-ai-xr/snipr
   tag: "v1.0.0-test"
+  imagePullPolicy: IfNotPresent
   replicaCount: 1
   
   api:
@@ -60,6 +61,7 @@ snipr:
   lti:
     enabled: false
 
+replicaCount: 1
 replicas: 1
 
 ingress:
@@ -79,6 +81,10 @@ resources:
 
 autoscaling:
   enabled: false
+
+podSecurityContext: {}
+
+securityContext: {}
 
 podDisruptionBudget:
   enabled: false

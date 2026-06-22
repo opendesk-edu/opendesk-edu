@@ -14,6 +14,7 @@ Deutsch: Dieser Leitfaden hilft Ihnen, die richtigen Ressourcen für Ihre Fragen
 
 | I need... / Ich brauche... | Go to / Gehe zu |
 |----------------------------|-----------------|
+| **Project website** | [opendesk-edu.org](https://opendesk-edu.org) |
 | **Setup instructions** | [Getting Started Guide](./docs/getting-started.md) |
 | **System requirements** | [Requirements](./docs/requirements.md) |
 | **Configuration help** | [Enhanced Configuration](./docs/enhanced-configuration.md) |

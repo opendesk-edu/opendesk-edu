@@ -19,7 +19,7 @@ one-command Kubernetes deploy with unified Keycloak SSO
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kubernetes](https://img.shields.io/badge/Platform-Kubernetes-326CE5?logo=kubernetes&logoColor=white)](https://kubernetes.io)
 [![Helm](https://img.shields.io/badge/Deploy-Helm-0F1689?logo=helm&logoColor=white)](https://helm.sh)
-[![Upstream](https://img.shields.io/badge/Upstream-openDesk_CE_v1.13.x-green)](https://www.opencode.de/en/opendesk)
+[![Upstream](https://img.shields.io/badge/Upstream-openDesk_CE_v1.15.x-green)](https://www.opencode.de/en/opendesk)
 [![Test](https://github.com/opendesk-edu/opendesk-edu/actions/workflows/test.yml/badge.svg)](https://github.com/opendesk-edu/opendesk-edu/actions/workflows/test.yml)
 
 <br/>
@@ -152,6 +152,10 @@ drop-in alternatives, not replacements. This is a **superset** of openDesk CE, n
 
 ---
 
+🌐 **Website:** [opendesk-edu.org](https://opendesk-edu.org) — project info, news, and resources.
+
+---
+
 ## 📖 Documentation
 
 | Topic | Link |
@@ -208,12 +212,12 @@ Found a bug or have a feature request? Please [open an issue](https://github.com
 
 ## 🔗 Repository Mirroring
 
-This repository is automatically synchronized between GitHub and Codeberg:
+This repository is available on both platforms:
 
 - **GitHub:** https://github.com/opendesk-edu/opendesk-edu
 - **Codeberg:** https://codeberg.org/opendesk-edu/opendesk-edu
 
-Both repositories are kept in sync via automated CI/CD workflows. Pushes to either platform sync to the other within 1-2 minutes. See [sync documentation](./docs/maintenance/github-codeberg-sync.md) for details.
+The Codeberg mirror is updated manually from GitHub. See [sync documentation](./docs/maintenance/github-codeberg-sync.md) for details.
 
 ## 🤝 Contributing
 

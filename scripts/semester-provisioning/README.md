@@ -6,7 +6,7 @@ SPDX-FileCopyrightText: 2024 Bundesministerium des Innern und für Heimat, PG Ze
 SPDX-License-Identifier: Apache-2.0
 -->
 
-![openDesk Edu](https://opendesk.org)
+![openDesk Edu](https://opendesk-edu.org)
 
 <p align="center">
   <img src="docs/assets/logo-opendesk-edu.svg" alt="openDesk Edu Logo" width="150">

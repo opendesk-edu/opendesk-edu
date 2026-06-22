@@ -45,6 +45,13 @@ jobs:
       - name: Run helm lint
         run: make lint
 
+      - name: Build chart dependencies
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          for chart in helmfile/charts/*/; do
+            helm dependency build "$chart" 2>/dev/null || true
+          done
+
       - name: Run helm template validation
         run: make template
 

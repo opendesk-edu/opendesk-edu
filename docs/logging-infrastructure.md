@@ -1,6 +1,9 @@
-# Logging Infrastructure Overview
+<!--
+SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
+SPDX-License-Identifier: Apache-2.0
+-->
 
-**SPDX-FileCopyrightText: 2024-2026 ZenDiS GmbH / openDesk Edu**
+# Logging Infrastructure Overview
 **SPDX-License-Identifier: Apache-2.0**
 
 ## Overview

@@ -1,6 +1,9 @@
-# Promtail - Log Agent for Loki
+<!--
+SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
+SPDX-License-Identifier: Apache-2.0
+-->
 
-**SPDX-FileCopyrightText: 2026 openDesk Edu Contributors**
+# Promtail - Log Agent for Loki
 **SPDX-License-Identifier: Apache-2.0**
 
 ## Overview

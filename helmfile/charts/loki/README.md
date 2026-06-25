@@ -1,6 +1,9 @@
-# Loki - Log Aggregation and Visualization
+<!--
+SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
+SPDX-License-Identifier: Apache-2.0
+-->
 
-**SPDX-FileCopyrightText: 2026 openDesk Edu Contributors**
+# Loki - Log Aggregation and Visualization
 **SPDX-License-Identifier: Apache-2.0**
 
 ## Overview

@@ -47,3 +47,8 @@ SPDX-License-Identifier = "Apache-2.0"
 path = ".gitlab/issue_templates/*.md"
 SPDX-FileCopyrightText = "2025 Zentrum für Digitale Souveränität der Öffentlichen Verwaltung (ZenDiS) GmbH"
 SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = "helmfile/charts/grafana-dashboards/*.json"
+SPDX-FileCopyrightText = "2026 openDesk Edu Contributors"
+SPDX-License-Identifier = "Apache-2.0"

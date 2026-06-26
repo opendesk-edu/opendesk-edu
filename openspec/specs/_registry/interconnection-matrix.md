@@ -61,9 +61,13 @@ Services sharing the MariaDB instance: Nextcloud (actually PostgreSQL in Edu), O
 
 ### Redis (single cluster)
 
-Services sharing the Redis instance: Nubus, Nextcloud, SOGo, Element, Intercom Service, BigBlueButton, Zammad
+Services sharing the Redis instance: Nubus, Nextcloud, Element, Intercom Service, BigBlueButton, Zammad
 
-If Redis fails: auth caching, session management, and intercom token caching break across 7 services.
+If Redis fails: auth caching, session management, and intercom token caching break across 6 services.
+
+### Memcached (session caching)
+
+SOGo uses Memcached (NOT Redis) for session caching. Memcached is NOT shared with other services.
 
 ### MinIO / S3
 
@@ -162,17 +166,21 @@ graph LR
 
     RD -.->|CACHE| NB
     RD -.->|CACHE| NC
-    RD -.->|CACHE| SOGo
     RD -.->|CACHE| IC
     RD -.->|CACHE| Element
     RD -.->|CACHE| BBB
     RD -.->|CACHE| Zammad
+
+    MC[Memcached] -.->|SESSION CACHE| SOGo
 
     SM -->|MAIL| OX_MAIL
     SM -->|MAIL| SOGo
     SM -->|MAIL| NC
     SM -->|MAIL| OP
     SM -->|MAIL| Zammad
+
+    DC[Dovecot] -->|IMAP| SOGo
+    PF[Postfix] -->|SMTP| SOGo
 
     CL[Collabora] -->|OFFICE DELEGATE| NC
 ```

@@ -49,9 +49,9 @@ Wave 6 — Stateless tools (no dependencies):
 |---------|------|----------|---------|-------|---------|-------------|
 | [Nubus](../services/nubus/spec.md) | OIDC (IdP) | PostgreSQL | RWX PVC | Redis | Apache-2.0 | — |
 | [Nextcloud](../services/nextcloud/spec.md) | SAML 2.0 | MariaDB | S3 | Redis | AGPL-3.0 | — |
-| [OpenCloud](../services/opencloud/spec.md) | SAML 2.0 | MariaDB | S3 | — | AGPL-3.0 | — |
+| [OpenCloud](../services/opencloud/spec.md) | OIDC | MariaDB | CephFS + S3 | Redis | Apache-2.0 | — |
 | [OX AppSuite](../services/ox-appsuite/spec.md) | SAML 2.0 | MySQL | RWX PVC | — | AGPL-3.0 | — |
-| [SOGo](../services/sogo/spec.md) | OIDC | MariaDB | — | Redis | LGPL-3.0 | — |
+| [SOGo](../services/sogo/spec.md) | OIDC | PostgreSQL | — | Memcached | LGPL-3.0 | — |
 | [Element](../services/element/spec.md) | OIDC | PostgreSQL | S3 | Redis | Apache-2.0 | — |
 | [Jitsi](../services/jitsi/spec.md) | OIDC | — | — | — | Apache-2.0 | BigBlueButton |
 | [BigBlueButton](../services/bigbluebutton/spec.md) | SAML 2.0 | PostgreSQL | RWX PVC | Redis | LGPL-3.0 | Jitsi |
@@ -76,8 +76,8 @@ Wave 6 — Stateless tools (no dependencies):
 
 | Method | Services | Spec |
 |--------|----------|------|
-| OIDC | Nubus, SOGo, Element, XWiki, Planka, Etherpad, Notes, TYPO3 | [OIDC](../auth/oidc/spec.md) |
-| SAML 2.0 | Nextcloud, OX AppSuite, OpenCloud, BigBlueButton, ILIAS, Moodle, BookStack, Zammad, OpenProject | [SAML](../auth/saml/spec.md) |
+| OIDC | Nubus, SOGo, OpenCloud, Element, XWiki, Planka, Etherpad, Notes, TYPO3 | [OIDC](../auth/oidc/spec.md) |
+| SAML 2.0 | Nextcloud, OX AppSuite, BigBlueButton, ILIAS, Moodle, BookStack, Zammad, OpenProject | [SAML](../auth/saml/spec.md) |
 | LDAP | LimeSurvey, Self-Service Password | [LDAP](../auth/ldap/spec.md) |
 | None | Draw.io, Excalidraw, Collabora, CryptPad | — |
 
@@ -89,7 +89,7 @@ Wave 6 — Stateless tools (no dependencies):
 | `nextcloud` | MariaDB | Nextcloud | `databases.nextcloud.*` |
 | `opendesk-opencloud` | MariaDB | OpenCloud | `databases.opendesk_opencloud.*` |
 | `oxappsuite` | MySQL | OX AppSuite | `databases.ox_appsuite.*` |
-| `sogo` | MariaDB | SOGo | `databases.sogo.*` |
+| `sogo` | PostgreSQL | SOGo | `databases.sogo.*` |
 | `element` | PostgreSQL | Element | `databases.element.*` |
 | `bigbluebutton` | PostgreSQL | BigBlueButton | `databases.bbb.*` |
 | `openproject` | PostgreSQL | OpenProject | `databases.openproject.*` |
@@ -120,6 +120,8 @@ Wave 6 — Stateless tools (no dependencies):
 | Service A | Service B | Reason |
 |-----------|-----------|--------|
 | Jitsi | BigBlueButton | Both provide video conferencing |
+| OpenCloud | Nextcloud | Both provide file sharing |
+| SOGo | OX AppSuite | Both provide groupware (email/calendar) |
 
 ## Health Check Catalog
 
@@ -162,6 +164,7 @@ graph TD
         PG[PostgreSQL]
         MY[MariaDB]
         RD[Redis]
+        MC[Memcached]
         S3[MinIO / S3]
     end
 
@@ -220,8 +223,8 @@ graph TD
     PG --> EL
     S3 --> EL
     NB --> SG
-    MY --> SG
-    RD --> SG
+    PG --> SG
+    MC --> SG
     PG --> XW
     NB --> OP
     PG --> OP

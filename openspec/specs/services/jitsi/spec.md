@@ -41,3 +41,11 @@ and SIP trunk are configured.
 - GIVEN Jigasi configured with a SIP connection
 - WHEN a participant dials the configured phone number
 - THEN the participant joins the meeting via audio-only
+
+## Depends On
+
+Keycloak (OIDC), Jitsi Keycloak Adapter
+
+## Integrates With
+
+Nubus Portal (tile)

@@ -38,3 +38,11 @@ Multiple users SHALL edit the same document simultaneously without conflicts.
 - WHEN both users edit simultaneously
 - THEN changes are merged in real-time by Collabora
 - AND no conflict resolution errors occur
+
+## Depends On
+
+Nextcloud (delegates office editing)
+
+## Integrates With
+
+Nextcloud (WOPI delegate for document editing)

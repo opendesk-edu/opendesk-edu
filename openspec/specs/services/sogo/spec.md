@@ -46,6 +46,14 @@ and sharing.
 - THEN the event is stored in PostgreSQL
 - AND the event is visible in SOGo's calendar view
 
+
+## Depends On
+
+Keycloak (OIDC), MariaDB, Redis, OpenLDAP
+
+## Integrates With
+
+Nubus Portal (tile), SMTP Relay (mail delivery)
 ## Component Reference
 
 | Property | Value |

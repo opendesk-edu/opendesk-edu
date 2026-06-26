@@ -23,6 +23,14 @@ Users SHALL create surveys, distribute them, and collect responses.
 - AND can submit responses
 - AND responses are stored in MariaDB
 
+
+## Depends On
+
+Keycloak (LDAP bind), MariaDB, OpenLDAP
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

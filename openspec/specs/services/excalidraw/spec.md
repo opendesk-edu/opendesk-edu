@@ -22,3 +22,11 @@ Excalidraw SHALL load and function without any authentication.
 - THEN the whiteboard loads
 - AND the user can draw, write, and share in real-time
 - AND NO data is persisted when the browser tab is closed
+
+## Depends On
+
+None (stateless)
+
+## Integrates With
+
+Nubus Portal (tile only — no data flow)

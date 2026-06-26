@@ -27,6 +27,14 @@ Zammad SHALL support ticket submission via email, chat, phone, and web form.
 - THEN Redis SHALL be available at `redis-headless:6379`
 - AND Zammad uses Redis for full-text search indexing
 
+
+## Depends On
+
+Keycloak (SAML 2.0), PostgreSQL, Redis, SMTP Relay
+
+## Integrates With
+
+Nubus Portal (tile), Nextcloud (file attachments via Intercom)
 ## Component Reference
 
 | Property | Value |

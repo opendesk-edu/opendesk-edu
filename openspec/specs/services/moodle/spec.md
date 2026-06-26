@@ -36,6 +36,14 @@ Moodle SHALL store course data, grades, and user preferences in PostgreSQL.
 - THEN they are stored in PostgreSQL
 - AND grades persist across pod restarts and upgrades
 
+
+## Depends On
+
+Keycloak (SAML 2.0), PostgreSQL, RWX PVC
+
+## Integrates With
+
+Nubus Portal (tile), Provisioning API (semester courses), HISinOne (enrollment webhooks)
 ## Component Reference
 
 | Property | Value |

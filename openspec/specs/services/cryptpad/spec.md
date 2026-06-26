@@ -28,6 +28,14 @@ encryption.
 - AND the document is encrypted end-to-end
 - AND server-side access to document content is not possible
 
+
+## Depends On
+
+None
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

@@ -21,3 +21,11 @@ Users SHALL create, edit, and share notes with real-time collaboration.
 - WHEN the user navigates to the Notes portal tile
 - THEN the user is authenticated via OIDC
 - AND can create and edit notes
+
+## Depends On
+
+Keycloak (OIDC), MinIO/S3
+
+## Integrates With
+
+Nubus Portal (tile)

@@ -32,6 +32,14 @@ Etherpad SHALL authenticate users via OIDC.
 - THEN the user is authenticated via OIDC
 - AND can create and edit pads
 
+
+## Depends On
+
+Keycloak (OIDC), PostgreSQL
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

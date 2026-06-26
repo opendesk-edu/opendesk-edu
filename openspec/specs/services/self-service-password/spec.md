@@ -29,6 +29,14 @@ and providing a new password meeting LDAP policy requirements.
 - THEN the change is rejected
 - AND an error message indicates the policy violation
 
+
+## Depends On
+
+OpenLDAP
+
+## Integrates With
+
+Nubus Portal (tile), Keycloak (user must have valid LDAP account)
 ## Component Reference
 
 | Property | Value |

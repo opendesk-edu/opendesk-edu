@@ -45,6 +45,14 @@ Element SHALL integrate Nordeck widgets for meeting room management.
 - WHEN meeting rooms are created or modified
 - THEN the Nordeck Meeting-Bot manages room state in Synapse
 
+
+## Depends On
+
+Keycloak (OIDC), PostgreSQL, MinIO/S3, Redis, Synapse (Matrix)
+
+## Integrates With
+
+Intercom Service (silent login, navigation), Nextcloud (file sharing via Intercom)
 ## Component Reference
 
 | Property | Value |

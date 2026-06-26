@@ -50,6 +50,14 @@ search-as-you-type in file sharing dialogs.
 - THEN Nextcloud creates a contact in OX App Suite via the Contacts API
 - AND the contact is available in the user's address book
 
+
+## Depends On
+
+Keycloak (SAML 2.0), MySQL, RWX PVC
+
+## Integrates With
+
+Nextcloud (Filepicker via Intercom), Intercom Service (silent login), Nubus Portal (tile), SMTP Relay (mail delivery)
 ## Component Reference
 
 | Property | Value |

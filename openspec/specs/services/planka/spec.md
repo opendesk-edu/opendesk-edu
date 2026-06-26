@@ -22,6 +22,14 @@ Users SHALL create boards with lists and cards for project tracking.
 - THEN the user is authenticated via OIDC (client: `planka`)
 - AND can create boards, add lists, and manage cards
 
+
+## Depends On
+
+Keycloak (OIDC, client: planka), PostgreSQL
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

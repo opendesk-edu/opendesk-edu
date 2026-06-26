@@ -30,6 +30,14 @@ persistence.
 - THEN the diagram is NOT stored on the server
 - AND the user MUST save or export before closing
 
+
+## Depends On
+
+None (stateless)
+
+## Integrates With
+
+Nubus Portal (tile only — no data flow)
 ## Component Reference
 
 | Property | Value |

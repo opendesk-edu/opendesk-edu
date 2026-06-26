@@ -32,6 +32,14 @@ BookStack SHALL store all content in MariaDB.
 - THEN content is stored in MariaDB
 - AND persists across pod restarts
 
+
+## Depends On
+
+Keycloak (SAML 2.0), MariaDB
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

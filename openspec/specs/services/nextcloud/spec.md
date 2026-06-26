@@ -61,6 +61,14 @@ of `initialDelaySeconds` to prevent PHP-FPM overload and container restart loops
 - AND PHP-FPM load remains at 1x (not 10x)
 - AND the container does not enter a restart loop
 
+
+## Depends On
+
+Keycloak (SAML 2.0), PostgreSQL, Redis, MinIO/S3
+
+## Integrates With
+
+OX AppSuite (Filepicker via Intercom), OpenProject (file store), Collabora (office delegate), Element (file sharing via Intercom)
 ## Component Reference
 
 | Property | Value |

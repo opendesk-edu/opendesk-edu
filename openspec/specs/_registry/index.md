@@ -8,6 +8,13 @@ SPDX-License-Identifier: Apache-2.0
 Shared reference for all services, their dependencies, configuration keys,
 and deployment ordering. This is the single source of truth for component metadata.
 
+## Related References
+
+- [Service Interconnection Matrix](interconnection-matrix.md) — runtime dependencies, data flows, shared infrastructure
+- [Cross-Service Workflows](../integrations/cross-service-workflows/spec.md) — end-to-end user workflows spanning services
+- [Test Mapping](test-mapping.md) — spec requirements mapped to test files
+- [Implementation Reference](implementation-reference.md) — Helm chart/template paths
+
 ## Deployment Order
 
 Services MUST be deployed in this order. Dependencies within the same wave

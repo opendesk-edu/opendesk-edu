@@ -41,6 +41,14 @@ as clickable tiles after a single Keycloak authentication.
 The platform SHALL provide a stripped-down UMC (Univention Management Console)
 for IAM administrators to manage users, groups, and permissions in OpenLDAP.
 
+
+## Depends On
+
+Keycloak (OIDC), OpenLDAP, PostgreSQL, Redis
+
+## Integrates With
+
+Portal tiles for all services, OX Connector for provisioning, Intercom Service for cross-app SSO
 ## Component Reference
 
 | Property | Value |

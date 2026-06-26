@@ -26,6 +26,14 @@ TYPO3 CMS SHALL authenticate editors and administrators via OIDC.
 
 TYPO3 SHALL store all content and configuration in MariaDB.
 
+
+## Depends On
+
+Keycloak (OIDC), MariaDB
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

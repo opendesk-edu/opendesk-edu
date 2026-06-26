@@ -53,6 +53,14 @@ BigBlueButton and Jitsi SHALL NOT be deployed simultaneously.
 - WHEN the environment is applied
 - THEN exactly one video conferencing service is deployed
 
+
+## Depends On
+
+Keycloak (SAML 2.0), PostgreSQL, Redis, RWX PVC
+
+## Integrates With
+
+Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

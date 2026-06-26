@@ -59,6 +59,14 @@ ILIAS cron jobs SHALL retry on transient database connection errors.
 - THEN it retries up to 5 times with 10-second sleep intervals
 - AND succeeds if the database becomes available within the retry window
 
+
+## Depends On
+
+Keycloak (SAML 2.0), PostgreSQL, MinIO/S3
+
+## Integrates With
+
+Nubus Portal (tile), Provisioning API (semester courses), HISinOne (enrollment webhooks)
 ## Component Reference
 
 | Property | Value |

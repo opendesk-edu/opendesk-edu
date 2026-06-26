@@ -44,6 +44,14 @@ Job and Mapped Groups Daily Updater.
 - THEN those users are imported into XWiki
 - AND mapped groups are updated
 
+
+## Depends On
+
+Keycloak (OIDC), PostgreSQL, OpenLDAP
+
+## Integrates With
+
+Intercom Service (newsfeed), Nubus Portal (tile), Nubus Portal (newsfeed via Intercom)
 ## Component Reference
 
 | Property | Value |

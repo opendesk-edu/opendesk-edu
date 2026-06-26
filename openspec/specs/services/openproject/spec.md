@@ -45,6 +45,14 @@ OpenProject SHALL store file attachments in S3-compatible object storage.
 - WHEN the upload completes
 - THEN the file is stored in the configured S3 bucket (`openproject`)
 
+
+## Depends On
+
+Keycloak (SAML 2.0), PostgreSQL, MinIO/S3, SMTP Relay
+
+## Integrates With
+
+Nextcloud (file store via bootstrap job), Nubus Portal (tile), OpenLDAP (LDAP group sync)
 ## Component Reference
 
 | Property | Value |

@@ -37,6 +37,14 @@ OpenCloud SHALL authenticate users via OIDC.
 - THEN the user is authenticated via OIDC
 - AND file storage is accessible
 
+
+## Depends On
+
+Keycloak (SAML 2.0), MariaDB, MinIO/S3
+
+## Integrates With
+
+OX AppSuite (WebDAV), Nubus Portal (tile)
 ## Component Reference
 
 | Property | Value |

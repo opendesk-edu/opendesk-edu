@@ -8,7 +8,8 @@ SPDX-License-Identifier: Apache-2.0
 ## Purpose
 
 Lightweight hand-drawn whiteboard for brainstorming and visual collaboration.
-Requires NO authentication and persists NO data server-side.
+Requires NO authentication and persists NO data server-side. Users can
+draw, write text, add shapes, and share via link (data encoded in URL hash).
 
 ## Requirements
 
@@ -20,13 +21,23 @@ Excalidraw SHALL load and function without any authentication.
 - GIVEN any user
 - WHEN the user navigates to the Excalidraw portal tile
 - THEN the whiteboard loads
-- AND the user can draw, write, and share in real-time
+- AND the user can draw, write, and add shapes
 - AND NO data is persisted when the browser tab is closed
 
 ## Depends On
 
-None (stateless)
+HAProxy Ingress, Nubus Portal (tile)
 
 ## Integrates With
 
 Nubus Portal (tile only — no data flow)
+
+## Component Reference
+
+| Property | Value |
+|---------|-------|
+| Auth | None (stateless) |
+| Database | None |
+| Storage | None |
+| Cache | None |
+| License | MIT |

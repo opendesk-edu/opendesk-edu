@@ -8,34 +8,53 @@ SPDX-License-Identifier: Apache-2.0
 ## Purpose
 
 Survey platform for course evaluations, academic research, and institutional
-feedback, with LDAP bind authentication and MariaDB backend.
+feedback. Authenticated via LDAP bind (NOT OIDC), with MariaDB backend
+for survey definitions and responses.
 
 ## Requirements
 
 ### Requirement: Survey creation and response collection
 
-Users SHALL create surveys, distribute them, and collect responses.
+Authenticated users SHALL create surveys, distribute them, and collect
+responses.
+
+#### Scenario: Instructor creates survey
+- GIVEN an instructor with an LDAP account
+- WHEN the instructor logs in via LDAP bind
+- THEN the instructor can create surveys, add questions, and configure
+  response collection settings
 
 #### Scenario: Student completes survey
-- GIVEN a student with an LDAP account
-- WHEN the student accesses an active LimeSurvey survey
-- THEN the student is authenticated via LDAP bind
-- AND can submit responses
-- AND responses are stored in MariaDB
+- GIVEN a student with an LDAP account accessing an active survey
+- WHEN the student submits responses
+- THEN responses are stored in MariaDB
+- AND the survey remains anonymous unless configured otherwise
 
+### Requirement: LDAP authentication
+
+LimeSurvey SHALL authenticate via LDAP bind using the OpenLDAP directory.
+
+#### Scenario: LDAP bind authentication
+- GIVEN a user with an LDAP account
+- WHEN the user logs in
+- THEN LimeSurvey performs an LDAP bind to verify credentials
+- AND the user's profile is imported from LDAP
 
 ## Depends On
 
-Keycloak (LDAP bind), MariaDB, OpenLDAP
+OpenLDAP (LDAP bind), MariaDB (`limesurvey` DB), HAProxy Ingress, Nubus Portal (tile)
 
 ## Integrates With
 
 Nubus Portal (tile)
+
 ## Component Reference
 
 | Property | Value |
-|:---------|:------|
+|---------|-------|
 | Auth | LDAP bind |
-| Database | MariaDB (`limesurvey` DB, `limesurvey_user`) |
+| Database | MariaDB (`limesurvey` DB, `limesurvey` user) |
+| Storage | None |
+| Cache | None |
 | License | GPL-2.0 |
 | Config | `databases.limesurvey.*` |

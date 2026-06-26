@@ -7,8 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 
 ## Purpose
 
-Enterprise content management system for institutional websites, department pages,
-and public-facing content, with OIDC authentication and MariaDB backend.
+Enterprise content management system for institutional websites, department
+pages, and public-facing content. Authenticated via OIDC with MariaDB
+backend. Supports multi-site setups, extension ecosystem, and rich text
+editing.
 
 ## Requirements
 
@@ -26,19 +28,27 @@ TYPO3 CMS SHALL authenticate editors and administrators via OIDC.
 
 TYPO3 SHALL store all content and configuration in MariaDB.
 
+#### Scenario: Content persistence
+- GIVEN an editor creating or modifying content
+- WHEN changes are saved
+- THEN content is stored in MariaDB
+- AND persists across pod restarts
 
 ## Depends On
 
-Keycloak (OIDC), MariaDB
+Keycloak (OIDC), MariaDB (`typo3` DB), HAProxy Ingress, Nubus Portal (tile)
 
 ## Integrates With
 
 Nubus Portal (tile)
+
 ## Component Reference
 
 | Property | Value |
-|---------|:------|
+|---------|-------|
 | Auth | OIDC |
-| Database | MariaDB (`typo3` DB, `typo3_user`) |
+| Database | MariaDB (`typo3` DB, `typo3` user) |
+| Storage | None |
+| Cache | None |
 | License | Apache-2.0 |
 | Config | `databases.typo3.*` |

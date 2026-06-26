@@ -45,12 +45,12 @@ mechanism, and error codes.
 
 ```json
 {
-  "access_token": "eyJhbGciOiJSUzI1NiIs...",
+  "access_token": "<opaque-access-token>",
   "token_type": "Bearer",
   "expires_in": 300,
-  "refresh_token": "dGhpcyBpcyBhIHJlZnJlc2g...",
+  "refresh_token": "<opaque-refresh-token>",
   "refresh_expires_in": 1800,
-  "id_token": "eyJhbGciOiJSUzI1NiIs..."
+  "id_token": "<opaque-id-token>"
 }
 ```
 

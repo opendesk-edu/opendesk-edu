@@ -49,6 +49,18 @@ configurable interval (default: twice daily).
 - WHEN group sync runs
 - THEN those users are NOT granted access
 
+### Requirement: Correct probe timing
+
+Nextcloud SHALL configure readiness and startup probes with `periodSeconds` instead
+of `initialDelaySeconds` to prevent PHP-FPM overload and container restart loops.
+
+#### Scenario: Probe timing prevents restart loop
+- GIVEN Nextcloud deployed with probe overrides
+- WHEN the readiness probe fires
+- THEN it uses `periodSeconds` semantics (not `initialDelaySeconds`)
+- AND PHP-FPM load remains at 1x (not 10x)
+- AND the container does not enter a restart loop
+
 ## Component Reference
 
 | Property | Value |

@@ -5,8 +5,36 @@ SPDX-License-Identifier: Apache-2.0
 
 # Component Registry
 
-Shared reference for all services, their dependencies, and configuration keys.
-This is the single source of truth for component metadata.
+Shared reference for all services, their dependencies, configuration keys,
+and deployment ordering. This is the single source of truth for component metadata.
+
+## Deployment Order
+
+Services MUST be deployed in this order. Dependencies within the same wave
+MAY be deployed in parallel.
+
+```
+Wave 0 — Infrastructure (no app depends on these):
+  Storage classes, Ingress controllers, Cert-manager, Keycloak, PostgreSQL, MariaDB, Redis, MinIO
+
+Wave 1 — Core platform (depends on Wave 0 databases/cache/storage):
+  Nubus (provides IAM + Portal), OpenCloud (provides WebDAV/S3)
+
+Wave 2 — Primary services (depend on Wave 1 for auth/portal):
+  OX AppSuite, Nextcloud, SOGo, Element, XWiki, OpenProject
+
+Wave 3 — Collaboration add-ons (depend on Wave 2 services):
+  Collabora (Nextcloud delegate), CryptPad (stateless), Jitsi, Notes, Planka
+
+Wave 4 — Education services (depend on Wave 0-1 infrastructure):
+  ILIAS, Moodle, BigBlueButton, Etherpad, BookStack
+
+Wave 5 — Support services (depend on Wave 0-1):
+  Zammad, LimeSurvey, TYPO3 CMS, Self-Service Password
+
+Wave 6 — Stateless tools (no dependencies):
+  Draw.io, Excalidraw
+```
 
 ## Service Index
 
@@ -70,14 +98,15 @@ This is the single source of truth for component metadata.
 
 ## Shared Storage
 
-| Bucket/Claim | Type | Services |
-|-------------|------|----------|
-| `nextcloud-data` | S3 | Nextcloud, Element |
-| `opendesk-opencloud-data` | CephFS RWX | OpenCloud |
-| `ilias-data` | S3 | ILIAS |
-| `bbb-recordings` | CephFS RWX | BigBlueButton |
-| `moodle-data` | CephFS RWX | Moodle |
-| `seaweedfs-all-in-one-data` | CephFS RWX | SeaweedFS |
+| Bucket/Claim | Type | Access | Services | Backup |
+|-------------|------|--------|----------|--------|
+| `nextcloud-data` | S3 | RWX | Nextcloud, Element | k8up (RWX) |
+| `opendesk-opencloud-data` | CephFS | RWX | OpenCloud | k8up (RWX) |
+| `ilias-data` | S3 | RWX | ILIAS | k8up (RWX) |
+| `bbb-recordings` | CephFS | RWX | BigBlueButton | k8up (RWX) |
+| `moodle-data` | CephFS | RWX | Moodle | k8up (RWX) |
+| `seaweedfs-all-in-one-data` | CephFS | RWX | SeaweedFS | k8up (RWX) |
+| Database PVCs (29) | Ceph RBD | RWO | Per-service DBs | Excluded (`k8up.io/exclude: "true"`) |
 
 ## Mutual Exclusivity
 

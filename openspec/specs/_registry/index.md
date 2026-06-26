@@ -113,3 +113,135 @@ Wave 6 — Stateless tools (no dependencies):
 | Service A | Service B | Reason |
 |-----------|-----------|--------|
 | Jitsi | BigBlueButton | Both provide video conferencing |
+
+## Health Check Catalog
+
+| Service | Readiness Path | Liveness Path | Startup Path | Port |
+|---------|---------------|---------------|-------------|------|
+| Nubus | `/univention/portal/` | `/univention/portal/` | — | 8080 |
+| Nextcloud | `/status.php` | `/status.php` | `/status.php` | 8080 |
+| OpenCloud | `/status.php` | `/status.php` | — | 8080 |
+| OX AppSuite | `/appsuite/api` | `/appsuite/api` | — | 8080 |
+| SOGo | `/SOGo/index.html` | — | — | 20080 |
+| Element | — | — | — | 80 |
+| Jitsi | — | — | — | — |
+| BigBlueButton | — | — | — | — |
+| OpenProject | `/api/v3/status` | `/api/v3/status` | — | 8080 |
+| XWiki | `/xwiki/bin/view/Main/WebHome` | `/xwiki/bin/view/Main/WebHome` | — | 8080 |
+| Collabora | — | — | — | 9980 |
+| CryptPad | `/cryptpad/` | `/cryptpad/` | — | 3000 |
+| Notes | — | — | — | 3000 |
+| ILIAS | `/ilias/` | — | — | 80 |
+| Moodle | `/moodle/` | — | — | 8080 |
+| Etherpad | `/` | — | — | 9001 |
+| BookStack | `/` | — | — | 8080 |
+| Planka | `/api/health` | `/api/health` | — | 3000 |
+| Zammad | `/api/v1/health_check` | — | — | 3000 |
+| LimeSurvey | — | — | — | 80 |
+| Draw.io | — | — | — | 8080 |
+| Excalidraw | — | — | — | 80 |
+| Self-Service Password | `/` | — | — | 80 |
+| TYPO3 CMS | `/` | — | — | 80 |
+
+## Deployment Dependency Graph
+
+```mermaid
+graph TD
+    subgraph Wave 0 [Infrastructure]
+        SC[Storage Classes]
+        IC[Ingress Controller]
+        CM[Cert Manager]
+        KC[Keycloak]
+        PG[PostgreSQL]
+        MY[MariaDB]
+        RD[Redis]
+        S3[MinIO / S3]
+    end
+
+    subgraph Wave 1 [Core Platform]
+        NB[Nubus]
+        OC[OpenCloud]
+    end
+
+    subgraph Wave 2 [Primary Services]
+        OX[OX AppSuite]
+        NC[Nextcloud]
+        SG[SOGo]
+        EL[Element]
+        XW[XWiki]
+        OP[OpenProject]
+    end
+
+    subgraph Wave 3 [Collaboration Add-ons]
+        CL[Collabora]
+        CP[CryptPad]
+        JT[Jitsi]
+        NT[Notes]
+        PK[Planka]
+    end
+
+    subgraph Wave 4 [Education Services]
+        IL[ILIAS]
+        MD[Moodle]
+        BB[BigBlueButton]
+        EP[Etherpad]
+        BS[BookStack]
+    end
+
+    subgraph Wave 5 [Support Services]
+        ZM[Zammad]
+        LS[LimeSurvey]
+        T3[TYPO3 CMS]
+        SP[Self-Service Password]
+    end
+
+    subgraph Wave 6 [Stateless Tools]
+        DI[Draw.io]
+        EX[Excalidraw]
+    end
+
+    KC --> NB
+    PG --> NB
+    RD --> NB
+    MY --> OC
+    S3 --> OC
+    NB --> OX
+    NB --> NC
+    MY --> NC
+    RD --> NC
+    S3 --> NC
+    PG --> EL
+    S3 --> EL
+    NB --> SG
+    MY --> SG
+    RD --> SG
+    PG --> XW
+    NB --> OP
+    PG --> OP
+    S3 --> OP
+    NC --> CL
+    NB --> CP
+    KC --> JT
+    KC --> NT
+    KC --> PK
+    PG --> PK
+    NB --> IL
+    PG --> IL
+    S3 --> IL
+    NB --> MD
+    PG --> MD
+    KC --> BB
+    PG --> BB
+    RD --> BB
+    KC --> EP
+    PG --> EP
+    KC --> BS
+    MY --> BS
+    NB --> ZM
+    PG --> ZM
+    RD --> ZM
+    MY --> LS
+    KC --> T3
+    MY --> T3
+    MY --> SP
+

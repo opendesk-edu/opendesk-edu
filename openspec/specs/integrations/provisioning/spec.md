@@ -78,3 +78,30 @@ university semester cycles.
 - WHEN the archival process runs
 - THEN course content is frozen
 - AND access is restricted to read-only for the archived semester
+
+### Requirement: Enrollment synchronization
+
+The platform SHALL synchronize student enrollments from the campus management
+system (HISinOne) to LMS course rosters.
+
+#### Scenario: Student enrolls via campus system
+- GIVEN a student enrolled in a course in HISinOne
+- WHEN the enrollment webhook fires
+- THEN the student is added to the corresponding ILIAS/Moodle course
+- AND the student can immediately access course materials
+
+#### Scenario: Student disenrolls
+- GIVEN a student who drops a course in HISinOne
+- WHEN the disenrollment webhook fires
+- THEN the student is removed from the LMS course roster
+- AND access to course materials is revoked
+
+### Requirement: Audit trail
+
+All provisioning actions SHALL be logged with timestamp, actor, and target.
+
+#### Scenario: Deprovisioning audit
+- GIVEN a user being deprovisioned
+- WHEN the deprovisioning process runs
+- THEN an audit entry is created with the user ID, timestamp, and action
+- AND the audit entry is queryable via the provisioning API

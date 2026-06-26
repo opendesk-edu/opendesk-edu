@@ -58,6 +58,38 @@ newsfeed via the `/wiki` endpoint with silent login.
 - THEN the Intercom Service calls XWiki via silent login
 - AND XWiki blog entries are displayed in the portal
 
+### Requirement: Shared secret authentication
+
+Frontend services SHALL authenticate to the Intercom Service using a shared
+secret passed via request header.
+
+#### Scenario: Unauthenticated request rejected
+- GIVEN a request to the Intercom Service without the shared secret
+- WHEN the request arrives
+- THEN the service returns HTTP 401 Unauthorized
+
+#### Scenario: Invalid secret rejected
+- GIVEN a request with an incorrect shared secret
+- WHEN the request arrives
+- THEN the service returns HTTP 403 Forbidden
+
+### Requirement: Token caching via Redis
+
+The Intercom Service SHALL cache Keycloak tokens in Redis to reduce
+authentication overhead for repeated cross-app access.
+
+#### Scenario: Cached token reuse
+- GIVEN a user who previously authenticated via Intercom
+- WHEN the token is still valid (within Keycloak's token TTL)
+- THEN the Intercom Service returns the cached token
+- AND no additional Keycloak request is made
+
+#### Scenario: Token refresh
+- GIVEN a cached token that has expired
+- WHEN a cross-app request arrives
+- THEN the Intercom Service performs a fresh silent login
+- AND updates the Redis cache with the new token
+
 ## Component Reference
 
 | Property | Value |

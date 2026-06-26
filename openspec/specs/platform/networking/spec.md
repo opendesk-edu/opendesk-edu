@@ -76,6 +76,17 @@ CNAME resolution SHALL use `hostAliases` with the ingress IP.
 - THEN CoreDNS returns SERVFAIL
 - AND the affected service SHALL be configured with `hostAliases` pointing to the ingress IP
 
+### Requirement: Proxy hostname resolution
+
+The proxy hostname `www-proxy2.uni-marburg.de` resolves via DNS, but the
+alias `proxy02.hrz.uni-marburg.de` does NOT.
+
+#### Scenario: Invalid proxy alias
+- GIVEN a pod configured with `proxy02.hrz.uni-marburg.de` as proxy
+- WHEN the pod attempts DNS resolution
+- THEN resolution fails
+- AND the pod SHALL use `www-proxy2.uni-marburg.de` instead
+
 ## DNS Configuration
 
 - Domain: `*.opendesk.hrz.uni-marburg.de` → `192.168.3.201` (ingress IP)

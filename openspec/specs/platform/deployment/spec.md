@@ -68,6 +68,31 @@ enabling dynamic configuration from environment variables.
 The platform SHALL use Helm >= 3.17.3. Helm 3.18.0 and 4.x are NOT supported
 due to known bugs and breaking changes.
 
+## Known Operational Constraints
+
+### Requirement: MariaDB password synchronization
+
+Helm-deployed MariaDB passwords may differ from passwords set during initial
+deployment. On upgrades, the Helm-managed password SHALL be checked and synced
+via `ALTER USER`.
+
+#### Scenario: Password mismatch after upgrade
+- GIVEN a MariaDB instance deployed via Helm with a generated password
+- WHEN the Helm release is upgraded with a new generated password
+- THEN the database retains the original password
+- AND the operator MUST run `ALTER USER` to sync the Helm-managed value
+
+### Requirement: Transient connection failure resilience
+
+Newly created pods MAY experience transient `Connection refused` errors on
+first database connection attempt.
+
+#### Scenario: Retry on first connection
+- GIVEN a newly created pod (e.g., ILIAS cronjob) connecting to MariaDB
+- WHEN the first connection attempt fails with `SQLSTATE[HY000] [2002] Connection refused`
+- THEN the application SHALL retry with a backoff
+- AND the connection SHALL succeed within 5 attempts (10s sleep between retries)
+
 ## Version Constraints
 
 | Tool | Minimum Version | Excluded |

@@ -127,6 +127,64 @@ Nubus Portal (tile, OIDC redirect), Postfix (email notifications), MinIO (note a
 | Config | `databases.notes.*`, `ai.*`, `helmfile/apps/notes/values.yaml.gotmpl` |
 | Chart | Upstream `notes` (OCI: `opencode.de`) |
 | Backend image | `runAsUser: 1001`, `readOnlyRootFilesystem: true` |
+
+## SLO
+
+**Tier**: Standard (collaborative note-taking, not critical for operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <400ms (note load) | Nginx access log analysis |
+| **Latency (P95)** | <200ms (real-time sync) | Yjs WebSocket metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Nginx access log analysis |
+| **AI Service Success** | >95% (when configured) | AI endpoint metrics |
+
+**Alerts**:
+- Notes 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- WebSocket connection failures >5% for 5 minutes → P2 alert
+- OIDC authentication failures >5% for 5 minutes → P2 alert
+- AI service failures >10% for 15 minutes → P3 alert (if AI enabled)
+
+**Capacity**:
+- 1,000 concurrent users
+- 5,000 notes created per day
+- 500 concurrent real-time collaboration sessions
+- Database: 2 GB (typical), 20 GB (large institution)
+- S3 attachments: 100 GB (typical), 1 TB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Daily full backup
+- **S3 attachments**: Daily snapshot, 30-day retention
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. PostgreSQL database restore - 15 min
+2. S3 attachment verification - 10 min
+3. Backend (Django) deployment - 10 min
+4. Frontend (React) deployment - 5 min
+5. Y-Provider collaboration service deployment - 5 min
+6. OIDC client configuration verification - 5 min
+7. Smoke tests (create note, edit, real-time sync) - 10 min
+8. User access restoration - 15 min
+
+**Critical Data**:
+- Notes content and structure
+- Real-time collaboration state (Yjs)
+- User accounts and permissions
+- AI integration configuration (if enabled)
+- S3 attachments
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify note integrity
+- **S3 attachment loss**: Restore from snapshot, verify checksums
+- **Y-Provider failure**: Redeploy collaboration service, verify WebSocket connectivity
+- **Complete failure**: Redeploy all 3 components from GitOps, restore DB + attachments, re-register OIDC client
 | Frontend image | `runAsUser: 1000`, `readOnlyRootFilesystem: true` |
 | Y-Provider image | `runAsUser: 1001`, `readOnlyRootFilesystem: true` |
 | Replicas | `replicas.notesBackend` (backend), 1 (frontend), 1 (y-provider) |

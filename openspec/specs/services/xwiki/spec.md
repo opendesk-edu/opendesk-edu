@@ -162,6 +162,63 @@ Nubus Portal (central navigation, tile), Intercom Service (newsfeed), OpenLDAP (
 | Cache | None |
 | License | LGPL-2.1 |
 | Config | `databases.xwiki.*`, `ldap.*`, `secrets.keycloak.clientSecret.xwiki`, `helmfile/apps/xwiki/values.yaml.gotmpl` |
+
+## SLO
+
+**Tier**: Standard (knowledge management, not critical for operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (page load) | Tomcat access log analysis |
+| **Latency (P95)** | <300ms (search) | XWiki search metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Tomcat access log analysis |
+| **SSO Success** | >99% (OIDC auth) | Keycloak event log |
+
+**Alerts**:
+- XWiki 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- OIDC authentication failures >5% for 5 minutes → P2 alert
+- LDAP sync failures >3 consecutive → P3 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 500 concurrent users
+- 10,000 pages accessed per day
+- 5,000 concurrent readers
+- Database: 5 GB (typical), 50 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL/MariaDB): Daily full backup
+- **RWO PVC** (attachments, skins): Daily snapshot via k8up
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. Database restore (PostgreSQL/MariaDB) - 20 min
+2. RWO PVC restore - 10 min
+3. XWiki application deployment - 15 min
+4. OIDC client configuration verification - 5 min
+5. LDAP sync verification - 5 min
+6. Smoke tests (login, view page, edit, search) - 10 min
+7. User access restoration - 15 min
+
+**Critical Data**:
+- Wiki pages and content
+- User accounts and permissions
+- LDAP group synchronization state
+- Attachments and skins (RWO PVC)
+- OIDC client configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify page content integrity
+- **RWO PVC loss**: Restore from snapshot, verify attachment checksums
+- **OIDC misconfiguration**: Re-register client in Keycloak, verify SSO flow
+- **LDAP sync broken**: Verify LDAP connectivity, re-run user import
+- **Complete failure**: Redeploy from GitOps, restore DB + PVC, verify all integrations
 | Chart | Upstream `xwiki` (OCI: `opencode.de`) |
 | Image | Two variants: `xwiki-mariadb` and `xwiki-postgres` |
 | Security | `runAsUser: 100`, `runAsGroup: 101`, `capabilities: drop ALL` |

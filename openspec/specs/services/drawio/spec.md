@@ -13,6 +13,12 @@ persists **NO data server-side**. Users must export or save diagrams locally
 or to external storage (Nextcloud, Git repositories) before closing the
 browser tab.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Stateless diagram editor deployment, client-side rendering, public access (no authentication), export to multiple formats (PNG/JPEG/SVG/PDF)
+- ❌ **Out of scope**: Persistent diagram storage (use Nextcloud, Git, etc.), real-time collaboration (use Miro, Excalidraw), authentication/authorization (public access only), server-side diagram processing (client-side JavaScript only)
+
 ## Non-Goals
 
 - Persistent diagram storage (use Nextcloud, Git repositories, etc.)

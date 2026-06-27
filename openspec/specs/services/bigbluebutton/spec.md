@@ -16,6 +16,12 @@ BigBlueButton uses a separate BBB backend server for actual conferencing
 (WebRTC, media processing), while Greenlight provides the web management
 interface for room creation, scheduling, and recording management.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Greenlight web interface deployment, SAML 2.0 authentication via Shibboleth SP, Docker image integration, room creation, recording management
+- ❌ **Out of scope**: BBB backend server deployment (managed separately), standard video conferencing (see Jitsi), GPU-accelerated transcription (planned future)
+
 ## Non-Goals
 
 - Standard video conferencing (see `../jitsi/spec.md`)

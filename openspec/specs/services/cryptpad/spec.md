@@ -13,6 +13,12 @@ application layer — the server cannot read document content. Supports diagram
 editing (diagram pad type) with registration restricted to authenticated access
 only.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: End-to-end encrypted diagram editing via Nextcloud integration, authenticated access (registration restricted), client-side encryption, document persistence via Nextcloud
+- ❌ **Out of scope**: Standalone deployment (integration-only), rich text/code/slide/spreadsheet pads (diagram only), public pad sharing (registration restricted), server-side document storage (Nextcloud-managed)
+
 ## Non-Goals
 
 - Standalone document editing outside Nextcloud (integration-only deployment)

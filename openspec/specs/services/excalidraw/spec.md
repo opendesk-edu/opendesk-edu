@@ -12,6 +12,12 @@ Requires **NO authentication** and persists **NO data server-side**. Users can
 draw, write text, add shapes, and share via link (whiteboard data encoded in
 URL fragment/hash). Stateful: only session state in client-side memory.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Hand-drawn style whiteboard editor, stateless deployment (no authentication), client-side rendering, shareable via URL fragment/hash encoding, single-user drawing sessions
+- ❌ **Out of scope**: Persistent whiteboard storage (use CryptPad, Miro, etc.), multi-user real-time collaboration (use Draw.io, Miro, etc.), authentication/authorization (public access only)
+
 ## Non-Goals
 
 - Persistent whiteboard storage (use CryptPad, Miro, etc.)

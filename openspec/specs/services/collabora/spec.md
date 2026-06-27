@@ -19,6 +19,12 @@ metrics/monitoring endpoints. Security features include document workspace
 isolation via Linux user namespaces, CAP_CHOWN/CAP_FOWNER/CAP_SYS_CHROOT
 for filesystem sandboxing, and admin URL blocking at the ingress level.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: WOPI protocol integration with Nextcloud and OpenCloud, collaborative editing of ODF/OOXML/PDF/text documents, document sandboxing via Linux user namespaces, admin URL ingress blocking, macro execution security
+- ❌ **Out of scope**: Standalone Collabora deployment (always WOPI-delegated), document conversion as standalone service (always via WOPI client), real-time multi-user editing (within WOPI context)
+
 ## Non-Goals
 
 - Standalone Collabora deployment (always accessed via WOPI delegate)

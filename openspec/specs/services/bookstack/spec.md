@@ -12,6 +12,12 @@ materials, SOPs, and documentation. Authenticated via SAML 2.0 (Keycloak as
 Shibboleth SP) with MariaDB backend. Supports rich text editing, image uploads,
 WYSIWYG editing, and role-based access control (Admin, Editor, Viewer).
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: BookStack deployment, SAML 2.0 authentication, MariaDB backend, rich text editing, role-based access control (Admin/Editor/Viewer), Book→Chapter→Page hierarchy
+- ❌ **Out of scope**: Alternative documentation platforms (toBit, Docusaurus, etc.), multi-site knowledge bases (single-tenant only)
+
 ## Non-Goals
 
 - Alternative documentation platforms (use toBit, Docusaurus, etc.)
@@ -118,6 +124,7 @@ SAML-authenticated users are assigned a default role on first login (typically
 |-----------|---------|----------|---------|
 | BookStack Web | PHP-FPM backend (nginx/Apache) | 1 | RWO PVC (MariaDB data) |
 | MariaDB | Content storage | 1 (StatefulSet) | RWO PVC (2Gi) |
+| Chart | `helmfile/charts/bookstack/` (local chart) |
 
 ## Security Context
 

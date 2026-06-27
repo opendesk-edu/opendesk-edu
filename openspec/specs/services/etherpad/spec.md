@@ -12,6 +12,12 @@ editing sessions. Uses operational transform (OT) algorithm for conflict-free
 concurrent editing. Authenticated via OIDC with embedded PostgreSQL for pad
 metadata and content.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Real-time collaborative text editing via OT algorithm, OIDC authentication, PostgreSQL backend for pad metadata/content, Markdown support with limited formatting
+- ❌ **Out of scope**: Alternative collaborative editing platforms (CryptPad, HedgeDoc, etc.), rich text editing beyond Markdown (Etherpad supports limited formatting), version control (pad history only)
+
 ## Non-Goals
 
 - Alternative collaborative editing platforms (use CryptPad, HedgeDoc, etc.)
@@ -108,6 +114,7 @@ Etherpad SHALL support limited Markdown-style formatting:
 |-----------|---------|----------|---------|
 | Etherpad Web | Node.js backend (Express) + frontend | 1 | RWO PVC (PostgreSQL data) |
 | PostgreSQL | Pad content and metadata storage | 1 (StatefulSet) | RWO PVC (10Gi) |
+| Chart | `helmfile/charts/etherpad/` (local chart) |
 
 ## Security Context
 

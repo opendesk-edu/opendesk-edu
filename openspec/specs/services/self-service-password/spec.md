@@ -12,6 +12,12 @@ their OpenLDAP directory password without helpdesk intervention. Users
 authenticate with their current LDAP credentials and set a new password meeting
 LDAP policy requirements.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: LTB Self-Service Password deployment, LDAP password reset via current credential authentication, LDAP policy enforcement, OpenLDAP directory integration, web-based password change interface
+- ❌ **Out of scope**: Keycloak password reset (SSP changes LDAP password only), multi-factor authentication for password resets, password synchronization between LDAP and Keycloak
+
 ## Non-Goals
 
 - Keycloak password reset (SSP changes LDAP password only — Keycloak

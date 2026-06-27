@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
-SP-License-Identifier: Apache-2.0
+SPDX-License-Identifier: Apache-2.0
 -->
 
 # Dovecot Postfix Mail Infrastructure
@@ -10,6 +10,12 @@ SP-License-Identifier: Apache-2.0
 Dovecot and Postfix provide email services for the openDesk Edu platform,
 enabling users to send and receive emails through SOGo integration. This spec
 defines their authentication, storage, delivery, and integration requirements.
+
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Dovecot IMAP server, Postfix SMTP server, email storage and delivery infrastructure, SOGo integration, LDAP authentication, SpamAssassin/Amavis spam filtering, TLS encryption, retention policies
+- ❌ **Out of scope**: Email list management (use mailing list services), advanced spam filtering beyond SpamAssassin/Amavis, webmail clients (SOGo provides webmail), email archiving beyond retention policies
 
 ## Non-Goals
 
@@ -144,7 +150,7 @@ Dovecot and Postfix SHALL be healthy and monitorable.
 - KeycloakLDAP (`ldap://openldap:389`, bind: `uid=postfix,cn=users,dc=opendesk,dc=edu`, password: `secret.postfix.ldap_password`)
 
 **Data Store**:
-- PostgreSQL (`postfix` DB, host: `postgresql.opendesk.svc.cluster.local:5432`, user: `postfix_user`, password: `secret.postfix.psql_password`) OR MariaDB (`postfix` DB, host: `mariadb:3306`, user: `postfix_user`, password: `secret.postfix.mysql_password`)
+- PostgreSQL (`postfix` DB, host: `postgresql:5432`, user: `postfix_user`, password: `secret.postfix.psql_password`) OR MariaDB (`postfix` DB, host: `mariadb:3306`, user: `postfix_user`, password: `secret.postfix.mysql_password`)
 - RWO PVC: `postfix-postgres-data` (5Gi, storage class: `ceph-rbd-ssd`, excluded from k8up schedule) - defer to vendor.
 
 **Infrastructure**:

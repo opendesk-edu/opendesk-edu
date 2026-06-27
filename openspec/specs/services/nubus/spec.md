@@ -17,6 +17,12 @@ Identity and access management platform providing:
 
 The Nubus stack is the foundation for all service authentication in openDesk Edu.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Nubus IAM + Portal deployment, OpenLDAP user directory, Keycloak OIDC/SAML IdP, Portal web frontend with application tiles, UMC administration interface, UMS REST API for provisioning, OX Connector integration, SSO navigation hub
+- ❌ **Out of scope**: Keycloak internal realm configuration (managed by Nubus upstream), OpenLDAP schema design (managed by Nubus upstream), SCIM provisioning (future, currently UMS REST), full UMC (only stripped-down admin interface)
+
 ## Non-Goals
 
 - Keycloak internal realm configuration (managed via Nubus upstream)

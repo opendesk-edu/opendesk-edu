@@ -11,6 +11,12 @@ Groupware providing email, calendar, address book, and personal task management
 with SAML 2.0 authentication, MariaDB backend, Dovecot IMAP backend, and
 OX Connector provisioning for academic institutions.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: OX App Suite groupware deployment, email/calendar/address book/task management, SAML 2.0 authentication, MariaDB backend, Dovecot IMAP backend, OX Connector provisioning for academic institutions
+- ❌ **Out of scope**: Alternative groupware (see SOGo), email delivery infrastructure (see dovecot-postfix), advanced email filtering (server-side Sieve rules)
+
 ## Non-Goals
 
 - Alternative groupware (see `../sogo/spec.md`)

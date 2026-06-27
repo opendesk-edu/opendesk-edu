@@ -11,6 +11,12 @@ Project management platform with agile boards, work packages, task tracking,
 timeline planning, and Nextcloud file store integration, with SAML 2.0
 authentication and comprehensive project oversight.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: OpenProject project management deployment, agile boards, work packages, task tracking, timeline planning, Nextcloud file store integration, SAML 2.0 authentication, PostgreSQL backend, MinIO/S3 attachment storage, Memcached caching
+- ❌ **Out of scope**: AI-assisted project management (external tool), resource leveling algorithms (manual scheduling only), multi-tenant SaaS mode (single-org only)
+
 ## Non-Goals
 
 - AI-assisted project management (external tool)

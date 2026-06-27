@@ -1,7 +1,7 @@
 ---
 title: openDesk Edu OpenSpec Metadata Index
-generated: "2026-06-26"
-total_specs: 50
+generated: "2026-06-27"
+total_specs: 53
 ---
 
 # Spec Metadata Index
@@ -37,6 +37,7 @@ enables tool automation (CI, search, linting) without modifying spec files.
 | excalidraw | services/productivity | None | None | None | — | 1 | Low |
 | self-service-password | services/support | LDAP | None | None | — | 2 | Low |
 | typo3 | services/knowledge | OIDC | MariaDB | None | — | 2 | Low |
+| dovecot-postfix | services/mail | KeycloakLDAP | PostgreSQL/MariaDB | RWO | — | 7 | High |
 
 ## Platform Specs
 
@@ -57,6 +58,7 @@ enables tool automation (CI, search, linting) without modifying spec files.
 | performance | platform | High |
 | upgrade-migration | platform | High |
 | capacity-planning | platform | Medium |
+| secret-derivation | platform | High |
 
 ## Auth Specs
 
@@ -75,6 +77,7 @@ enables tool automation (CI, search, linting) without modifying spec files.
 | file-store | integrations | High |
 | cross-service-workflows | integrations | High |
 | api-contracts | integrations | Critical |
+| spec-writing | methodology | High |
 
 ## Registry Specs
 

@@ -188,3 +188,60 @@ Nubus Portal (tile, SSO redirect), Keycloak (SAML 2.0), BBB backend (meeting API
 | Health | TCP port 80 (liveness: 30s/10s, readiness: 5s/5s) |
 | PDB | Yes (PodDisruptionBudget) |
 | Ingress | HAProxy, 120s timeout (long-lived WebSocket connections) |
+
+## SLO
+
+**Tier**: High (critical for online classes, can fall back to Jitsi)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (Greenlight page load) | Apache access log analysis |
+| **Latency (P95)** | <1s (room creation) | Greenlight API metrics |
+| **Error Rate** | <0.5% (HTTP 5xx) | Apache access log analysis |
+| **SSO Success** | >99% (Shibboleth auth) | Keycloak event log |
+
+**Alerts**:
+- Greenlight 5xx error rate >1% for 10 minutes → P2 alert
+- BBB backend connection failures >3 in 5 minutes → P1 alert
+- Recording upload failures >5% for 30 minutes → P3 alert
+- Shibboleth SP configuration errors → P1 alert
+- Disk usage >85% (recording storage) → P3 alert
+
+**Capacity**:
+- 500 concurrent meeting participants (typical)
+- 1,000 concurrent participants (large lecture)
+- 50 concurrent active meetings
+- Recording storage: 500 GB (typical), 5 TB (large institution)
+
+**Note**: BBB backend server is managed separately, not in this chart. This spec covers Greenlight web interface only.
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 1 hour, RTO: 2 hours)
+
+**Backup Strategy**:
+- **Greenlight configuration**: GitOps-managed (database.yml, .env)
+- **Recording metadata** (PostgreSQL): Hourly incremental + daily full backup
+- **Recording files** (BBB backend storage): Daily snapshot via backend server
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. Greenlight database restore (PostgreSQL) - 15 min
+2. Greenlight application deployment - 10 min
+3. Shibboleth SP configuration verification - 5 min
+4. BBB backend API connection test - 5 min
+5. Recording playback verification - 5 min
+6. Smoke tests (login, create room, join meeting) - 10 min
+
+**Critical Data**:
+- Room configurations and metadata
+- User accounts and permissions
+- Recording metadata (BBB backend stores actual files)
+- Greenlight database (users, rooms, settings)
+
+**Failure Scenarios**:
+- **Greenlight DB corruption**: Restore from PITR, verify room metadata
+- **BBB backend unavailable**: Coordinate with backend team, verify API endpoint
+- **Shibboleth misconfiguration**: Re-register SP in Keycloak, verify SSO flow
+- **Complete failure**: Redeploy from GitOps, restore DB, verify backend integration

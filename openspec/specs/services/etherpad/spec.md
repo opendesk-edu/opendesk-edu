@@ -151,3 +151,54 @@ Keycloak (OIDC), PostgreSQL (embedded), HAProxy Ingress
 ## Integrates With
 
 Nubus Portal (tile)
+
+## SLO
+
+**Tier**: Standard (collaboration tool, not critical for core operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <300ms (pad load) | Nginx access log analysis |
+| **Latency (P95)** | <200ms (OT sync) | Etherpad metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Nginx access log analysis |
+| **Concurrent Editors** | 50 per pad (max) | Etherpad socket metrics |
+
+**Alerts**:
+- Etherpad 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- OIDC authentication failures >5% for 5 minutes → P2 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 500 concurrent active pads
+- 2,000 concurrent users (viewing/editing)
+- 10,000 pads created per month
+- Database: 5 GB (typical), 50 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Daily full backup (pad metadata and content)
+- **Configuration**: GitOps-managed
+- **Pad content**: Included in database backup
+
+**Recovery Order**:
+1. PostgreSQL database restore - 20 min
+2. Etherpad application deployment - 10 min
+3. OIDC client configuration verification - 5 min
+4. Smoke tests (create pad, edit, save) - 10 min
+5. User access restoration - 15 min
+
+**Critical Data**:
+- Pad content (text, formatting, revisions)
+- User accounts and permissions
+- Pad metadata (creation date, author, tags)
+- OIDC client configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify pad content integrity
+- **OIDC misconfiguration**: Re-register client in Keycloak, verify SSO flow
+- **Complete failure**: Redeploy from GitOps, restore DB, verify authentication

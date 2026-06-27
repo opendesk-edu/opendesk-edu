@@ -146,3 +146,57 @@ Keycloak (OIDC client `opendesk-typo3`), MariaDB (embedded), HAProxy Ingress
 ## Integrates With
 
 Nubus Portal (tile, role mapping `typo3-editor`)
+
+## SLO
+
+**Tier**: Standard (CMS for public-facing content, not critical for operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (page load) | Apache access log analysis |
+| **Latency (P95)** | <300ms (content edit save) | TYPO3 backend metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Apache access log analysis |
+| **SSO Success** | >99% (OIDC auth) | Keycloak event log |
+
+**Alerts**:
+- TYPO3 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- OIDC authentication failures >5% for 5 minutes → P2 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 5,000 concurrent public visitors
+- 50 concurrent content editors
+- 1,000,000 page views per month (typical institution)
+- Database: 2 GB (typical), 20 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (MariaDB): Daily full backup
+- **File storage** (RWO PVC): Daily snapshot via k8up
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. MariaDB database restore - 20 min
+2. RWO PVC file storage restore - 10 min
+3. TYPO3 application deployment - 10 min
+4. OIDC client configuration verification - 5 min
+5. Smoke tests (public page load, content edit) - 10 min
+6. User access restoration - 15 min
+
+**Critical Data**:
+- Web pages and content
+- Media files (images, videos, documents)
+- User accounts and permissions
+- Extension configurations
+- OIDC client configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify content integrity
+- **RWO PVC loss**: Restore from snapshot, verify media file checksums
+- **OIDC misconfiguration**: Re-register client in Keycloak, verify SSO flow
+- **Complete failure**: Redeploy from GitOps, restore DB + PVC, verify authentication

@@ -137,3 +137,54 @@ HAProxy Ingress
 ## Integrates With
 
 Nubus Portal (tile, not role-based — LDAP group filter)
+
+## SLO
+
+**Tier**: Standard (survey tool, not critical for operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (survey page load) | Apache access log analysis |
+| **Latency (P95)** | <300ms (response submission) | LimeSurvey metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Apache access log analysis |
+| **LDAP Auth Success** | >99% (LDAP bind) | LDAP access log |
+
+**Alerts**:
+- LimeSurvey 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- LDAP bind failures >5% for 5 minutes → P2 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 2,000 concurrent survey respondents
+- 10,000 active surveys
+- 50,000 responses per month (typical)
+- Database: 5 GB (typical), 50 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (MariaDB): Daily full backup
+- **Configuration**: GitOps-managed
+- **Survey data**: Included in database backup
+
+**Recovery Order**:
+1. MariaDB database restore - 20 min
+2. LimeSurvey application deployment - 10 min
+3. LDAP bind configuration verification - 5 min
+4. Smoke tests (create survey, submit response) - 10 min
+5. User access restoration - 15 min
+
+**Critical Data**:
+- Survey definitions and questions
+- User responses and statistics
+- User accounts and permissions
+- LDAP bind configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify survey/response integrity
+- **LDAP misconfiguration**: Re-verify LDAP bind DNs, test authentication
+- **Complete failure**: Redeploy from GitOps, restore DB, verify LDAP integration

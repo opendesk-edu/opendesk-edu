@@ -123,3 +123,47 @@ OpenLDAP (direct bind), HAProxy Ingress
 ## Integrates With
 
 Nubus Portal (tile), Keycloak (validates against LDAP on each login)
+
+## SLO
+
+**Tier**: Standard (password reset tool, not critical for operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <300ms (page load) | Apache access log analysis |
+| **Latency (P95)** | <500ms (password reset operation) | LDAP bind metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Apache access log analysis |
+| **LDAP Bind Success** | >99% (current password validation) | LDAP access log |
+
+**Alerts**:
+- SSP 5xx error rate >2% for 10 minutes → P3 alert
+- LDAP bind failures >5% for 5 minutes → P2 alert
+- LDAP connection failures >3 in 5 minutes → P2 alert
+
+**Capacity**:
+- 500 concurrent users (password resets)
+- 1,000 password resets per day (peak: start of semester)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: N/A - stateless, RTO: 30 min)
+
+**Backup Strategy**:
+- **Configuration**: GitOps-managed
+- **User data**: NONE (stateless service, all data in LDAP)
+
+**Recovery Order**:
+1. SSP application deployment - 5 min
+2. LDAP bind configuration verification - 3 min
+3. Smoke tests (password reset flow) - 5 min
+4. User access restoration - 5 min
+
+**Critical Data**:
+- LDAP bind DN and password
+- LDAP server configuration
+- Password policy settings
+
+**Failure Scenarios**:
+- **LDAP misconfiguration**: Re-verify bind DN/password, test connectivity
+- **Complete failure**: Redeploy from GitOps, verify LDAP integration (no data to restore)

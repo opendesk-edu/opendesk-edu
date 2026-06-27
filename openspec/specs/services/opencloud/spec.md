@@ -16,6 +16,12 @@ OpenCloud is built on a microservices architecture with a Graph service for
 metadata, CS3 (Cloud Storage Synchronization), WOPI for office document
 collaboration, and an event system for notifications and audit logging.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: OpenCloud deployment (educational use case alternative), per-course/per-student file shares, WebDAV access, OIDC auto-provisioning with RBAC, OX AppSuite and Nubus Portal integration, Graph service metadata, CS3 storage sync, WOPI office collaboration
+- ❌ **Out of scope**: Nextcloud-specific features (OCID, Talk, Draw.io, Collectives), desktop client application (web-only interface), general-purpose file sharing beyond education
+
 ## Non-Goals
 
 - Nextcloud-specific features (OCID integration, Talk, Draw.io, Collectives — see `../nextcloud/spec.md`)

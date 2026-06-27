@@ -17,6 +17,12 @@ XWiki uses a dual authentication strategy: OIDC for user login via Keycloak,
 and LDAP for group synchronization and user import. OIDC and LDAP users are
 linked via the `LDAPUserImport` LDAPUserImportConfigClass.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: XWiki knowledge management platform deployment, OIDC authentication via Keycloak, LDAP group synchronization and user import, multi-wiki setups, LDAP profile picture sync, group-based access control, optional Collabora ODT/DOCX export (enterprise)
+- ❌ **Out of scope**: Meeting scheduling (see Nordeck widget in Element), chat/messaging (see Element/Synapse), real-time collaborative editing, custom XWiki extension development
+
 ## Non-Goals
 
 - Meeting scheduling (see Nordeck widget in Element)

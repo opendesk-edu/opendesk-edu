@@ -18,6 +18,12 @@ Synapse supports optional federation with external Matrix homeservers and
 enterprise features including admin/audit bot application services and
 LDAP group synchronization.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Element Web + Synapse Matrix homeserver deployment, OIDC authentication via Keycloak, PostgreSQL backend, S3 media storage, Redis appservice transactions, TURN server for WebRTC, Intercom/OX AppSuite application services, Nordeck widgets (whiteboard, polling), optional federation, LDAP group sync
+- ❌ **Out of scope**: Video conferencing (see BigBlueButton or Jitsi), file storage (delegated to Nextcloud/OpenCloud), native mobile apps (use Element mobile clients)
+
 ## Non-Goals
 
 - Video conferencing (see `../bigbluebutton/spec.md` or `../jitsi/spec.md`)

@@ -19,6 +19,12 @@ and cron scheduler into a single container, with a separate Notify Push
 sidecar for WebSocket notifications and a separate metrics exporter for
 Prometheus.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Nextcloud AIO deployment, file storage/sharing (CephFS/S3), OIDC authentication via Keycloak, LDAP group sync, ClamAV virus scanning, WOPI office editing via Collabora, Notify Push real-time notifications, S3 primary storage
+- ❌ **Out of scope**: Alternative file sharing (see OpenCloud), Collabora integration details (see Collabora spec), Talk/Draw.io/Collectives specific features (use standard Nextcloud apps)
+
 ## Non-Goals
 
 - Alternative file sharing (see `../opencloud/spec.md`)

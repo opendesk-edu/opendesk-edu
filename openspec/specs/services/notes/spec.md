@@ -17,6 +17,12 @@ Notes uses a split architecture: `impress-backend` (Django REST API + Celery),
 `impress-frontend` (React SPA served by Nginx), and `impress-y-provider`
 (real-time collaboration via Yjs/WebSocket).
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Notes (im.press) collaborative note-taking deployment, Django REST API backend, React frontend, Y-Provider real-time collaboration, OIDC authentication, PostgreSQL backend, S3 note attachments, AI integration (configurable model/endpoint), Redis cache
+- ❌ **Out of scope**: Presentation slides (see CryptPad), knowledge management (see XWiki or BookStack), custom note templates, mobile app development
+
 ## Non-Goals
 
 - Presentation slides (see CryptPad for diagram-only editing)

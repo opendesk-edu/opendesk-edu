@@ -12,6 +12,12 @@ backend, SAML 2.0 authentication, PostgreSQL metadata, Redis for search/Faye
 WebSocket push, and Elasticsearch for full-text ticket search. Supports ticket
 submission via email, chat (web widget), phone (voice), and web form.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Zammad helpdesk deployment, multi-channel ticketing (email, web form, chat widget, phone), Ruby on Rails backend, SAML 2.0 authentication, PostgreSQL metadata, Redis search/Faye WebSocket, Elasticsearch full-text search, agent management, SLA tracking
+- ❌ **Out of scope**: General-purpose project management (see OpenProject), external knowledge base (see XWiki or BookStack), custom Zammad plugin development, voice/telephony infrastructure
+
 ## Non-Goals
 
 - General-purpose project management (see `../openproject/spec.md`)

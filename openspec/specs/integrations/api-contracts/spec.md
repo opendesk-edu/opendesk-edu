@@ -413,3 +413,30 @@ Cookie: <nextcloud-session-cookie>
   ]
 }
 ```
+
+## Depends On
+
+- Keycloak (OIDC token endpoint)
+- Intercom Service (silent login relay)
+- All OIDC/SAML client services
+
+## Integrates With
+
+- [Cross-Service Workflows](../cross-service-workflows/spec.md) (end-to-end flows using these contracts)
+- [Service specs](../../services/) (individual service authentication requirements)
+- `../_registry/interconnection-matrix.md` (AUTH and TOKEN relationship types)
+
+## Contract Index
+
+| Contract | Protocol | Services Involved |
+|----------|----------|-------------------|
+| Keycloak OIDC Token | HTTPS | All OIDC clients (9 services) |
+| SAML SP-SSO | SAML 2.0 | All SAML SPs (8 services) |
+| Intercom Silent Login | HTTPS | OX, Nextcloud, Element |
+| Nubus Navigation | HTTPS | All portal-integrated services |
+| WOPI Discovery + CheckFileInfo | HTTPS | Collabora ↔ OpenCloud, Nextcloud, XWiki |
+| BBB Room API | HTTPS | BBB backend |
+| LDAP Bind/Search | LDAP | LimeSurvey, SSP, SOGo, XWiki, Keycloak |
+| S3 Operations | S3 API | Nextcloud, OpenCloud, Element, Notes, ILIAS, OpenProject |
+| ClamAV ICAP | ICAP | Nextcloud |
+| Notify Push WebSocket | WebSocket | Nextcloud |

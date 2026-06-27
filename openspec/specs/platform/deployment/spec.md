@@ -101,3 +101,63 @@ first database connection attempt.
 | Helmfile | 1.0.0 | — |
 | HelmDiff | 3.11.0 | — |
 | Kubernetes | 1.24 | OpenShift (untested) |
+
+## Deployment Waves
+
+Releases are processed in 6 waves to ensure correct dependency ordering.
+Each wave's `deployStage` label controls ordering.
+
+| Wave | Stage | Components | Label |
+|------|-------|-----------|-------|
+| 1 | 000-migrations | Pre-migration jobs | `000-migrations` |
+| 2 | 010-infra | Keycloak, MariaDB, PostgreSQL, Redis, Memcached, MinIO, Dovecot, Postfix | `010-infra` |
+| 3 | 020-components | Nubus Portal, Intercom, OpenCloud, Nextcloud, OX AppSuite, SOGo, Element | `020-components` |
+| 4 | 040-collaboration | Collabora, Jitsi, BigBlueButton, Etherpad, CryptPad | `040-collab` |
+| 5 | 060-education | ILIAS, Moodle, XWiki, Zammad, OpenProject | `060-edu` |
+| 6 | 050-components | Planka, Notes, BookStack, LimeSurvey, TYPO3, SSP, Draw.io, Excalidraw | `050-components` |
+
+### Requirement: Wave ordering enforcement
+
+Helmfile SHALL process releases in ascending `deployStage` order. Within the
+same stage, releases MAY be processed in parallel.
+
+#### Scenario: Application deployed before database
+- GIVEN `opendesk-services` (databases) has `deployStage: 010`
+- AND `opendesk-opencloud` has `deployStage: 020`
+- WHEN helmfile processes the release order
+- THEN databases deploy BEFORE applications
+- AND application pods do not crash-loop on missing database connections
+
+## Known Service Quirks
+
+### Requirement: license-cache CronJob failure handling
+
+The `ums-udm-rest-api-license-cache` CronJob in both `default` and `opendesk`
+namespaces SHALL fail permanently. The binary
+`/usr/share/univention-directory-manager-tools/univention-update-license-cache`
+does not exist in image `udm-rest-api:0.42.6`. This CronJob SHALL be suspended
+until the chart is updated to a compatible version.
+
+### Requirement: k8up RWO PVC exclusion
+
+All 29 RWO PVCs SHALL be annotated with `k8up.io/exclude: "true"` to prevent
+backup pods from hanging in `ContainerCreating` (they cannot mount multiple
+RWO PVCs on different nodes). Only RWX PVCs are backed up by the main
+k8up schedule.
+
+#### Scenario: Backup job stuck on RWO PVC
+- GIVEN a k8up Schedule backing up all PVCs including RWO
+- WHEN the backup pod tries to mount RWO PVCs bound to different nodes
+- THEN the pod hangs in `ContainerCreating` indefinitely
+- AND the stuck Job SHALL be deleted for the next scheduled run
+- AND all RWO PVCs SHALL have `k8up.io/exclude: "true"` annotation
+
+## Service Tiers
+
+| Tier | Services | SLA Target |
+|------|----------|------------|
+| Critical | Keycloak, PostgreSQL, MariaDB, Redis, MinIO | 99.9% |
+| High | Nubus, Intercom, OpenCloud, Nextcloud, OX, SOGo, Element | 99.9% |
+| Standard | ILIAS, Moodle, XWiki, Jitsi/BBB, Collabora | 99.5% |
+| Low | Planka, Notes, Etherpad, CryptPad, BookStack, Draw.io, Excalidraw | 99.0% |
+| Support | SSP, LimeSurvey, TYPO3, OpenProject, Zammad | 99.0% |

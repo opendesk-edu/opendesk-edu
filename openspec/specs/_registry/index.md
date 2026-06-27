@@ -56,15 +56,15 @@ Wave 6 — Stateless tools (no dependencies):
 | [Jitsi](../services/jitsi/spec.md) | OIDC | — | — | — | Apache-2.0 | BigBlueButton |
 | [BigBlueButton](../services/bigbluebutton/spec.md) | SAML 2.0 | PostgreSQL | RWX PVC | Redis | LGPL-3.0 | Jitsi |
 | [OpenProject](../services/openproject/spec.md) | SAML 2.0 | PostgreSQL | S3 | — | GPL-3.0 | — |
-| [XWiki](../services/xwiki/spec.md) | OIDC | PostgreSQL | — | — | LGPL-2.1 | — |
+| [XWiki](../services/xwiki/spec.md) | OIDC | MariaDB / PostgreSQL | — | — | LGPL-2.1 | — |
 | [Collabora](../services/collabora/spec.md) | — | — | — | — | MPL-2.0 | — |
 | [CryptPad](../services/cryptpad/spec.md) | — | — | — | — | AGPL-3.0 | — |
-| [Notes](../services/notes/spec.md) | OIDC | — | — | — | AGPL-3.0 | — |
-| [ILIAS](../services/ilias/spec.md) | SAML 2.0 | PostgreSQL | S3 | — | GPL-3.0 | Moodle |
-| [Moodle](../services/moodle/spec.md) | SAML 2.0 | PostgreSQL | RWX PVC | — | GPL-3.0 | ILIAS |
+| [Notes](../services/notes/spec.md) | OIDC | PostgreSQL | S3 | Redis | AGPL-3.0 | — |
+| [ILIAS](../services/ilias/spec.md) | SAML 2.0 | MariaDB Galera | S3 | — | GPL-3.0 | Moodle |
+| [Moodle](../services/moodle/spec.md) | SAML 2.0 | MariaDB (external) | RWX PVC | — | GPL-3.0 | ILIAS |
 | [Etherpad](../services/etherpad/spec.md) | OIDC | PostgreSQL | — | — | Apache-2.0 | — |
 | [BookStack](../services/bookstack/spec.md) | SAML 2.0 | MariaDB | — | — | MIT | — |
-| [Planka](../services/planka/spec.md) | OIDC | PostgreSQL | — | — | AGPL-3.0 | — |
+| [Planka](../services/planka/spec.md) | OIDC | PostgreSQL | RWO PVC (1Gi) | — | AGPL-3.0 | — |
 | [Zammad](../services/zammad/spec.md) | SAML 2.0 | PostgreSQL | — | Redis | AGPL-3.0 | — |
 | [LimeSurvey](../services/limesurvey/spec.md) | LDAP | MariaDB | — | — | GPL-2.0 | — |
 | [Draw.io](../services/drawio/spec.md) | None | — | — | — | Apache-2.0 | — |
@@ -93,9 +93,9 @@ Wave 6 — Stateless tools (no dependencies):
 | `element` | PostgreSQL | Element | `databases.element.*` |
 | `bigbluebutton` | PostgreSQL | BigBlueButton | `databases.bbb.*` |
 | `openproject` | PostgreSQL | OpenProject | `databases.openproject.*` |
-| `xwiki` | PostgreSQL | XWiki | `databases.xwiki.*` |
-| `ilias` | PostgreSQL | ILIAS | `databases.ilias.*` |
-| `moodle` | PostgreSQL | Moodle | `databases.moodle.*` |
+| `xwiki` | MariaDB / PostgreSQL | XWiki | `databases.xwiki.*` |
+| `ilias` | MariaDB Galera | ILIAS | `databases.ilias.*` |
+| `moodle` | MariaDB (external) | Moodle | `databases.moodle.*` |
 | `etherpad` | PostgreSQL | Etherpad | `databases.etherpad.*` |
 | `bookstack` | MariaDB | BookStack | `databases.bookstack.*` |
 | `planka` | PostgreSQL | Planka | `databases.planka.*` |
@@ -112,6 +112,8 @@ Wave 6 — Stateless tools (no dependencies):
 | `ilias-data` | S3 | RWX | ILIAS | k8up (RWX) |
 | `bbb-recordings` | CephFS | RWX | BigBlueButton | k8up (RWX) |
 | `moodle-data` | CephFS | RWX | Moodle | k8up (RWX) |
+| `notes-data` | S3 | RWX | Notes | k8up (RWX) |
+| `planka-data` | RWO PVC | RWO | Planka | Excluded (`k8up.io/exclude: "true"`) |
 | `seaweedfs-all-in-one-data` | CephFS | RWX | SeaweedFS | k8up (RWX) |
 | Database PVCs (29) | Ceph RBD | RWO | Per-service DBs | Excluded (`k8up.io/exclude: "true"`) |
 

@@ -66,3 +66,44 @@ helmfile/environments/<env>/       ← Environment overrides
 - Daily backups at 00:42 UTC
 - Alertmanager routing to HRZ ops team
 - Brute-force protection enabled (NEVER disabled)
+- Namespace: `opendesk`
+
+## HRZ Cluster Context
+
+### Cluster Details
+
+| Property | Value |
+|----------|-------|
+| Kubernetes | K3s v1.32.3 |
+| OS | Debian 12 |
+| Control Plane | 3 nodes (vhrz2331-2333) |
+| Workers | 6 nodes (vhrz2334-2339) |
+| Container Runtime | containerd 2.0.4-k3s2 |
+| Ingress IP | 192.168.3.201 |
+| Storage (DB) | `ceph-rbd-ssd` (RWO) |
+| Storage (files) | `ceph-cephfs-hdd-ec` (RWX) |
+| Backup target | `s3:https://s3.hrz.uni-marburg.de/backups` |
+| Ingress Controller | HAProxy (primary) + nginx-ingress (secondary) |
+| GitOps | ArgoCD |
+
+### Active Namespaces
+
+`argocd`, `buildkit`, `ceph-csi-cephfs`, `ceph-csi-rbd`, `default`,
+`ingress-nginx`, `kube-node-lease`, `kube-public`, `kube-system`,
+`opendesk`, `testing`, `traefik`
+
+### Environment-Specific Overrides
+
+All environments inherit from `helmfile/environments/default/` which contains:
+- `global.yaml.gotmpl` — Domain, storage classes, ingress IP, cluster domain
+- `databases.yaml.gotmpl` — Database engine type selection and credentials
+- `objectstores.yaml.gotmpl` — MinIO/S3 endpoints and credentials
+- `secrets.yaml.gotmpl` — All derived passwords (MASTER_PASSWORD-based)
+- `resources.yaml.gotmpl` — CPU/memory limits and requests per component
+- `replicas.yaml.gotmpl` — Per-component replica counts
+- `images.yaml.gotmpl` — Container image registries, repos, and tags
+- `ingress.yaml.gotmpl` — Ingress class and per-service body timeouts
+- `selinux.yaml.gotmpl` — SELinux label overrides per component
+- `annotations.yaml.gotmpl` — Otterize, Prometheus, and Grafana annotations
+- `turn.yaml.gotmpl` — TURN server configuration for Jitsi
+- `sip.yaml.gotmpl` — SIP server configuration for Jigasi (disabled by default)

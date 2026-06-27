@@ -1,7 +1,7 @@
 ---
 title: openDesk Edu OpenSpec Metadata Index
 generated: "2026-06-26"
-total_specs: 46
+total_specs: 47
 ---
 
 # Spec Metadata Index
@@ -27,10 +27,10 @@ enables tool automation (CI, search, linting) without modifying spec files.
 | element | services/communication | OIDC | PostgreSQL | S3 | Redis | 9 | High |
 | ox-appsuite | services/communication | SAML | MySQL | RWX PVC | — | — | High |
 | sogo | services/communication | OIDC | PostgreSQL | — | Memcached | 9 | High |
-| planka | services/productivity | OIDC | PostgreSQL | — | — | 2 | Low |
+| planka | services/productivity | OIDC | PostgreSQL | RWO PVC | — | 2 | Low |
 | zammad | services/support | SAML | PostgreSQL | RWO | Redis + ES | 5 | High |
 | limesurvey | services/education | LDAP | MariaDB | — | — | 2 | Low |
-| jitsi | services/communication | OIDC | — | — | — | — | Low |
+| jitsi | services/communication | OIDC + Matrix UVS | — | — | — | 10 | High |
 | openproject | services/productivity | SAML | PostgreSQL | S3 | — | — | High |
 | drawio | services/productivity | None | None | None | — | 2 | Low |
 | excalidraw | services/productivity | None | None | None | — | 1 | Low |
@@ -50,6 +50,7 @@ enables tool automation (CI, search, linting) without modifying spec files.
 | monitoring | platform | High |
 | resource-sizing | platform | High |
 | security/threat-model | platform | High |
+| security/compliance-checklists | platform | High |
 | upgrade-migration | platform | High |
 | capacity-planning | platform | Medium |
 

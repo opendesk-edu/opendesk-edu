@@ -20,48 +20,49 @@ A cell contains the relationship type; empty means no direct interaction.
 
 ## Matrix
 
-| | KC | NC | OC | OX | SG | EL | NB | OP | XW | IL | MD | BB | EP | BS | PK | ZM | LS | SP | CP | DI | EX | T3 | NT |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **Keycloak** | — | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | — | — | — | AUTH | AUTH |
+| | KC | NC | OC | OX | SG | EL | NB | OP | XW | IL | MD | BB | EP | BS | PK | ZM | LS | SP | CP | DI | EX | T3 | NT | JT |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Keycloak** | — | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | AUTH | — | — | — | AUTH | AUTH | AUTH |
 | **Nextcloud** | | — | DATA | DATA | DATA | DATA | PORTAL | DATA | NEWS | DATA | | | | | | | | | FILE | | | | |
 | **OpenCloud** | | | — | DATA | DATA | | PORTAL | | | | | | | | | | | | | | | | |
-| **OX AppSuite** | | | | — | DELEGATE | | PORTAL | DATA | NEWS | | | | | | | | | | | | | | | |
+| **OX AppSuite** | | | | — | DELEGATE | | PORTAL | DATA | NEWS | | | | | | | | | | | | | | |
 | **SOGo** | | | | | — | | PORTAL | | | | | | | | | | | LDAP | | | | | |
-| **Element** | | | | | | — | TOKEN | | | | | | | | | | | | | | | | | |
-| **Nubus** | | | | | | | — | | | | | | | | | | | | | | | | |
+| **Element** | | | | | | — | TOKEN | | | | | | | | | | | | | | | | | UVS |
+| **Nubus** | | | | | | | — | | | | | | | | | | | | | | | | | |
 | **OpenProject** | | DATA | | | | | | — | | | | | | | | | | | | | | | |
 | **XWiki** | | NEWS | | | | | | | — | | | | | | | | LDAP | | | | | |
-| **ILIAS** | | | | | | | PORTAL | | | — | | | | | | | | | | | | | |
-| **Moodle** | | | | | | | PORTAL | | | | — | | | | | | | | | | | | |
+| **ILIAS** | | | | | | | PORTAL | | | — | | | | | | | | | | | | | | |
+| **Moodle** | | | | | | | PORTAL | | | | — | | | | | | | | | | | | | |
 | **BBB** | | | | | | | PORTAL | | | | | — | | | | | | | | | | | |
 | **Etherpad** | | | | | | | PORTAL | | | | | | — | | | | | | | | | | |
 | **BookStack** | | | | | | | PORTAL | | | | | | | — | | | | | | | | | |
-| **Planka** | | | | | | | PORTAL | | | | | | | | — | | | | | | | |
+| **Planka** | | | | | | | PORTAL | | | | | | | | — | | | | | | | | |
 | **Zammad** | | | | | | MAIL | PORTAL | | | | | | | | | — | | | | | | | |
-| **LimeSurvey** | | | | | | | PORTAL | | | | | | | | | | — | LDAP | | | | |
-| **SSP** | | | | | | | | | | | | | | | | | | LDAP | — | | | |
-| **Collabora** | | DELEGATE | | | | | | | | | | | | | | | | | | — | | | |
+| **LimeSurvey** | | | | | | | PORTAL | | | | | | | | | | — | LDAP | | | | | |
+| **SSP** | | | | | | | | | | | | | | | | | | LDAP | — | | | | |
+| **Collabora** | | DELEGATE | WOPI | | | | | | WOPI | | | | | | | | | | | — | | | |
 | **CryptPad** | | | | | | | PORTAL | | | | | | | | | | | | | | — | | |
 | **Draw.io** | | | | | | | PORTAL | | | | | | | | | | | | | | | — | |
-| **Excalidraw** | | | | | | | PORTAL | | | | | | | | | | | | | | | — | |
-| **TYPO3** | | | | | | | PORTAL | | | | | | | | | | | | | | | — | |
-| **Notes** | | | | | | | PORTAL | | | | | | | | | | | | | | | | — |
+| **Excalidraw** | | | | | | | PORTAL | | | | | | | | | | | | | | | | — | |
+| **TYPO3** | | | | | | | PORTAL | | | | | | | | | | | | | | | | — | |
+| **Notes** | | | | | | | PORTAL | | | | | | | | | | | | | | | | | — | |
+| **Jitsi** | | | | | | | PORTAL | | | | | | | | | | | | | | | | | | — |
 
 ## Shared Infrastructure
 
 ### PostgreSQL (single cluster, multiple databases)
 
-Services sharing the PostgreSQL instance: Nubus, Nextcloud, Element, Jitsi, OpenProject, XWiki, BigBlueButton, ILIAS, Moodle, Etherpad, Planka, Zammad
+Services sharing the PostgreSQL instance: Nubus, Nextcloud, Element, OpenProject, XWiki, BigBlueButton, Etherpad, Planka, Zammad, Notes, SOGo
 
-If the PostgreSQL cluster fails, ALL 12 services lose database connectivity simultaneously.
+If the PostgreSQL cluster fails, ALL 11 services lose database connectivity simultaneously.
 
 ### MariaDB (single cluster, multiple databases)
 
-Services sharing the MariaDB instance: Nextcloud (actually PostgreSQL in Edu), OpenCloud, SOGo, BookStack, LimeSurvey, TYPO3
+Services sharing the MariaDB instance: Nextcloud, OpenCloud, OX AppSuite, BookStack, LimeSurvey, TYPO3, ILIAS (Galera), Moodle (external)
 
 ### Redis (single cluster)
 
-Services sharing the Redis instance: Nubus, Nextcloud, Element, Intercom Service, BigBlueButton, Zammad
+Services sharing the Redis instance: Nubus, Nextcloud, Element, Intercom Service, BigBlueButton, Zammad, Notes
 
 If Redis fails: auth caching, session management, and intercom token caching break across 6 services.
 
@@ -75,7 +76,7 @@ Shared buckets used by: Nextcloud (primary), OpenCloud (WebDAV/S3), Element (med
 
 ### Keycloak (OIDC/SAML IdP)
 
-All 18 authenticated services depend on Keycloak. If Keycloak is unavailable:
+All 19 authenticated services depend on Keycloak. If Keycloak is unavailable:
 - No new logins succeed
 - Existing sessions remain valid until token expiry
 - Silent login (Intercom) fails → cross-app workflows break
@@ -88,14 +89,15 @@ Services sending mail: OX AppSuite, SOGo, Nextcloud, OpenProject, Zammad
 
 | Component | Impact Scope | Services Affected |
 |-----------|-------------|-------------------|
-| Keycloak | All authentication | 18 services |
-| PostgreSQL | All PG-backed services | 12 services |
-| MariaDB | All MariaDB-backed services | 6 services |
+| Keycloak | All authentication | 19 services |
+| PostgreSQL | All PG-backed services | 11 services |
+| MariaDB | All MariaDB-backed services | 8 services |
 | Redis | Caching + session | 7 services |
 | MinIO | File storage | 6 services |
 | HAProxy Ingress | All external access | All services |
 | Cert Manager | TLS termination | All services |
 | Intercom Service | Cross-app SSO | OX, Nextcloud, Element |
+| Matrix UVS | Jitsi auth verification | Jitsi, Element |
 
 ## Interconnection Diagram
 
@@ -136,6 +138,8 @@ graph LR
     NB -->|PORTAL TILE| BBB
     NB -->|PORTAL TILE| Zammad
     NB -->|PORTAL TILE| Planka
+    NB -->|PORTAL TILE| Jitsi
+    NB -->|PORTAL TILE| Notes
 
     IC -->|TOKEN| OX
     IC -->|TOKEN| Element
@@ -158,11 +162,19 @@ graph LR
     PG -.->|DB| OP
     PG -.->|DB| XWiki
     PG -.->|DB| BBB
-    PG -.->|DB| ILIAS
-    PG -.->|DB| Moodle
+    PG -.->|DB| SOGo
     PG -.->|DB| Etherpad
     PG -.->|DB| Planka
     PG -.->|DB| Zammad
+    PG -.->|DB| Notes
+
+    MY -.->|DB| OC
+    MY -.->|DB| OX
+    MY -.->|DB| ILIAS
+    MY -.->|DB| Moodle
+    MY -.->|DB| BookStack
+    MY -.->|DB| LimeSurvey
+    MY -.->|DB| TYPO3
 
     RD -.->|CACHE| NB
     RD -.->|CACHE| NC
@@ -170,6 +182,7 @@ graph LR
     RD -.->|CACHE| Element
     RD -.->|CACHE| BBB
     RD -.->|CACHE| Zammad
+    RD -.->|CACHE| Notes
 
     MC[Memcached] -.->|SESSION CACHE| SOGo
 
@@ -182,5 +195,9 @@ graph LR
     DC[Dovecot] -->|IMAP| SOGo
     PF[Postfix] -->|SMTP| SOGo
 
-    CL[Collabora] -->|OFFICE DELEGATE| NC
+    CL[Collabora] -->|WOPI| NC
+    CL -->|WOPI| OC
+    CL -->|WOPI| XW[XWiki]
+
+    EL[Element/Synapse] -.->|UVS| JT[Jitsi]
 ```

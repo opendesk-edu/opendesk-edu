@@ -181,3 +181,16 @@ OpenLDAP → Keycloak → [SOGo, XWiki, ILIAS, Moodle, OpenProject]
 - WHEN the nightly XWiki LDAP sync job runs
 - THEN those users are imported into XWiki
 - AND gain wiki access without manual intervention
+
+## Depends On
+
+- Keycloak (OIDC/SAML for all SSO flows)
+- Nubus Portal (portal tiles and Intercom silent login)
+- Intercom Service (cross-app token relay)
+- OpenLDAP (user/group directory source)
+- [API Contracts](../api-contracts/spec.md) (HTTP-level integration details)
+
+## Integrates With
+
+- All services in `../services/` (each provides an SSO entry point)
+- `../_registry/interconnection-matrix.md` (service dependency map)

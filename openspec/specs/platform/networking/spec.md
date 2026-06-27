@@ -92,3 +92,41 @@ alias `proxy02.hrz.uni-marburg.de` does NOT.
 - Domain: `*.opendesk.hrz.uni-marburg.de` → `192.168.3.201` (ingress IP)
 - Nameservers: `137.248.21.22`, `137.248.1.5`, `137.248.1.8`
 - Proxy: `http://www-proxy2.uni-marburg.de:3128`
+
+## Per-Service Ingress Timeouts
+
+| Service | Timeout (s) | Reason |
+|---------|-------------|--------|
+| Collabora | 600 | Long document processing |
+| Jitsi | 3600 | Long-lived WebSocket during meetings |
+| Nextcloud | 600 | Large file uploads |
+| Notes Y-Provider | 86400 | Long-lived Y.js WebSocket connections |
+| All others | 100 | Default body timeout |
+
+## Known Networking Issues
+
+### ingress-nginx and HAProxy share external IP
+
+Both `ingress-nginx` and `haproxy` ingress controllers are deployed with the
+external IP `192.168.3.201`. The nginx-ingress controller does NOT process
+all ingresses — only those with `ingressClassName: nginx`. Most services use
+`ingressClassName: haproxy`.
+
+#### Scenario: Ingress class mismatch
+- GIVEN a service Ingress with `ingressClassName: nginx`
+- WHEN the nginx ingress controller does not have the matching host rule
+- THEN traffic to that host is NOT routed
+- AND the service SHALL use `ingressClassName: haproxy` instead
+
+### Nextcloud AIO probe timing
+
+Nextcloud AIO uses `initialDelaySeconds` instead of `periodSeconds` for
+readiness/startup probes, causing 10x PHP-FPM load and container restart
+loops. The deployment and chart template SHALL be patched to use
+`periodSeconds` with appropriate values.
+
+### Planka ingress class annotation conflict
+
+The upstream Planka chart sets `kubernetes.io/ingress.class: nginx` annotation
+in `values.yaml`. When using HAProxy ingress, this annotation MUST be removed,
+keeping only `ingressClassName: haproxy`.

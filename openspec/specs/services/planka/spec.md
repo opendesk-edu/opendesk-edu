@@ -139,9 +139,21 @@ This is optional and requires LTI configuration.
 
 ## Depends On
 
-Keycloak (OIDC client `planka`), PostgreSQL (separate database),
-HAProxy Ingress
+**Authentication**:
+- Keycloak OIDC (`https://keycloak.opendesk.hrz.uni-marburg.de/auth/realms/opendek/.well-known/openid-configuration`, client: `planka`, secret: `planka-oidc-client-secret` from `planka-planka-secrets` secret)
+
+**Data Store**:
+- PostgreSQL (`planka` DB, host: `postgresql.opendesk.svc.cluster.local:5432`, user: `planka_user`, password: `secret.planka.psql_password`)
+- RWO PVC: `planka-postgres-data` (1Gi, storage class: `ceph-rbd-ssd`, excluded from k8up schedule)
+
+**Infrastructure**:
+- HAProxy Ingress (HAProxy route, ingress class: `haproxy`, host: `planka.opendesk.hrz.uni-marburg.de`)
 
 ## Integrates With
 
-Nubus Portal (tile, role mapping `planka-user`), ILIAS/Moodle (LTI v1.x, optional)
+**API Contracts**:
+- [Keycloak OIDC Token](../../integrations/api-contracts/spec.md#contract-keycloak-oidc-token-endpoint) — authentication, user sync
+
+**Services**:
+- Nubus Portal (tile: display, url: `https://planka.opendesk.hrz.uni-marburg.de/`, icon, description, role mapping: `planka-user` group in Keycloak)
+- ILIAS/Moodle (LTI v1.x integration for board attachments, optional, consumer key: `planka-lti`, secret: `secret.planka.lti_secret`)

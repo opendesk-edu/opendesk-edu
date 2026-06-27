@@ -187,11 +187,39 @@ SOGo SHALL expose liveness and readiness probes.
 
 ## Depends On
 
-Keycloak (OIDC, client: `sogo`), PostgreSQL (metadata, emails, calendar, contacts), Redis/Memcached (session cache), OpenLDAP (address book, contact sync), Dovecot (IMAP), Postfix (SMTP), HAProxy Ingress, Nubus Portal (tile)
+**Authentication**:
+- Keycloak OIDC (`https://keycloak.opendesk.hrz.uni-marburg.de/auth/realms/opendek/.well-known/openid-configuration`, client: `sogo`, secret: `sogo-oidc-client-secret` from `sogo-sogo` secret)
+- OpenLDAP (`ldap://openldap:389`, bind: `uid=ldapsearch_sogo,cn=users,dc=opendesk,dc=edu`, password: `secret.sogo.ldap_password`)
+
+**Data Store**:
+- PostgreSQL (`sogo` DB, host: `postgresql.opendesk.svc.cluster.local:5432`, user: `sogo_user`, password: `secret.sogo.psql_password`)
+- Redis (`redis:6379`, password: `secret.sogo.redis_password`) / Memcached (`memcached:11211`)
+
+**Mail**:
+- Dovecot IMAP (`imaps://dovecot:993`, se else: `secret.sogo.imap_password`)
+- Postfix SMTP (submission: `smtp://postfix:587` STARTTLS, se else: `secret.sogo.smtp_password`)
+- Dovecot Sieve (`sieve://dovecot:4190`)
+
+**Infrastructure**:
+- HAProxy Ingress (HAProxy route, ingress class: `haproxy`)
+- Nubus Portal (navigation tile, navigation.json endpoint)
 
 ## Integrates With
 
-Nubus Portal (tile), Postfix (mail relay), Dovecot (IMAP access), OpenLDAP (address book sync), SMTP Relay (mail delivery), ILIAS (course notification emails via mail channel)
+**API Contracts**:
+- [Keycloak OIDC Token](../../integrations/api-contracts/spec.md#contract-keycloak-oidc-token-endpoint) — authentication
+- [Dovecot IMAP](../../integrations/api-contracts/spec.md#contract-dovecot-imap) — email access
+- [Postfix SMTP](../../integrations/api-contracts/spec.md#contract-postfix-smtp-submission) — email sending
+- [LDAP Bind/Search](../../integrations/api-contracts/spec.md#contract-ldap-bind-and-search) — address book sync
+- [Nubus Navigation](../../integrations/api-contracts/spec.md#contract-nubus-portal-navigation) — portal tile
+
+**Services**:
+- Nubus Portal (tile: display, url: `https://sogo.opendesk.hrz.uni-marburg.de/SOGo/`, icon, description)
+- Postfix (mail relay for outgoing SMTP via `smtp://postfix:587` STARTTLS)
+- Dovecot (IMAP access for incoming mail via `imaps://dovecot:993`)
+- OpenLDAP (address book auto-population from `ou=contacts,dc=opendesk,dc=edu`)
+- SMTP Relay (mail delivery to `*@hrz.uni-marburg.edu` via `opendesk-email` transport)
+- ILIAS (course notification emails via mail channel, notifications@opendesk.hrz.uni-marburg.edu)
 
 ## Component Reference
 

@@ -110,7 +110,55 @@ mechanism, and error codes.
 | `displayName` | Keycloak display name | ILIAS, Moodle |
 | `eduPersonAffiliation` | Keycloak realm role | ILIAS |
 | `uid` | Keycloak username | Moodle, BBB |
-| `preferred_username` | Keycloak username | Nextcloud OIDC |
+|   `preferred_username` | Keycloak username | Nextcloud OIDC |
+
+### SAML POST Metadata Endpoint (DFN-AAI Federation)
+
+**Service**: Keycloak → DFN-AAI IdP Registration
+**Endpoint**: `POST /admin/realms/opendek/services`
+**Auth**: UMC admin (basic auth) or Keycloak admin client credentials
+
+**Request via UMC (Univention Management Console)**
+```http
+POST /univention/portal/saml2/idp/metadata HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic umd01:<umc-master-password>
+```
+
+**Request Body**
+```
+sp_name=dfn-aai&
+sp_url=https://idp.opendesk.hrz.uni-marburg.de/auth/realms/opendek/saml&
+sp_logout=https://idp.opendesk.hrz.uni-marburg.de/auth/realms/opendek/protocol/saml
+```
+
+**Response (200 — SP Metadata)**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor entityID="https://idp.opendesk.hrz.uni-marburg.de/auth/realms/opendek"
+  xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+  <md:IDPSSODescriptor WantAuthnRequestsSigned="true"
+    protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+      Location="https://idp.opendesk.hrz.uni-marburg.de/auth/realms/opendek/protocol/saml"/>
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data><ds:X509Certificate>MIIC...Cert...</ds:X509Certificate></ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+  </md:IDPSSODescriptor>
+</md:EntityDescriptor>
+```
+
+**Fed Attributes (eduGAIN Standard)**
+
+| Attribute | Source | Federation Category |
+|-----------|--------|---------------------|
+| `eduPersonPrincipalName` | `preferred_username@opendesk.hrz.uni-marburg.de` | Required |
+| `eduPersonAffiliation` | `student@opendesk.hrz.uni-marburg.edu` | Required |
+| `eduPersonEntitlement` | `urn:mace:opendesk.edu:member` | Optional |
+| `mail` | Keycloak user email | Required |
+| `displayName` | Keycloak display name | Optional |
 
 ---
 
@@ -235,6 +283,63 @@ it is excluded from the response by the Nubus Portal server.
   "LastModifiedTime": "2026-01-15T10:30:00Z"
 }
 ```
+
+### CheckFileInfo Request Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `access_token` | Yes | OAuth token from WOPI host |
+| `fileId` | Yes | Unique file identifier from host |
+
+### GetFile Endpoint (for document content)
+
+```
+GET https://<collabora>/cool/wopi/files/<fileId>/contents?access_token=<token>
+```
+
+### PutFile Endpoint (for saving changes)
+
+```
+POST https://<collaboro>/cool/wopi/files/<fileId>/contents?access_token=<token>
+Content-Type: application/octet-stream
+```
+
+**Response (Success — 200)**
+```json
+{
+  "LastModifiedTime": "2026-01-15T11:45:00Z"
+}
+```
+
+### SaveChild Endpoint (for creating new documents)
+
+**Service**: Host → Collabora → Creates new document in same folder
+
+```
+POST https://<collabora>/cool/wopi/files/<fileId>/children?access_token=<token>
+Content-Type: application/json
+```
+
+**Request Body**
+```json
+{
+  "name": "New Document.odt",
+  "url": ""
+}
+```
+
+**Response (Success — 200)**
+```json
+{
+  "Name": "New Document.odt",
+  "Url": "https://<host>/index.php/apps/files?dir=/path/new-document.odt",
+  "HostEditUrl": "",
+  "HostViewUrl": "",
+  "WriteRequired": true
+}
+```
+
+---
 
 ---
 
@@ -414,6 +519,99 @@ Cookie: <nextcloud-session-cookie>
 }
 ```
 
+---
+
+## Contract: Dovecot IMAP
+
+**Service**: SOGo, Postfix → Dovecot IMAP Server
+**Endpoint**: `imap://dovecot:143` (STARTTLS) or `imaps://dovecot:993` (SSL)
+**Auth**: Clear-text password from KeycloakLDAP → Password change via `SECRET=${MASTER_PASSWORD}`
+
+### IMAP Connection
+
+```
+A capability
+* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN AUTH=LOGIN AUTH=CRAM-MD5 QRESYNC
+C LOGIN jdoe <password>
+* OK [CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN ...] Logged in
+C SELECT INBOX
+* 1 EXISTS
+* 1 RECENT
+* OK [UNSEEN 1] Message 1 is first unseen
+C FETCH 1 RFC822
+* 1 FETCH (RFC822 {500}
+...
+)
+C LOGOUT
+```
+
+### IMAP Folders
+
+| Folder | Usage | Service |
+|--------|-------|---------|
+| `INBOX` | Incoming messages | SOGo, Postfix |
+| `Sent` | Sent messages | SOGo |
+| `Drafts` | Draft messages | SOGo |
+| `Junk` | Spam folder | SOGo, SpamAssassin |
+| `Trash` | Deleted messages | SOGo |
+| `Archive` | Archived messages | SOGo |
+
+### IMAP SSL/TLS Configuration
+
+**Certificate**: `*.opendesk.hrz.uni-marburg.de` wildcard cert from `secrets.tls`
+**Cipher Suite**: TLSv1.2+ with ECDHE-RSA-AES256-GCM-SHA384
+
+---
+
+## Contract: Postfix SMTP (Submission)
+
+**Service**: SOGo, other mail services → Postfix SMTP Server
+**Endpoint**: `smtp://postfix:25` (STARTTLS) or `smtps://postfix:465` (SSL)
+**Auth**: SASL PLAIN from KeycloakLDAP
+
+### SMTP Submission
+
+```
+EHLO opendesk.hrz.uni-marburg.edu
+EHLO opendesk.hrz.uni-marburg.edu
+STARTTLS
+MAIL FROM:<jdoe@opendesk.hrz.uni-marburg.edu>
+RCPT TO:<recipient@external.edu>
+DATA
+Subject: Test Message
+From: jdoe@opendesk.hrz.uni-marburg.edu
+To: recipient@external.edu
+
+This is a test message.
+.
+QUIT
+```
+
+### SMTP Authentication
+
+```
+AUTH PLAIN AGpkb2UAbXlwYXNzd29yZA==
+```
+
+Where `AGpkb2UAbXlwYXNzd29yZA==` is Base64(`\0jdoe\0mypassword`)
+
+### Postfix Queue Management
+
+| Queue | Description |
+|-------|-------------|
+| `incoming` | Messages received from network |
+| `active` | Messages being delivered |
+| `deferred` | Temporary delivery failures |
+| `corrupt` | Unreadable queue files |
+| `hold` | Messages on hold (admin) |
+
+### Postfix Filters
+
+**SpamAssassin** - Spam scoring, moves to `$JUNK` folder
+**Amavis** - Content filtering, attaches `X-Spam-Status` headers
+
+---
+
 ## Depends On
 
 - Keycloak (OIDC token endpoint)
@@ -431,12 +629,16 @@ Cookie: <nextcloud-session-cookie>
 | Contract | Protocol | Services Involved |
 |----------|----------|-------------------|
 | Keycloak OIDC Token | HTTPS | All OIDC clients (9 services) |
-| SAML SP-SSO | SAML 2.0 | All SAML SPs (8 services) |
+| Keycloak SAML 2.0 SP-SSO | SAML 2.0 | All SAML SPs (8 services) |
+| SAML POST Metadata (DFN-AAI) | HTTPS + XML | Keycloak → DFN-AAI IdP |
 | Intercom Silent Login | HTTPS | OX, Nextcloud, Element |
 | Nubus Navigation | HTTPS | All portal-integrated services |
 | WOPI Discovery + CheckFileInfo | HTTPS | Collabora ↔ OpenCloud, Nextcloud, XWiki |
+| WOPI SaveChild | HTTPS | OpenCloud/Nextcloud/XWiki → Collabora |
 | BBB Room API | HTTPS | BBB backend |
 | LDAP Bind/Search | LDAP | LimeSurvey, SSP, SOGo, XWiki, Keycloak |
 | S3 Operations | S3 API | Nextcloud, OpenCloud, Element, Notes, ILIAS, OpenProject |
-| ClamAV ICAP | ICAP | Nextcloud |
+| ClamAV ICAP Scan | ICAP | Nextcloud |
+| Dovecot IMAP | IMAP/IMAPS | SOGo, Postfix |
+| Postfix SMTP Submission | SMTP/SMTPS | SOGo, other mail services |
 | Notify Push WebSocket | WebSocket | Nextcloud |

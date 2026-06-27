@@ -216,11 +216,45 @@ Nextcloud SHALL integrate with the Nubus central navigation bar.
 
 ## Depends On
 
-Keycloak (OIDC, client: `opendesk-nextcloud`), MariaDB or PostgreSQL (metadata), Redis (cache), MinIO/S3 (primary storage), HAProxy Ingress, Collabora (WOPI delegate), ClamAV (virus scanning), Postfix (SMTP mail), Nubus Portal (central navigation), Intercom Service (silent login for Filepicker)
+**Authentication**:
+- Keycloak OIDC (`https://keycloak.opendesk.hrz.uni-marburg.de/auth/realms/opendek/.well-known/openid-configuration`, client: `opendesk-nextcloud`, secret: `nextcloud-oidc-client-secret` from `nextcloud-nextcloud` secret)
+- Intercom (`https://intercom.opendesk.hrz.uni-marburg.de/api/silent-login`, secret: `secret.centralnavigation.apiKey`)
+
+**Data Store**:
+- MariaDB (`nextcloud` DB, host: `mariadb:3306`, user: `nextcloud_user`, password: `secrets.nextcloud.db_password`) OR PostgreSQL (`nextcloud` DB, host: `postgresql:5432`, user: `nextcloud_user`, password: `secret.nextcloud.psql_password`)
+- Redis (`redis:6379`, password: `secrets.cache.redis_password`)
+- MinIO S3 (bucket: `opendesk-nextcloud`, endpoint: `http://minio:9000`, access key: `secret.s3.accessKey`, secret: `secret.s3.secretKey`)
+- CephFS RWX: `opendesk-nextcloud-data` (100Gi, storage class: `ceph-cephfs-hdd-ec`, included in k8up schedule)
+
+**Infrastructure**:
+- HAProxy Ingress (HAProxy route, ingress class: `haproxy`, host: `nextcloud.opendesk.hrz.uni-marburg.de`, timeout: 86400s for large files)
+- Collabora (`https://collabora.opendesk.hrz.uni-marburg.edu`, WOPI endpoint: `https://collabora.opendesk.hrz.uni-marburg.edu/hosting/discovery`)
+- ClamAV ICAP (`icap://clamav-icap:1344/avscan`, REQMOD/RESMOD)
+- Postfix (submission: `smtp://postfix:587` STARTTLS, from address: `noreply@opendesk.hrz.uni-marburg.de`)
+- Notify Push (`wss://notify-push.opendesk.hrz.uni-marburg.de/push`, WebSocket notifications)
+- Nubus Portal (navigation.json endpoint, tile)
 
 ## Integrates With
 
-OX AppSuite (Filepicker via Intercom), OpenProject (file store integration, admin bootstrap), Collabora (WOPI office editing), Element (file sharing via Intercom), XWiki (newsfeed via Intercom), Notify Push (WebSocket notifications), ClamAV (ICAP virus scanning), Nubus Portal (central navigation, tile)
+**API Contracts**:
+- [Keycloak OIDC Token](../../integrations/api-contracts/spec.md#contract-keycloak-oidc-token-endpoint) — authentication
+- [Intercom Silent Login](../../integrations/api-contracts/spec.md#contract-intercom-silent-login) — Filepicker/OX integration
+- [WOPI Discovery + CheckFileInfo](../../integrations/api-contracts/spec.md#contract-wopi-discovery-and-checkfileinfo) — Collabora office editing
+- [WOPI SaveChild](../../integrations/api-contracts/spec.md#wopi-savechild-endpoint) — Collabora new document creation
+- [S3 Operations](../../integrations/api-contracts/spec.md#contract-s3-object-storage) — file storage
+- [ClamAV ICAP Scan](../../integrations/api-contracts/spec.md#contract-clamav-icap-scan) — virus scanning
+- [Notify Push WebSocket](../../integrations/api-contracts/spec.md#contract-notify-push-websocket) — real-time notifications
+- [Nubus Navigation](../../integrations/api-contracts/spec.md#contract-nubus-portal-navigation) — portal tile
+- [Postfix SMTP](../../integrations/api-contracts/spec.md#contract-postfix-smtp-submission) — email sending
+
+**Services**:
+- OX AppSuite (Filepicker via Intercom, consumer: `opendesk-opencloud`, target service: `opendesk-nextcloud`)
+- OpenProject (file store integration via Nextcloud API v3, admin bootstrap: `openid-config`)
+- Collabora (WOPI delegate, reads OdT/OdX/LyX presentation formats, writes back to Nextcloud S3)
+- Element (file sharing via Intercom, Signal bridge for file attachments)
+- XWiki (newsfeed via Intercom, syndication and notification display)
+- ClamAV (ICAP REQMOD/RESMOD, quarantines infected files in `quarantine` folder)
+- Nubus Portal (tile: display, url: `https://nextcloud.opendesk.hrz.uni-marburg.de/`, icon, description)
 
 ## Component Reference
 

@@ -97,3 +97,41 @@ HAProxy Ingress
 ## Integrates With
 
 Nubus Portal (tile only — no data flow)
+
+## SLO
+
+**Tier**: Low (stateless whiteboard, public access, no data flow)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <300ms (page load) | Nginx access log analysis |
+| **Error Rate** | <1% (HTTP 5xx) | Nginx access log analysis |
+
+**Alerts**:
+- Excalidraw 5xx error rate >2% for 10 minutes → P3 alert
+- Pod crash loop >3 in 5 minutes → P3 alert
+
+**Capacity**:
+- 1,000 concurrent users (stateless, easily scalable)
+- 10,000 page loads per day
+
+## Disaster Recovery
+
+**Tier**: Low (RPO: N/A - stateless, RTO: 30 min)
+
+**Backup Strategy**:
+- **Configuration**: GitOps-managed
+- **User data**: NONE (stateless service, all data client-side)
+
+**Recovery Order**:
+1. Excalidraw application deployment - 5 min
+2. Smoke tests (page load, whiteboard rendering) - 5 min
+3. User access restoration - 5 min
+
+**Critical Data**:
+- None (stateless service)
+
+**Failure Scenarios**:
+- **Pod crash**: Kubernetes auto-restart
+- **Complete failure**: Redeploy from GitOps (no data to restore)

@@ -255,3 +255,55 @@ CryptPad SHALL integrate with Nubus Portal for centralized navigation.
 | Health | HTTP liveness `/health` port 3000, 60s/30s
 | Ingress | Via Nextcloud (no separate ingress) |
 
+## SLO
+
+**Tier**: Standard (E2E encrypted editing, integrated with Nextcloud)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <400ms (pad load) | Nginx access log analysis |
+| **Error Rate** | <1% (HTTP 5xx) | Nginx access log analysis |
+| **E2E Encryption** | 100% (server cannot read content) | Architecture guarantee |
+
+**Alerts**:
+- CryptPad 5xx error rate >2% for 10 minutes → P3 alert
+- Redis connection failures >3 in 5 minutes → P2 alert
+- Nextcloud integration failures >3 in 5 minutes → P2 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 500 concurrent users
+- 1,000 active pads
+- 5,000 pad operations per hour
+- Database: 1 GB (typical), 10 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (Redis): Daily snapshot (pad metadata)
+- **CephFS storage**: Daily snapshot (pad data)
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. Redis database restore - 10 min
+2. CephFS storage restore - 15 min
+3. CryptPad application deployment - 10 min
+4. Nextcloud integration verification - 5 min
+5. OIDC client configuration verification - 5 min
+6. Smoke tests (create pad, edit, E2E encryption verify) - 10 min
+7. User access restoration - 15 min
+
+**Critical Data**:
+- Pad metadata (stored in Redis)
+- Pad data (stored in CephFS, E2E encrypted)
+- OIDC client configuration
+
+**Failure Scenarios**:
+- **Redis corruption**: Restore from snapshot, verify pad metadata
+- **CephFS storage loss**: Restore from snapshot, verify E2E encryption integrity
+- **Nextcloud integration broken**: Verify WOPI/Nextcloud configuration
+- **Complete failure**: Redeploy from GitOps, restore Redis + CephFS, verify Nextcloud integration
+

@@ -188,3 +188,65 @@ Dovecot and Postfix SHALL be healthy and monitorable.
 | Config | `databases.postfix.*`, `imu auth.cred.*`, `helmfile/apps/dovecot/values.yaml.gotmpl`, `helmfile/apps/postfix/values.yaml.gotmpl` |
 | Chart | `helmfile/charts/dovecot/` and `helmfile/charts/postfix/` (local charts) |
 | Health | IMAP 143/993, SMTP 25/587 |
+
+## SLO
+
+**Tier**: Critical (email infrastructure is essential for all communication)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.9% (43.2 min downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <100ms (IMAP operation) | Dovecot metrics |
+| **Latency (P95)** | <200ms (SMTP delivery) | Postfix metrics |
+| **Error Rate** | <0.1% (delivery failures) | Postfix mail log analysis |
+| **Spam Detection** | >99% (SpamAssassin) | Amavis log analysis |
+
+**Alerts**:
+- IMAP connection failures >3 in 5 minutes → P1 alert
+- SMTP delivery failures >1% for 10 minutes → P1 alert
+- ClamAV scan failures >3 in 5 minutes → P2 alert
+- SpamAssassin failures >5% for 15 minutes → P3 alert
+- Disk usage >85% (mail storage) → P1 alert
+- Queue depth >1,000 messages → P2 alert
+
+**Capacity**:
+- 50,000 IMAP connections (total)
+- 100,000 emails delivered per day
+- 10 TB mail storage (typical institution)
+- 1,000 concurrent SMTP submissions
+
+## Disaster Recovery
+
+**Tier**: Critical (RPO: 15 min, RTO: 1 hour)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL/MariaDB): Hourly incremental + daily full backup, PITR enabled
+- **Mail storage** (Dovecot): Daily snapshot via k8up
+- **Configuration**: GitOps-managed
+- **Spam/AV rules**: Daily snapshot of ClamAV and SpamAssassin databases
+
+**Recovery Order**:
+1. Database restore (PostgreSQL/MariaDB) - 15 min
+2. Mail storage restore (Dovecot) - 20 min
+3. Postfix deployment - 10 min
+4. Dovecot deployment - 10 min
+5. ClamAV + Amavis deployment - 5 min
+6. SpamAssassin rule update - 5 min
+7. SOGo/OX AppSuite integration test - 5 min
+8. Smoke tests (send email, receive, IMAP access) - 10 min
+9. User access restoration - 10 min
+
+**Critical Data**:
+- Mailboxes and email messages
+- User accounts and quotas
+- Email aliases and forwarding rules
+- Spam/AV quarantine
+- Postfix configuration and routing rules
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify user account integrity
+- **Mail storage loss**: Restore from snapshot, verify message checksums
+- **Postfix failure**: Redeploy, verify SMTP routing, check queue
+- **Dovecot failure**: Redeploy, verify IMAP/SIEVE functionality
+- **ClamAV signature outdated**: Update signatures, verify scan capability
+- **Complete failure**: Redeploy from GitOps, restore DB + mail storage, verify SOGo/OX integration

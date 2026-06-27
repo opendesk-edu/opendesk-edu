@@ -248,3 +248,61 @@ OX App Suite SHALL integrate with Nubus Portal for centralized navigation.
 | License | Open-Xchange License |
 | Config | ``helmfile/apps/ox-appsuite/values.yaml.gotmpl`` |
 
+## SLO
+
+**Tier**: Critical (email and calendar are essential for communication)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.9% (43.2 min downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (webmail page load) | OX AppSuite metrics |
+| **Latency (P95)** | <200ms (IMAP operation) | Dovecot metrics |
+| **Error Rate** | <0.1% (HTTP 5xx) | OX AppSuite access logs |
+| **Calendar Sync** | >99% (CalDAV operations) | CalDAV endpoint metrics |
+
+**Alerts**:
+- OX AppSuite 5xx error rate >0.5% for 5 minutes → P1 alert
+- MariaDB connection pool exhausted → P1 alert
+- Dovecot IMAP connection failures >3 in 5 minutes → P1 alert
+- SAML authentication failures >5% for 5 minutes → P1 alert
+- OX Connector provisioning failures >3 consecutive → P2 alert
+
+**Capacity**:
+- 5,000 concurrent webmail users
+- 50,000 IMAP connections (total)
+- 100,000 emails per day (typical institution)
+- Database: 10 GB (typical), 100 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Critical (RPO: 15 min, RTO: 30 min)
+
+**Backup Strategy**:
+- **Database** (MariaDB): Hourly incremental + daily full backup, PITR enabled
+- **Mail data**: Backed up via Dovecot-Postfix infrastructure
+- **OX Connector state**: Daily snapshot
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. MariaDB database restore - 15 min
+2. OX AppSuite application deployment - 10 min
+3. Dovecot IMAP connection verification - 5 min
+4. OX Connector deployment - 5 min
+5. SAML SP configuration verification - 5 min
+6. Nubus LDAP sync verification - 5 min
+7. Smoke tests (login, send email, calendar sync) - 10 min
+8. User access restoration - 10 min
+
+**Critical Data**:
+- User accounts and permissions
+- Email folders and messages (via Dovecot)
+- Calendar entries and contacts
+- OX Connector provisioning state
+- SAML SP configuration
+
+**Failure Scenarios**:
+- **MariaDB corruption**: Restore from PITR, verify user data integrity
+- **OX AppSuite crash**: Kubernetes auto-restart, verify MariaDB connectivity
+- **Dovecot failure**: Coordinate with Dovecot-Postfix recovery
+- **Complete failure**: Redeploy from GitOps, restore DB, verify all integrations (Dovecot, OX Connector, SAML)
+

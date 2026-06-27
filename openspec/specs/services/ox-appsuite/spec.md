@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
-SP-License-Identifier: Apache-2.0
+SPDX-License-Identifier: Apache-2.0
 -->
 
 # OX App Suite
@@ -16,6 +16,20 @@ OX Connector provisioning for academic institutions.
 - Alternative groupware (see `../sogo/spec.md`)
 - Email delivery infrastructure (see dovecot-postfix spec)
 - Advanced email filtering (server-side Sieve rules outside scope)
+
+## Depends On
+
+- **MariaDB** (database): Stores persistent groupware data including emails, calendar entries, contacts, tasks
+- **Dovecot** (IMAP backend): Provides IMAP email storage and access for email functionality
+- **Nubus** (LDAP sync): Provides user and group synchronization for provisioning
+- **Keycloak** (authentication): Uses SAML 2.0 for user authentication and attribute mapping
+- **OX Connector** (provisioning): Integrates with UCS for groupware account provisioning
+
+## Integrates With
+
+- **Nextcloud** (file sharing): Provides shared file access for email attachments and calendar documents
+- **SOGo** (coexistence): Alternative groupware option for different user scenarios
+- **Postfix** (mail delivery): Delivers inbound/outbound email via mail infrastructure
 
 ## Requirements
 
@@ -218,3 +232,13 @@ OX App Suite SHALL integrate with Nubus Portal for centralized navigation.
 - AND tile icon is the OX AppSuite logo (data:image/svg+xml;base64)
 - AND tile description is "Email and calendar groupware"
 - AND clicking the tile redirects to OX AppSuite main page
+
+
+## Component Reference
+
+| Property | Value |
+|---------|-------|
+| Chart | Upstream OX AppSuite (OCI registry: `opencode.de`) |
+| License | Open-Xchange License |
+| Config | ``helmfile/apps/ox-appsuite/values.yaml.gotmpl`` |
+

@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
-SP-License-Identifier: Apache-2.0
+SPDX-License-Identifier: Apache-2.0
 -->
 
 # CryptPad
@@ -19,6 +19,18 @@ only.
 - Rich text/code/slide/spreadsheet pads (diagram only in openDesk)
 - Public pad sharing (registration restricted prevents this)
 - Server-side document storage (persistence is Nextcloud-managed)
+
+## Depends On
+
+- **Nextcloud** (integration platform): Provides user authentication, document storage, and seamless editing integration
+- **Keycloak** (authentication): Uses opaque OAuth2 tokens for secure user authentication
+- **Redis** (session storage): Stores session tokens and pad metadata
+- **CephFS/HDD** (storage): Provides shared storage for CryptPad data persistence
+
+## Integrates With
+
+- **Nextcloud** (document editing): Seamless integration for diagram document editing within Nextcloud interface
+- **Keycloak** (SSO): Provides single sign-on authentication via OAuth2
 
 ## Requirements
 
@@ -221,3 +233,19 @@ CryptPad SHALL integrate with Nubus Portal for centralized navigation.
 - AND tile icon is CryptPad logo (data:image/svg+xml;base64)
 - AND tile description is "Encrypted diagram collaborative editor (E2E)"
 - AND clicking the tile redirects to CryptPad via Nextcloud (not directly to CryptPad)
+
+
+## Component Reference
+
+| Property | Value |
+|---------|-------|
+| Auth | None (stateless, session delegated to Nextcloud) |
+| Storage | Nextcloud S3 (no separate PVC) |
+| Chart | Upstream CryptPad (via Nextcloud Cryptpad app) |
+| License | AGPL-3.0 |
+| Replica range | 2-10 (HPA, targetCPU 70%) |
+| Resources | CPU 250m-500m, memory 256Mi-512Mi |
+| Security | uid 65532, read-only rootfs, dropped capabilities, RuntimeDefault seccomp |
+| Health | HTTP liveness `/health` port 3000, 60s/30s
+| Ingress | Via Nextcloud (no separate ingress) |
+

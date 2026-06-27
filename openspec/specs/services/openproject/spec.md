@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 openDesk Edu Contributors
-SP-License-Identifier: Apache-2.0
+SPDX-License-Identifier: Apache-2.0
 -->
 
 # OpenProject
@@ -16,6 +16,20 @@ authentication and comprehensive project oversight.
 - AI-assisted project management (external tool)
 - Resource leveling algorithms (manual scheduling only)
 - Multi-tenant SaaS mode (single-organization deployment only)
+
+## Depends On
+
+- **PostgreSQL** (database): Stores persistent data including projects, work packages, users, configurations
+- **Memcached** (caching): Provides distributed caching for session management and query result caching
+- **MinIO/S3** (object storage): Stores file attachments with versioning and retention policies
+- **Nextcloud** (bootstrap only): Validates admin account existence for cross-application file store integration
+- **SMTP relay** (email notification): Sends project notifications, mentions, and deadline reminders
+
+## Integrates With
+
+- **Keycloak** (authentication): Uses SAML 2.0 for user authentication and attribute mapping
+- **Nextcloud** (file storage): Provides shared file store for project attachments via OAuth2 integration
+- **Postfix** (email delivery): Relays email notifications for internal university recipients
 
 ## Requirements
 
@@ -200,3 +214,18 @@ university deployment settings.
 - Annual growth: 2 GB (projects) + 20 GB attachments min (S3 bucket)
 - Recommended PVC size increments: 10 GB PostgreSQL per year (actual: 30 GiB baseline)
 - Recommended S3 bucket quota: 100 GB (can scale with MinIO)
+
+
+## Component Reference
+
+| Property | Value |
+|---------|-------|
+| Chart | Upstream OpenProject (OCI registry: `opencode.de`)
+| Database | PostgreSQL (`openproject` DB, `openproject_user`) |
+| Storage | RWO PVC (`postgres-data` 30Gi) + S3 (`openproject-uploads` bucket) |
+| Cache | Redis (`cache.openproject.host:port`) |
+| License | GPL-3.0 |
+| Config | ``helmfile/apps/openproject/values.yaml.gotmpl`` |
+| Image | Upstream OpenProject (OCI registry) |
+| Replicas | 2 (default) |
+

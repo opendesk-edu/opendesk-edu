@@ -18,6 +18,12 @@ for course files and user data, and supports backchannel logout via SAML.
 The deployment includes volume permission initialization containers and a
 dedicated service account for filesystem operations.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Moodle LMS deployment, Shibboleth SAML 2.0 authentication, custom Docker image with Shibboleth SP integration, course management, gradebook, forums, quizzes, SCORM support, plugin ecosystem, MariaDB backend, CephFS persistent storage
+- ❌ **Out of scope**: Alternative LMS (see ILIAS), Moodle plugin development (see Moodle Plugin Database), custom Moodle theme development, mobile app development
+
 ## Non-Goals
 
 - Alternative LMS (see `../ilias/spec.md`)

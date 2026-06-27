@@ -12,6 +12,12 @@ planning, and task tracking. Features OIDC authentication (Keycloak client
 `planka`), PostgreSQL backend, drag-and-drop board interface, card labels/due
 dates, and LTI integration (for LMS embedding).
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Planka Kanban deployment, OIDC authentication via Keycloak, Board→List→Card hierarchy, drag-and-drop interface, card labels/due dates, LTI 1.1 LMS integration, PostgreSQL backend
+- ❌ **Out of scope**: Alternative project management tools (OpenProject, Trello, etc.), agile methodology enforcement (use additional tools for Scrum/Sprint), advanced reporting (use OpenProject for enterprise PM)
+
 ## Non-Goals
 
 - Alternative project management tools (use OpenProject, Trello, etc.)
@@ -110,6 +116,7 @@ This is optional and requires LTI configuration.
 |-----------|---------|----------|---------|
 | Planka Web | Node.js backend (Express) | 1 | RWO PVC (PostgreSQL data) |
 | PostgreSQL | Content storage | 1 (StatefulSet) | RWO PVC (1Gi) |
+| Chart | `helmfile/charts/planka/` (local chart) |
 
 ## Security Context
 
@@ -143,7 +150,7 @@ This is optional and requires LTI configuration.
 - Keycloak OIDC (`https://keycloak.opendesk.hrz.uni-marburg.de/auth/realms/opendek/.well-known/openid-configuration`, client: `planka`, secret: `planka-oidc-client-secret` from `planka-planka-secrets` secret)
 
 **Data Store**:
-- PostgreSQL (`planka` DB, host: `postgresql.opendesk.svc.cluster.local:5432`, user: `planka_user`, password: `secret.planka.psql_password`)
+- PostgreSQL (`planka` DB, host: `postgresql:5432`, user: `planka_user`, password: `secret.planka.psql_password`)
 - RWO PVC: `planka-postgres-data` (1Gi, storage class: `ceph-rbd-ssd`, excluded from k8up schedule)
 
 **Infrastructure**:

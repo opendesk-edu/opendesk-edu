@@ -12,6 +12,12 @@ departmental pages, and public-facing content. Authenticated via OIDC with
 embedded MariaDB, supporting multi-site setups, rich text editing, and the TYPO3
 extension ecosystem.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: TYPO3 CMS deployment, OIDC authentication via Keycloak, multi-site setups, rich text editing, TYPO3 extension ecosystem, public-facing content management, MariaDB backend
+- ❌ **Out of scope**: Alternative web CMS platforms (use WordPress if needed), multi-language content (single-language per deployment), e-commerce features, custom TYPO3 extension development
+
 ## Non-Goals
 
 - Alternative web CMS platforms (use WordPress if needed)
@@ -102,6 +108,7 @@ via the TYPO3 Extension Manager (backend UI).
 |-----------|---------|----------|---------|
 | TYPO3 Web | PHP-FPM backend (Apache) | 1 | RWO PVC (MariaDB) |
 | Embedded MariaDB | Content and configuration storage | 1 (StatefulSet) | RWO PVC (8Gi) |
+| Chart | `helmfile/charts/typo3/` (local chart) |
 
 ## Security Context
 

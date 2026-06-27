@@ -12,6 +12,12 @@ SIP dial-in via Jigasi, and session recording via Jibri. Uses a custom
 Keycloak adapter for OIDC authentication with Matrix User Verification Service
 (UVS) for secure meeting room validation.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: Jitsi Meet video conferencing deployment, WebRTC-based meetings, OIDC authentication via custom Keycloak adapter, Matrix UVS meeting room validation, SIP dial-in via Jigasi, session recording via Jibri
+- ❌ **Out of scope**: Alternative video conferencing (see BigBlueButton), TURN server deployment (external infrastructure), SIP server/IVR deployment (external infrastructure), GPU-accelerated features
+
 ## Non-Goals
 
 - Alternative video conferencing (see `../bigbluebutton/spec.md`)
@@ -209,3 +215,8 @@ headless recording). All other capabilities SHALL be dropped.
 | Jigasi | SIP gateway (disabled by default) | 1 | 3584Mi |
 | Jibri | Recording (SYS_ADMIN required) | 1 | 3Gi + 2Gi /dev/shm |
 | patchJVB | Post-install IP patch job | — | — |
+| Chart | Upstream Jitsi (OCI registry: `opencode.de`)
+|
+
+## Known Quirks
+

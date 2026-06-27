@@ -12,6 +12,12 @@ address book integration, OIDC authentication, PostgreSQL backend, IMAP/SMTP
 via Dovecot and Postfix, Sieve email filtering, and Memcached session caching.
 Optimized for simplicity and LDAP-native environments.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: SOGo groupware deployment, email/calendar/contact/task management, OIDC authentication, PostgreSQL backend, IMAP/SMTP via Dovecot-Postfix, Sieve email filtering, Memcached session caching, LDAP-native integration
+- ❌ **Out of scope**: OX AppSuite features (see ox-appsuite spec), Exchange ActiveSync (native LDAP sync only), coexistence with OX AppSuite (mutually exclusive)
+
 ## Non-Goals
 
 - OX AppSuite features (see `../ox-appsuite/spec.md`)
@@ -192,7 +198,7 @@ SOGo SHALL expose liveness and readiness probes.
 - OpenLDAP (`ldap://openldap:389`, bind: `uid=ldapsearch_sogo,cn=users,dc=opendesk,dc=edu`, password: `secret.sogo.ldap_password`)
 
 **Data Store**:
-- PostgreSQL (`sogo` DB, host: `postgresql.opendesk.svc.cluster.local:5432`, user: `sogo_user`, password: `secret.sogo.psql_password`)
+- PostgreSQL (`sogo` DB, host: `postgresql:5432`, user: `sogo_user`, password: `secret.sogo.psql_password`)
 - Redis (`redis:6379`, password: `secret.sogo.redis_password`) / Memcached (`memcached:11211`)
 
 **Mail**:

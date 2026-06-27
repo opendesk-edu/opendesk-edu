@@ -11,6 +11,12 @@ Survey platform for course evaluations, academic research, institutional feedbac
 and student questionnaires. Authenticated via LDAP bind (direct to OpenLDAP,
 NOT via Keycloak), with MariaDB backend for survey definitions and responses.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: LimeSurvey deployment, survey creation and management, question types (single/multi-select, text, Likert scales), response collection configuration, URL-based survey distribution, LDAP authentication, MariaDB backend
+- ❌ **Out of scope**: Alternative survey platforms (REDCap, SurveyMonkey, etc.), advanced statistical analysis (R, SPSS, etc.), survey analytics and reporting beyond basic response viewing
+
 ## Non-Goals
 
 - Alternative survey platforms (use REDCap, SurveyMonkey, etc.)
@@ -92,6 +98,7 @@ default.
 |-----------|---------|----------|---------|
 | LimeSurvey Web | PHP-FPM backend (Apache) | 1 | RWO PVC (MariaDB data) |
 | MariaDB | Survey data storage | 1 (StatefulSet) | RWO PVC (8Gi) |
+| Chart | Upstream LimeSurvey (OCI registry: `opencode.de`) |
 
 ## Security Context
 

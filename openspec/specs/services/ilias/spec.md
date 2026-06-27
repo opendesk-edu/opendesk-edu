@@ -13,6 +13,12 @@ course materials. Authenticated via Shibboleth SAML 2.0 SP through Keycloak,
 with a Lucene-based search backend, automated setup, and MariaDB Galera
 cluster support for high-availability database deployments.
 
+## Scope
+
+This spec defines:
+- ✅ **In scope**: ILIAS LMS deployment, Shibboleth SAML 2.0 authentication, course management, assessments, forums, SCORM support, learning modules, file storage, Lucene search backend, MariaDB Galera HA support
+- ❌ **Out of scope**: Alternative LMS (see Moodle), ILIAS course content authoring (instructor responsibility), custom ILIAS plugin development (see ILIAS docs)
+
 ## Non-Goals
 
 - Alternative LMS (see `../moodle/spec.md`)

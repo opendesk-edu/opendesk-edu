@@ -170,3 +170,56 @@ PostgreSQL (Keycloak + UMS), Redis (optional for UMS), HAProxy Ingress
 ## Integrates With
 
 All services via OIDC/SAML (Keycloak clients/SP entities), OX Connector (UMS REST API), IntercomService (portal tiles)
+
+## SLO
+
+**Tier**: Critical (foundation service for all authentication)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.9% (43.2 min downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <100ms (OIDC token issuance) | Prometheus histogram from Keycloak metrics |
+| **Latency (P95)** | <50ms (LDAP bind) | OpenLDAP access log analysis |
+| **Error Rate** | <0.1% (authentication failures) | Failed login ratio vs total attempts |
+| **Portal Response** | <200ms (P95) | Portal frontend performance metrics |
+
+**Alerts**:
+- Keycloak OIDC endpoint error rate >1% for 5 minutes → P2 alert
+- OpenLDAP response time >200ms for 10 minutes → P3 alert
+- Portal tile navigation failures >5 in 1 minute → P3 alert
+- UMS REST API 5xx errors >0.5% for 5 minutes → P2 alert
+
+**Capacity**:
+- 5,000 concurrent authenticated users (typical semester load)
+- 50,000 OIDC token issuances per hour (peak: exam periods)
+- 10,000 LDAP binds per hour (peak: morning login rush)
+
+## Disaster Recovery
+
+**Tier**: Critical (RPO: 5 min, RTO: 30 min)
+
+**Backup Strategy**:
+- **PostgreSQL** (Keycloak + UMS): Hourly incremental + daily full backup, PITR enabled
+- **OpenLDAP**: Daily LDIF export + continuous replication to standby node
+- **Configuration**: GitOps-managed via ArgoCD, all changes version-controlled
+
+**Recovery Order**:
+1. PostgreSQL cluster (Keycloak database) - 5 min
+2. OpenLDAP replication - 3 min
+3. Keycloak realm import - 2 min
+4. UMS REST API deployment - 5 min
+5. Portal frontend deployment - 2 min
+6. Smoke tests (token issuance, LDAP bind) - 5 min
+7. DNS/ingress verification - 3 min
+8. User-facing service restoration - 5 min
+
+**Critical Data**:
+- Keycloak realm configuration (users, roles, clients, identity providers)
+- OpenLDAP user directory (uid, mail, groups, organizational units)
+- UMS provisioning state (last sync timestamps, queued operations)
+- Portal configuration (application tiles, user preferences)
+
+**Failure Scenarios**:
+- **Keycloak DB corruption**: Restore from PITR, re-apply recent realm changes
+- **OpenLDAP corruption**: Promote standby, redirect clients, rebuild primary
+- **Complete cluster loss**: Redeploy from GitOps, restore from backups, re-provision from UCS source

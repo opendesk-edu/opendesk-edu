@@ -280,3 +280,62 @@ Nextcloud SHALL integrate with the Nubus central navigation bar.
 | Notify Push | Separate sidecar, connects to same DB and Redis |
 | Replicas | `replicas.nextcloud` (AIO), `replicas.nextcloudNotifyPush` (Notify Push), `replicas.nextcloudExporter` (exporter) |
 | Health | Port 8080 (`/status.php`), exporter port 9205 |
+
+## SLO
+
+**Tier**: Critical (primary file storage for 20+ integrated services)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.9% (43.2 min downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <200ms (file list/UI) | Nextcloud AIO metrics exporter |
+| **Latency (P95)** | <500ms (file upload 10MB) | Upload completion time |
+| **Latency (P95)** | <300ms (file download) | Download throughput metrics |
+| **Error Rate** | <0.1% (HTTP 5xx) | Nginx access log analysis |
+| **Storage Latency** | <100ms (S3 object get) | MinIO/Ceph performance metrics |
+
+**Alerts**:
+- Nextcloud 5xx error rate >0.5% for 5 minutes → P1 alert
+- File upload success rate <99% for 10 minutes → P2 alert
+- Database connection failures >3 in 5 minutes → P1 alert
+- Disk usage >85% → P3 alert
+- Notify Push WebSocket disconnection rate >10% → P3 alert
+
+**Capacity**:
+- 5,000 concurrent active users
+- 50,000 files uploaded per day (peak: assignment deadlines)
+- 10 TB total storage (typical institution)
+- 1,000 MB/s aggregate throughput (CephFS/S3 backend)
+
+## Disaster Recovery
+
+**Tier**: Critical (RPO: 15 min, RTO: 1 hour)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL/MariaDB): Hourly incremental + daily full backup, PITR enabled
+- **User files** (S3/CephFS): Daily snapshot + continuous versioning
+- **Configuration**: GitOps-managed via ArgoCD
+- **External storage**: k8up schedule for RWX PVCs only
+
+**Recovery Order**:
+1. Database restore (PostgreSQL/MariaDB) - 10 min
+2. S3/CephFS data verification - 15 min
+3. Nextcloud AIO deployment - 10 min
+4. Notify Push sidecar deployment - 5 min
+5. Collabora integration verification - 5 min
+6. ClamAV scan resumption - 5 min
+7. Smoke tests (upload, share, WOPI) - 5 min
+8. User access restoration - 5 min
+
+**Critical Data**:
+- User files (documents, photos, videos, shared content)
+- File metadata (names, permissions, share links, tags)
+- User preferences and app configurations
+- External storage mount points and credentials
+- Collabora temporary files and session data
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify file metadata integrity
+- **S3 storage loss**: Restore from snapshots, verify checksums
+- **Complete AIO failure**: Redeploy from GitOps, restore DB + files, re-register OIDC client
+- **Collabora integration broken**: Verify WOPI endpoint, re-register WOPI host

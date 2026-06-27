@@ -201,3 +201,61 @@ Nubus Portal (portal tile, SSO redirect), Provisioning API (semester course prov
 | Init | Init container runs `/setup.sh` with DB connection, setup.sql, and client.ini.php |
 | Cronjobs | Maintenance (02:00 daily), SSO check (every 15min, disabled by default) |
 | Health | TCP liveness probe on port 80, readiness probe on port 80 |
+
+## SLO
+
+**Tier**: High (primary LMS for many institutions, but can degrade gracefully)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (page load) | Apache access log analysis |
+| **Latency (P95)** | <1s (course content delivery) | Lucene search + DB query time |
+| **Error Rate** | <0.5% (HTTP 5xx) | Apache access log analysis |
+| **SSO Success** | >99% (Shibboleth auth) | Keycloak event log |
+
+**Alerts**:
+- ILIAS 5xx error rate >1% for 10 minutes → P2 alert
+- Login failures >5% for 5 minutes → P1 alert
+- Lucene search response time >2s for 15 minutes → P3 alert
+- Disk usage >85% → P3 alert
+- Database connection pool exhausted → P2 alert
+
+**Capacity**:
+- 10,000 concurrent users (exam periods)
+- 100,000 course page views per hour (peak)
+- 5,000 concurrent file downloads
+- Database: 10 GB (typical), 100 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 30 min, RTO: 2 hours)
+
+**Backup Strategy**:
+- **Database** (MariaDB Galera): Hourly incremental + daily full backup
+- **Course files** (CephFS): Daily snapshot
+- **Lucene index**: Daily snapshot with search index rebuild capability
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. Database restore (MariaDB Galera) - 20 min
+2. CephFS course files verification - 15 min
+3. Lucene index rebuild - 30 min
+4. ILIAS application deployment - 10 min
+5. Shibboleth SP configuration verification - 5 min
+6. Cronjob resumption - 5 min
+7. Smoke tests (login, course access, file upload) - 10 min
+8. User access restoration - 15 min
+
+**Critical Data**:
+- Course content (SCORM packages, learning modules, assessments)
+- User submissions and grades
+- Forum posts and collaborative content
+- Course metadata and structure
+- Shibboleth SP configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify user data integrity
+- **CephFS storage loss**: Restore from snapshots, verify course material checksums
+- **Lucene index corruption**: Rebuild index from database, reindex documents
+- **Complete failure**: Redeploy from GitOps, restore DB + files, re-register Shibboleth SP

@@ -162,3 +162,54 @@ HAProxy Ingress
 ## Integrates With
 
 Nubus Portal (tile, role mapping `bookstack-editor`)
+
+## SLO
+
+**Tier**: Standard (documentation platform, not critical for operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <400ms (page load) | Apache access log analysis |
+| **Latency (P95)** | <200ms (search) | BookStack search metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Apache access log analysis |
+| **SSO Success** | >99% (SAML auth) | Keycloak event log |
+
+**Alerts**:
+- BookStack 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- SAML authentication failures >5% for 5 minutes → P2 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 500 concurrent users (typical)
+- 10,000 pages accessed per day
+- 5,000 concurrent readers
+- Database: 2 GB (typical), 20 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (MariaDB): Daily full backup
+- **Configuration**: GitOps-managed
+- **Content**: Included in database backup
+
+**Recovery Order**:
+1. MariaDB database restore - 15 min
+2. BookStack application deployment - 10 min
+3. SAML SP configuration verification - 5 min
+4. Smoke tests (login, create page, search) - 10 min
+5. User access restoration - 15 min
+
+**Critical Data**:
+- Books, chapters, and pages
+- User accounts and permissions
+- Images and attachments (stored in database or filesystem)
+- SAML SP configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify content integrity
+- **SAML misconfiguration**: Re-register SP in Keycloak, verify SSO flow
+- **Complete failure**: Redeploy from GitOps, restore DB, verify authentication

@@ -201,3 +201,56 @@ Nextcloud (WOPI delegate, RichDocuments app, font config), OpenCloud (WOPI deleg
 | Security context | `runAsUser: 1001`, `runAsGroup: 1001`, `seccompProfile: RuntimeDefault`, `capabilities: drop ALL + add CHOWN/FOWNER/SYS_CHROOT` |
 | Health | Port 9980 |
 | Ingress affinity | HAProxy: `url_param WOPISrc check_post` with `hash-type consistent` |
+
+## SLO
+
+**Tier**: High (critical for document editing, integrated with Nextcloud)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (document open) | Collabora metrics |
+| **Latency (P95)** | <200ms (WOPI request) | WOPI endpoint metrics |
+| **Error Rate** | <0.5% (HTTP 5xx) | Collabora access logs |
+| **Concurrent Editors** | 50 per document (max) | Collabora session metrics |
+
+**Alerts**:
+- Collabora 5xx error rate >1% for 10 minutes → P2 alert
+- WOPI connection failures >3 in 5 minutes → P1 alert
+- Document conversion failures >5% for 10 minutes → P3 alert
+- Admin URL access attempts (security alert) → P1 alert
+
+**Capacity**:
+- 500 concurrent editing sessions
+- 1,000 concurrent document viewers
+- 50 concurrent conversions (document format)
+- 10,000 documents edited per day
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 1 hour, RTO: 2 hours)
+
+**Backup Strategy**:
+- **Configuration**: GitOps-managed (admin passwords, WOPI hosts)
+- **Session data**: Stateless (no backup needed)
+- **Document data**: Stored in Nextcloud/OpenCloud (see those specs)
+
+**Recovery Order**:
+1. Collabora application deployment - 10 min
+2. WOPI host registration verification (Nextcloud/OpenCloud) - 5 min
+3. Admin password verification - 3 min
+4. Storage sandbox verification - 5 min
+5. Smoke tests (open document from Nextcloud, edit, save) - 10 min
+6. User access restoration - 5 min
+
+**Critical Data**:
+- WOPI host configurations (Nextcloud, OpenCloud)
+- Admin credentials
+- Font configurations
+- Macro security settings
+
+**Failure Scenarios**:
+- **Collabora crash**: Kubernetes auto-restart, verify WOPI connectivity
+- **WOPI host misconfiguration**: Re-register Nextcloud/OpenCloud as WOPI host
+- **Storage sandbox broken**: Verify user namespace mapping, check filesystem permissions
+- **Complete failure**: Redeploy from GitOps, re-register WOPI hosts, verify Nextcloud integration

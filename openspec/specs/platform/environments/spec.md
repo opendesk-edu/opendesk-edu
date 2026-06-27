@@ -102,6 +102,60 @@ All environments inherit from `helmfile/environments/default/` which contains:
 - `resources.yaml.gotmpl` — CPU/memory limits and requests per component
 - `replicas.yaml.gotmpl` — Per-component replica counts
 - `images.yaml.gotmpl` — Container image registries, repos, and tags
+
+### Known HRZ DNS Quirks
+
+The HRZ CoreDNS configuration has limitations that require workarounds for
+certain DNS resolution scenarios.
+
+#### Issue: External CNAME Chain Resolution Failures
+
+**Problem**: HRZ CoreDNS fails to resolve external CNAME chains that are 2+
+hops deep from the internal DNS server.
+
+**Example**: Resolving `www-proxy2.uni-marburg.de` → `(CNAME) www-proxy2` → 
+`(A) 137.248.1.8` fails if done from within the cluster because CoreDNS
+cannot follow the CNAME chain beyond the first hop.
+
+**Workaround**: Use `hostAliases` in pod specs to hardcode the resolved IP
+addresses for internal services that need to resolve external hostnames.
+
+**Example `hostAliases` (YAML snippet)**:
+```yaml
+hostAliases:
+  - ip: "137.248.1.8"
+    hostnames:
+      - "www-proxy2.uni-marburg.de"
+      - "proxy02.hrz.uni-marburg.de"
+```
+
+#### Issue: Ingress Controller IP Conflict
+
+**Problem**: HAProxy and nginx-ingress both share the same external IP
+`192.168.3.201`, causing routing confusion for certain ingress resources.
+
+**Workaround**: Use explicit `ingressClassName` in all Ingress resources:
+- HAProxy resources: `ingressClassName: haproxy`
+- nginx-ingress resources: `ingressClassName: nginx`
+
+**Note**: Some upstream charts default to `kubernetes.io/ingress.class: nginx`
+annotation; this must be overridden when using HAProxy (e.g., Planka chart).
+
+#### Issue: Proxy Resolution for Pods Needing Internet Access
+
+**Problem**: Pods that need internet access for API calls (e.g., capabilities
+checks, external web services) cannot resolve `www-proxy2.uni-marburg.de`
+due to the CoreDNS CNAME chain failure.
+
+**Workaround**: Add `hostAliases` with the proxy IP to affected pods OR use the
+IP directly `http://137.248.1.8:3128` instead of DNS hostname.
+
+**Example usage**:
+```yaml
+env:
+  - name: HTTP_PROXY
+    value: "http://137.248.1.8:3128"  # Use IP directly instead of DNS
+```
 - `ingress.yaml.gotmpl` — Ingress class and per-service body timeouts
 - `selinux.yaml.gotmpl` — SELinux label overrides per component
 - `annotations.yaml.gotmpl` — Otterize, Prometheus, and Grafana annotations

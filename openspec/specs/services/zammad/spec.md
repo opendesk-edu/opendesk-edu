@@ -107,6 +107,65 @@ Nubus Portal (tile), Postfix (email tickets), Nextcloud (file attachments via In
 | Cache | Redis (search cache + Faye WebSocket) |
 | Storage | RWO PVC (`zammad-data`, 1Gi, `storageClassNames.RWO`) |
 | License | AGPL-3.0 |
+
+## SLO
+
+**Tier**: High (critical for IT support, but can use email fallback)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (ticket page load) | Nginx access log analysis |
+| **Latency (P95)** | <300ms (search query) | Elasticsearch metrics |
+| **Error Rate** | <0.5% (HTTP 5xx) | Nginx access log analysis |
+| **Email-to-Ticket** | <2 minutes (postfix → Zammad) | Postfix + Zammad logs |
+
+**Alerts**:
+- Zammad 5xx error rate >1% for 10 minutes → P2 alert
+- Email ingestion failures >5 in 10 minutes → P1 alert
+- Elasticsearch connection failures >3 in 5 minutes → P2 alert
+- SAML authentication failures >5% for 5 minutes → P1 alert
+- Disk usage >85% → P3 alert
+
+**Capacity**:
+- 200 concurrent agents
+- 1,000 tickets per day (typical)
+- 10,000 tickets per month (large institution)
+- Database: 5 GB (typical), 50 GB (large institution)
+- Elasticsearch: 10 GB (typical), 100 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 1 hour, RTO: 2 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Hourly incremental + daily full backup, PITR enabled
+- **Elasticsearch indices**: Daily snapshot
+- **Attachments** (RWO PVC): Daily snapshot via k8up
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. PostgreSQL database restore - 15 min
+2. Elasticsearch index restore - 20 min
+3. RWO PVC attachment restore - 10 min
+4. Zammad application deployment - 10 min
+5. Redis cache deployment - 3 min
+6. Postfix integration test - 5 min
+7. SAML SP configuration verification - 5 min
+8. Smoke tests (create ticket, search, email ingestion) - 10 min
+
+**Critical Data**:
+- Tickets and customer communications
+- Agent assignments and workflows
+- Knowledge base articles
+- Email correspondence (via Postfix)
+- Attachments and media files
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify ticket data integrity
+- **Elasticsearch corruption**: Restore from snapshot, rebuild search indices
+- **Attachment loss**: Restore RWO PVC from snapshot, verify file checksums
+- **Complete failure**: Redeploy from GitOps, restore DB + indices + attachments, re-register SAML SP
 | Config | `databases.zammad.*`, `helmfile/apps/zammad/values.yaml.gotmpl` |
 | Chart | Upstream `zammad/zammad` (custom values overlay) |
 | Image | `ghcr.io/zammad/zammad:latest` |

@@ -164,3 +164,57 @@ This is optional and requires LTI configuration.
 **Services**:
 - Nubus Portal (tile: display, url: `https://planka.opendesk.hrz.uni-marburg.de/`, icon, description, role mapping: `planka-user` group in Keycloak)
 - ILIAS/Moodle (LTI v1.x integration for board attachments, optional, consumer key: `planka-lti`, secret: `secret.planka.lti_secret`)
+
+## SLO
+
+**Tier**: Standard (kanban tool, not critical for core operations)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.0% (7.2 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <400ms (board load) | Nginx access log analysis |
+| **Latency (P95)** | <200ms (card drag-and-drop) | Planka API metrics |
+| **Error Rate** | <1% (HTTP 5xx) | Nginx access log analysis |
+| **LTI Integration** | >98% (ILIAS/Moodle embedding) | LTI launch logs |
+
+**Alerts**:
+- Planka 5xx error rate >2% for 10 minutes → P3 alert
+- Database connection pool exhausted → P3 alert
+- OIDC authentication failures >5% for 5 minutes → P2 alert
+- LTI launch failures >5% for 10 minutes → P3 alert
+
+**Capacity**:
+- 1,000 concurrent users
+- 5,000 boards across organization
+- 50,000 cards created per month
+- Database: 2 GB (typical), 20 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Standard (RPO: 4 hours, RTO: 8 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Daily full backup
+- **Configuration**: GitOps-managed
+- **Board data**: Included in database backup
+
+**Recovery Order**:
+1. PostgreSQL database restore - 15 min
+2. Planka application deployment - 10 min
+3. OIDC client configuration verification - 5 min
+4. LTI consumer key/secret verification - 3 min
+5. Smoke tests (create board, add card, LTI launch) - 10 min
+6. User access restoration - 15 min
+
+**Critical Data**:
+- Boards, lists, and cards
+- User assignments and labels
+- Card comments and activity history
+- OIDC client configuration
+- LTI consumer credentials
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from backup, verify board data integrity
+- **OIDC misconfiguration**: Re-register client in Keycloak, verify SSO flow
+- **LTI integration broken**: Re-register consumer key, verify ILIAS/Moodle integration
+- **Complete failure**: Redeploy from GitOps, restore DB, verify all integrations

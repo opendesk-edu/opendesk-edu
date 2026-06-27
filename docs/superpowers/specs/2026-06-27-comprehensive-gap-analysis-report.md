@@ -342,8 +342,8 @@ See [Test Coverage Gaps](../../_registry/test-coverage-gaps/spec.md) for testing
 
 - ✅ Target: 100% service specs with `## Scope` sections ✅ **COMPLETED (25/25)**
 - ✅ Target: 100% service specs with `## Depends On` sections ✅ **COMPLETED (25/25)**
-- ✅ Target: 100% service specs with `## SLO` sections
-- ✅ Target: 100% service specs with `## Disaster Recovery` sections
+- ⏳ Target: 100% service specs with `## SLO` sections (in progress: 6/25)
+- ⏳ Target: 100% service specs with `## Disaster Recovery` sections (in progress: 6/25)
 
 ### Test Coverage
 
@@ -370,8 +370,8 @@ The openDesk Edu OpenSpec demonstrates strong architectural foundations with exc
 **Status (2026-06-27)**:
 - ✅ 25/25 services with `## Scope` sections (Fission AI OpenSpec compliance achieved)
 - ✅ 25/25 services with `## Depends On` sections (architectural clarity achieved)
-- ⏳ 0/25 services with `## SLO` sections (next priority)
-- ⏳ 0/25 services with `## Disaster Recovery` sections (next priority)
+- ⏳ 6/25 services with `## SLO` sections (in progress: Nubus, Nextcloud, ILIAS, Moodle, Jitsi, SOGo)
+- ⏳ 6/25 services with `## Disaster Recovery` sections (in progress: same 6 services)
 
 ---
 

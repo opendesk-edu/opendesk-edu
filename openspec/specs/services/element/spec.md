@@ -172,3 +172,64 @@ Intercom Service (silent login, navigation, AS pipe), OX AppSuite (messaging AS 
 | Presence | Configurable (`functional.dataProtection.matrixPresence.enabled`) |
 | Theme | `title: "Chat - <productName>"`, primary color CSS variables |
 | Security | Both: `capabilities: drop ALL`, `seccompProfile: RuntimeDefault` |
+
+## SLO
+
+**Tier**: High (important communication tool, but not critical)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <300ms (message delivery) | Synapse metrics |
+| **Connection Success** | >98% (WebSocket) | Synapse connection logs |
+| **Message Delivery** | >99% (within 5 seconds) | Federation/send queue metrics |
+| **Federation Success** | >95% (external homeservers) | Federation transaction logs |
+
+**Alerts**:
+- Synapse 5xx error rate >1% for 10 minutes → P2 alert
+- WebSocket connection failures >5% for 5 minutes → P1 alert
+- Message delivery delay >10s for 5 minutes → P2 alert
+- Federation failures >10% for 15 minutes → P3 alert
+- TURN server connection failures >3 in 5 minutes → P2 alert
+
+**Capacity**:
+- 5,000 concurrent connected users
+- 50,000 messages per day (typical)
+- 1,000 concurrent voice/video calls (TURN)
+- Database: 20 GB (typical), 200 GB (large institution)
+- S3 media storage: 500 GB (typical), 5 TB (large institution)
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 1 hour, RTO: 2 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Hourly incremental + daily full backup, PITR enabled
+- **S3 media storage**: Daily snapshot, 30-day retention
+- **Configuration**: GitOps-managed (homeserver.yaml, well-known delegation)
+- **Signing keys**: Encrypted backup with quarterly rotation
+
+**Recovery Order**:
+1. PostgreSQL database restore - 20 min
+2. S3 media storage verification - 15 min
+3. Synapse homeserver deployment - 15 min
+4. Element Web frontend deployment - 5 min
+5. OIDC client configuration verification - 5 min
+6. Federation signing key verification - 5 min
+7. Well-known delegation DNS check - 3 min
+8. TURN server integration test - 5 min
+9. Smoke tests (login, send message, join room) - 10 min
+10. User access restoration - 10 min
+
+**Critical Data**:
+- User accounts and device lists
+- Room memberships and metadata
+- Message history (encrypted)
+- Media uploads (S3)
+- Signing keys (critical for federation trust)
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify message history integrity
+- **S3 media loss**: Restore from snapshot, verify media checksums
+- **Signing key loss**: CRITICAL - federation trust broken, coordinate with other homeservers
+- **Complete failure**: Redeploy from GitOps, restore DB + media, re-register OIDC client, verify federation

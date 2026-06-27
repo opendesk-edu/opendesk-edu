@@ -235,3 +235,63 @@ university deployment settings.
 | Image | Upstream OpenProject (OCI registry) |
 | Replicas | 2 (default) |
 
+## SLO
+
+**Tier**: High (important for project management, can degrade gracefully)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (page load) | Nginx access log analysis |
+| **Latency (P95)** | <1s (work package update) | OpenProject API response metrics |
+| **Error Rate** | <0.5% (HTTP 5xx) | Nginx access log analysis |
+| **Cache Hit Rate** | >80% (Memcached) | Memcached metrics |
+
+**Alerts**:
+- OpenProject 5xx error rate >1% for 10 minutes → P2 alert
+- Database connection pool exhausted → P2 alert
+- Memcached connection failures >3 in 5 minutes → P2 alert
+- SAML authentication failures >5% for 5 minutes → P1 alert
+- S3 attachment upload failures >2% for 10 minutes → P3 alert
+
+**Capacity**:
+- 2,000 concurrent users
+- 10,000 work packages created per month (typical)
+- 5,000 API requests per minute (peak)
+- Database: 10 GB (typical), 100 GB (large institution)
+- S3 attachments: 1 TB (typical), 10 TB (large institution)
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 1 hour, RTO: 4 hours)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Hourly incremental + daily full backup, PITR enabled
+- **S3 attachments**: Daily snapshot, 30-day retention
+- **Memcached state**: Stateless (no backup needed)
+- **Configuration**: GitOps-managed
+
+**Recovery Order**:
+1. PostgreSQL database restore - 20 min
+2. S3 attachment verification - 15 min
+3. OpenProject application deployment - 15 min
+4. Memcached deployment - 5 min
+5. SAML SP configuration verification - 5 min
+6. Nextcloud integration test - 5 min
+7. SMTP relay configuration test - 5 min
+8. Smoke tests (login, project creation, work package update) - 10 min
+9. User access restoration - 15 min
+
+**Critical Data**:
+- Projects, work packages, and timelines
+- User assignments and permissions
+- File attachments (S3)
+- Comments and activity logs
+- Custom fields and workflows
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify project data integrity
+- **S3 attachment loss**: Restore from snapshot, verify checksums
+- **SAML misconfiguration**: Re-register SP in Keycloak, verify SSO flow
+- **Complete failure**: Redeploy from GitOps, restore DB + attachments, re-register SAML SP
+

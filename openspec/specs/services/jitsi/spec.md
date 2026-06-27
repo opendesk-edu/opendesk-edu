@@ -218,5 +218,62 @@ headless recording). All other capabilities SHALL be dropped.
 | Chart | Upstream Jitsi (OCI registry: `opencode.de`)
 |
 
-## Known Quirks
+## SLO
+
+**Tier**: High (critical for distance learning, but can fall back to BBB)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.5% (3.6 hours downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <300ms (meeting join) | Jitsi Videobridge metrics |
+| **Connection Success** | >98% (WebRTC handshake) | Prosody connection logs |
+| **Media Quality** | <2% packet loss | WebRTC statistics API |
+| **Recording Success** | >95% (Jibri recordings) | Jibri completion logs |
+
+**Alerts**:
+- Jitsi Videobridge CPU >80% for 5 minutes → P2 alert
+- Meeting join failure rate >5% for 10 minutes → P1 alert
+- Recording failure rate >10% for 30 minutes → P3 alert
+- TURN server connection failures >3 in 5 minutes → P2 alert
+- Matrix UVS validation failures >2% for 5 minutes → P2 alert
+
+**Capacity**:
+- 500 concurrent meeting participants (typical load)
+- 1,000 concurrent participants (large lecture)
+- 50 concurrent active meetings
+- Media: 2.5 Mbps per participant (HD video)
+
+## Disaster Recovery
+
+**Tier**: High (RPO: 1 hour, RTO: 2 hours)
+
+**Backup Strategy**:
+- **Jitsi configuration**: GitOps-managed (Prosody, Jicofo, JVB, Jibri, Jigasi)
+- **Recording storage** (S3/CephFS): Daily snapshot, 30-day retention
+- **TURN server credentials**: Kubernetes secret, rotated quarterly
+- **Matrix UVS configuration**: GitOps-managed
+
+**Recovery Order**:
+1. Jitsi Web deployment - 10 min
+2. Prosody XMPP server deployment - 10 min
+3. Jicofo deployment - 5 min
+4. Jitsi Videobridge (JVB) deployment - 15 min
+5. Jibri recorder deployment - 10 min
+6. Jigasi SIP gateway deployment - 10 min
+7. TURN server verification - 5 min
+8. Matrix UVS integration test - 5 min
+9. Smoke tests (meeting creation, join, recording) - 15 min
+
+**Critical Data**:
+- Active meeting configurations
+- Recording files (stored in S3/CephFS)
+- TURN server credentials and shared secrets
+- Matrix UVS service configuration
+- Custom OIDC adapter configuration
+
+**Failure Scenarios**:
+- **JVB crash**: Kubernetes auto-restart, verify auto-scaling triggers
+- **Prosody failure**: Redeploy, verify MUC components, test meeting creation
+- **Recording loss**: Restore from S3 snapshot, verify recording integrity
+- **Complete failure**: Redeploy from GitOps, verify all components, test end-to-end meeting flow
 

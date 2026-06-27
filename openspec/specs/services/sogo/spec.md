@@ -244,3 +244,61 @@ SOGo SHALL expose liveness and readiness probes.
 | SSO via | Shibboleth → Keycloak SAML (disabled in edu — uses OIDC instead) |
 | LDAP bind | OpenLDAP (`ou=users,dc=opendesk,dc=edu`), bindDN `uid=sogo,ou=services` |
 | Dovecot integration | IMAP, Sieve, Managed Folders, Shared Namespace |
+
+## SLO
+
+**Tier**: Critical (email is essential for communication)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.9% (43.2 min downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <500ms (webmail page load) | Apache access log analysis |
+| **Latency (P95)** | <200ms (IMAP operation) | Dovecot metrics |
+| **Error Rate** | <0.1% (HTTP 5xx) | Apache access log analysis |
+| **Sieve Filter Success** | >99% (email filtering) | Sieve log analysis |
+
+**Alerts**:
+- SOGo 5xx error rate >0.5% for 5 minutes → P1 alert
+- IMAP connection failures >3 in 5 minutes → P1 alert
+- LDAP bind failures >2% for 5 minutes → P1 alert
+- Memcached connection errors >3 in 5 minutes → P2 alert
+- Database connection pool exhausted → P2 alert
+
+**Capacity**:
+- 5,000 concurrent webmail users
+- 50,000 IMAP connections (total)
+- 100,000 emails per day (typical institution)
+- Database: 5 GB (typical), 50 GB (large institution)
+
+## Disaster Recovery
+
+**Tier**: Critical (RPO: 15 min, RTO: 30 min)
+
+**Backup Strategy**:
+- **Database** (PostgreSQL): Hourly incremental + daily full backup, PITR enabled
+- **Memcached state**: Stateless (no backup needed)
+- **Configuration**: GitOps-managed
+- **Mail data**: Backed up via Dovecot-Postfix infrastructure (see dovecot-postfix spec)
+
+**Recovery Order**:
+1. PostgreSQL database restore - 10 min
+2. SOGo application deployment - 5 min
+3. Apache + PHP-FPM configuration verification - 3 min
+4. OIDC client configuration verification - 2 min
+5. LDAP bind test - 2 min
+6. Dovecot IMAP connection test - 3 min
+7. Memcached connection test - 2 min
+8. Smoke tests (login, send email, calendar sync) - 3 min
+
+**Critical Data**:
+- User preferences and calendar entries
+- Address book contacts
+- Email filters (Sieve scripts)
+- Session data (Memcached)
+- OIDC client configuration
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify user data integrity
+- **Apache failure**: Kubernetes auto-restart, verify configuration
+- **Complete failure**: Redeploy from GitOps, restore DB, verify all integrations
+- **OIDC misconfiguration**: Re-register client in Keycloak, verify SSO flow

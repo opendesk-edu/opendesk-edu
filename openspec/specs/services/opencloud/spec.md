@@ -182,3 +182,62 @@ OX AppSuite (WebDAV file access via Intercom), Nubus Portal (tile), Collabora (W
 | Replicas | 2 (default, HAProxy ingress) |
 | Environment vars | `JWT_SECRET`, `TRANSFER_SECRET`, `MACHINE_AUTH_API_KEY`, `URL_SIGNING_SECRET`, `SYSTEM_USER_API_KEY`, `SYSTEM_USER_ID` |
 | Service Account | UUID-based (`serviceAccountId`) used for all internal service communication |
+
+## SLO
+
+**Tier**: Critical (alternative primary file storage, used in education scenarios)
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Availability** | 99.9% (43.2 min downtime/month max) | Uptime over 30-day window |
+| **Latency (P95)** | <200ms (file list/UI) | OpenCloud metrics |
+| **Latency (P95)** | <500ms (file upload 10MB) | Upload completion time |
+| **Latency (P95)** | <300ms (file download) | Download throughput metrics |
+| **Error Rate** | <0.1% (HTTP 5xx) | Nginx access log analysis |
+
+**Alerts**:
+- OpenCloud 5xx error rate >0.5% for 5 minutes → P1 alert
+- File upload success rate <99% for 10 minutes → P2 alert
+- Database connection failures >3 in 5 minutes → P1 alert
+- Disk usage >85% → P3 alert
+- CephFS mount failures >3 in 5 minutes → P1 alert
+
+**Capacity**:
+- 5,000 concurrent active users
+- 50,000 files uploaded per day (peak: assignment deadlines)
+- 10 TB total storage (typical institution)
+- 1,000 MB/s aggregate throughput (CephFS backend)
+
+## Disaster Recovery
+
+**Tier**: Critical (RPO: 15 min, RTO: 1 hour)
+
+**Backup Strategy**:
+- **Database** (MariaDB): Hourly incremental + daily full backup, PITR enabled
+- **User files** (CephFS): Daily snapshot, 30-day retention
+- **Configuration**: GitOps-managed
+- **Secrets**: Encrypted backup with quarterly rotation
+
+**Recovery Order**:
+1. Database restore (MariaDB) - 15 min
+2. CephFS data verification - 15 min
+3. OpenCloud application deployment - 10 min
+4. Redis cache deployment - 3 min
+5. OIDC client configuration verification - 5 min
+6. OX AppSuite/Nubus Portal integration test - 5 min
+7. WOPI host registration (if Collabora used) - 5 min
+8. Smoke tests (upload, share, WebDAV) - 10 min
+9. User access restoration - 10 min
+
+**Critical Data**:
+- User files (documents, photos, videos, shared content)
+- File metadata (names, permissions, share links, CS3 references)
+- User profiles and role-based access control
+- OIDC client configuration and secrets
+- Service account UUIDs
+
+**Failure Scenarios**:
+- **Database corruption**: Restore from PITR, verify file metadata integrity
+- **CephFS storage loss**: Restore from snapshot, verify checksums
+- **Complete failure**: Redeploy from GitOps, restore DB + files, re-register OIDC client, re-establish CS3 connections
+- **OIDC misconfiguration**: Re-register client in Keycloak, verify SSO flow
